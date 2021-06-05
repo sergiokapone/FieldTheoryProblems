@@ -1,0 +1,51 @@
+% !TeX program = lualatex
+% !TeX encoding = utf8
+% !TeX spellcheck = uk_UA
+
+
+\documentclass[]{ProblemBook}
+
+\def\Dolgoshey{D\raisebox{-0.5ex}{o}\raisebox{0.5ex}{l}}
+
+\begin{document}
+
+%=========================================================
+\begin{problem}
+    В порожнині незаземленого і незарядженого металевого провідника довільної форми знаходиться електричний диполь. Порожнина також має довільну форму. Знайдіть електричне поле за межами провідника.
+\end{problem}
+
+\begin{problem}
+Електричне поле утворене розподілом зарядів $\sigma(\theta, \phi) = \sigma_0\cos\theta$ на поверхні сфери радіуса $R$, всередині і зовні зарядів немає. Знайти потенціал зовні та усередині кулі, в сферичних координатах.
+\begin{solution}
+
+Для обчислення скористаємось інтегралом $\pot = \int\frac{\sigma'dS'}{|\vect{r} - \vect{r}'|}$, для цього скористаємось мультипольним розкладом підінтегрального виразу:
+\[
+    \frac{1}{|\vect{r} - \vect{r}'|} = \sum\limits_{l=0}^{\infty}\sum\limits_{m=-l}^l \frac{4\pi}{2l + 1} \frac{r_<^l}{r_>^{l+1}} Y_{lm}(\theta, \phi) Y_{lm}^*(\theta', \phi').
+\]
+
+Також пам'ятатимемо, що 
+\[
+    \int Y^*_{lm}(\theta', \phi')Y_{l'm'}(\theta', \phi')d\Omega' = \delta_{ll'}\delta_{mm'},
+\]
+а також $dS' = R^2\sin\theta'd\theta'd\phi' = R^2d\Omega'$.
+
+Отже, записуємо:
+
+\begin{multline}
+    \pot = \sigma_0R^2  \sum\limits_{l=0}^{\infty}\sum\limits_{m=-l}^l \frac{4\pi}{2l + 1} \frac{r_<^l}{r_>^{l+1}} Y_{lm}(\theta, \phi) \int Y_{lm}^*(\theta', \phi') \overbrace{\cos\theta'}^{\sqrt{\frac{4\pi}{3}}Y_{10}} d\Omega' = \\
+   = \sigma_0R^2  \sum\limits_{l=0}^{\infty}\sum\limits_{m=-l}^l \frac{4\pi}{2l + 1} \frac{r_<^l}{r_>^{l+1}} Y_{lm}(\theta, \phi) \cdot \sqrt{\frac{4\pi}{3}} \underbrace{\int Y_{lm}^*(\theta', \phi')  Y_{10} d\Omega'}_{\delta_{l1}\delta_{m0}} = \\
+      = \sigma_0R^2  \sum\limits_{l=0}^{\infty}\sum\limits_{m=-l}^l \delta_{l1}\delta_{m0} \frac{4\pi}{2l + 1} \frac{r_<^l}{r_>^{l+1}} Y_{lm}(\theta, \phi) \cdot \sqrt{\frac{4\pi}{3}} = \\
+       =  \sigma_0R^2 \frac{r_<}{r_>^2}  \frac{4\pi}{3} \sqrt{\frac{4\pi}{3}} Y_{10}(\theta, \phi) = \sigma_0R^2 \frac{r_<}{r_>^2}  \frac{4\pi}{3} \cos\theta.
+\end{multline}
+Звідки, для зовнішньої частини сфери $r_< = R, r_> = r$, для внутрішньої $r_< = r, r_> = R$, остаточно:
+\[
+    \pot(\theta) = 
+\begin{cases}
+     \frac{4\pi\sigma_0 R^3}{3r^3}\cos\theta, \quad r \ge R, \\
+    4\pi\sigma_0 r \cos\theta, \quad r < R.
+\end{cases}
+\]
+
+\end{solution}
+\end{problem}
+\end{document}

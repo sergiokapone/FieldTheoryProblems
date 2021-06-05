@@ -1,0 +1,173 @@
+\protect \section *{\protect \nameref  *{EMstaticsInMedia}}
+\begin{Solution}{6.{1}}
+    $\Efield_2 = \Efield_1 + \left( \frac{\epsilon_1}{\epsilon _2} - 1 \right)\vect{n}\left( \vect{n} \cdot \Efield_1 \right) - \frac{4\pi \sigma }{\epsilon _2}{\vect{n}}$.
+\end{Solution}
+\begin{Solution}{6.{2}}
+	$
+		\pot  = \frac{2}{{{\varepsilon _1} + {\varepsilon _2}}}\frac{q}{r},
+	$
+	$
+		\Efield = \frac{2q}{\epsilon_1 + \epsilon_2}\frac{\vect{r}}{r^3},
+	$
+	$ \Dfield_i = \frac{2\epsilon_i}{\epsilon_1 + \epsilon_2}\frac{q\vect{r}}{r^3} $ ($i = 1,2$).
+\end{Solution}
+\begin{Solution}{6.{3}}
+	Граничні умови на поверхні провідника $\pot = \const$  та межі розділу діелектриків можна задовольнити, використовуючи сферично-симетричний потенціал  $\pot(r) = \frac{C}{r}$, $r > R$ . Константу $C$ знаходимо з теореми Гаусса для індукції. Остаточно маємо потенціал:
+	\[
+		\pot(r) = \frac{2q}{(\epsilon_1 + \epsilon_2)r}, \quad r > R,
+	\]
+	та густину зарядів на поверхнях кулі:
+	\[
+		\sigma_i = \frac{q\epsilon_i}{2\pi(\epsilon_1 + \epsilon_2)R^2}, \quad i = 1,2.
+	\]
+\end{Solution}
+\begin{Solution}{6.{10}}
+	Зовні кулі на зовнішнє однорідне поле накладається поле, що створюється поляризаційними зарядами які виникли на кулі. З урахуванням нульової умови на нескінченності для поля зарядів на кулі та умови регулярності в початку координат, шукатимемо потенціал у вигляді:
+	\[
+		\pot(r) =
+		\begin{cases}
+			-Cr\cos\theta, \quad r \le R \\
+			-E_0 r \cos\theta + \frac{p\cos\theta}{r^2}, \quad r > R.
+		\end{cases}
+	\]
+	Граничні умови мають вигляд:
+	\[
+		\left. \pot^{(i)} \right|_{r = R} = \left. \pot^{(e)} \right|_{r = R} \left., \quad \epsilon^{(i)}\frac{\partial\pot^{(i)}}{\partial r}\right|_{r = R} =  \left. \epsilon^{(e)}\frac{\partial\pot^{(e)}}{\partial r}\right|_{r = R},
+	\]
+	і дають змогу визначити константу $C$ та дипольний момент $p$:
+	\[
+		\begin{cases}
+			-CR\cos\theta = -E_0 R \cos\theta + \frac{p\cos\theta}{R^2} \\
+			\epsilon^{(i)}(-C\cos\theta) = \epsilon^{(e)} E_0 \cos\theta + \epsilon^{(e)}\frac{2p\cos\theta}{R^3}.
+		\end{cases}
+	\]
+	Звідки:
+	\[
+		p = \frac{\epsilon^{(i)} - \epsilon^{(e)}}{\epsilon^{(i)} + 2\epsilon^{(e)}}R^3E_0,
+	\]
+	\[
+		C = \frac{3\epsilon^{(e)}}{\epsilon^{(i)} + 2\epsilon^{(e)}}.
+	\]
+	Потенціал дорівнює:
+	\[
+		\pot =
+		\begin{cases}
+			-\frac{3\epsilon^{(e)}}{\epsilon^{(i)} + 2\epsilon^{(e)}}\left( \Efield_0\cdot \vect{r}\right), & r \le R \\
+			-\left( \Efield_0\cdot \vect{r}\right) + \frac{\vect{p} \vect{r}}{r^3},                         & r > R.
+		\end{cases}
+	\]
+	Густина зв'язаного заряду:
+	\[
+		\sigma_   \text{зв'яз} = P_{1n} - P_{2n} = \frac{1}{4\pi} \left( \left.\frac{\partial\pot^{(i)}}{\partial r}\right|_{r = R} -  \left. \frac{\partial\pot^{(e)}}{\partial r}\right|_{r = R} \right)  = \frac{3}{4\pi} \frac{\epsilon_i - \epsilon_e}{\epsilon_i + 2\epsilon_e} E_0\cos\theta.
+	\]
+\end{Solution}
+\begin{Solution}{6.{11}}
+	\emph{Вказівка}: Шукаємо розв’язок рівняння Лапласа всередині кулі (в сферичних координатах)  у вигляді $\pot(r,\theta,\phi) = f(r)\cos\theta$. Маємо загальний розв'язок для  $f(r) = A\frac{r}{R} + B\left( \frac{R}{r}\right)^2$.  Константи знаходимо з умови регулярності в нулі та з граничної умови при  $r = R$. Густина зв’язаних зарядів визначається за формулою $\sigma = \vect{P}\cdot\vect{n}$.
+\end{Solution}
+\begin{Solution}{6.{12}}
+	$\pot = \pot_0 \left( \frac{R}{r}\right)^2\cos\theta $.
+\end{Solution}
+\begin{Solution}{6.{13}}
+	\emph{Вказівка}: Шукаємо розв’язок рівняння Лапласа всередині кулі (в сферичних координатах)  у вигляді $\pot(r,\theta,\phi) = f(r)\cos\theta$. Маємо загальний розв'язок для  $f(r) = A\frac{r}{R} + B\left( \frac{R}{r}\right)^2$.  Константи $A$ та $B$ в середині та зовні кулі різні. Знаходимо іх з нульової умови на нескінченності при $r>R$, умови регулярності та з граничної умови при  $r = R$. Густину вільного заряду знаходимо з граничної умови для нормальної компоненти індукції на поверхні кулі.
+\end{Solution}
+\begin{Solution}{6.{14}}
+	\(
+		\pot(R,z,\phi) =
+		\begin{cases}
+			\pot _0\left( \frac{r}{R} \right)^m\cos (m\varphi), r < R \\
+			\pot _0\left( \frac{R}{r} \right)^m\cos (m\varphi), r \ge R.
+		\end{cases}
+	\),
+	\(
+		\sigma_\text{вільн} = \frac{m(\varepsilon  + 1)}{4\pi }\cos (m\varphi ).
+	\)
+\end{Solution}
+\begin{Solution}{6.{15}}
+	Розв'язок слід шукати окремо зовні кулі ($r >R$ ) та всередині ($r<R$). Користуючись повнотою системи сферичних функцій на сфері, шукаємо розв’язок у вигляді:
+	\[
+		\pot(r,\theta ,\varphi ) = \sum\limits_{n = 0}^\infty  {\sum\limits_{m =  - n}^n {{f_{nm}}(r){Y_{nm}}(\theta ,\varphi )} } .
+	\]
+	Підставимо це в рівняння Лапласа в сферичних координатах:
+	\begin{equation}\label{Laplace_prb:L}
+		\Delta \pot  \equiv \frac{1}{{{r^2}}}\frac{\partial }{{\partial r}}\left( {{r^2}\frac{{\partial \pot }}{{\partial r}}} \right) + \frac{1}{{{r^2}}}\hat \Lambda \psi  = 0,
+	\end{equation}
+	де \(\hat \Lambda {Y_{nm}} \equiv \frac{1}{{\sin \theta }}\frac{\partial }{{\partial \theta }}\left( {\sin \theta \frac{{\partial {Y_{nm}}}}{{\partial \theta }}} \right) + \frac{1}{{{{\sin }^2}\theta }}\frac{{{\partial ^2}{Y_{nm}}}}{{\partial {\varphi ^2}}} =  - n\left( {n + 1} \right){Y_{nm}}\left( {\theta ,\varphi } \right)\) .
+
+	Звідси, з огляду на незалежність сферичних функцій з різними індексами і лінійність рівняння Лапласа по $\pot$  (принцип суперпозиції!), кожну складову потенціалу можна розглядати окремо. Маємо
+	\[
+		\frac{1}{{{r^2}}}\frac{\partial }{{\partial r}}\left( {{r^2}\frac{{\partial {f_{nm}}}}{{\partial r}}} \right) - \frac{{n\left( {n + 1} \right)}}{{{r^2}}}{f_{nm}}(r) = 0
+	\]
+	для усіх $n= 0,1,2,\ldots$ , і $m = -n, -(n-1), \ldots, 0, \ldots, n-1, n$  для кожного $n$.
+	Загальний розв’язок рівняння~\eqref{Laplace_prb:L} є комбінацією степеневих функцій
+	\begin{equation}\label{star_prb:L}
+		f_{nm}(r) = A_{nm}{\left( {\frac{r}{R}} \right)^n} + {B_{nm}}{\left( {\frac{R}{r}} \right)^{n + 1}}
+	\end{equation}
+
+	Нормування на $R$ введено для зручності, константи $A_{nm}$ та $B_{nm}$~--- різні всередині і зовні кулі.
+	Зовні кулі ($r >R$) поле обмеженої системи зарядів має прямувати до нуля на нескінченності, тому $A_{nm} = 0$,
+
+	\begin{equation}\label{dstar_prb:L}
+		\pot_\mathrm{out}(r,\theta ,\varphi ) = \sum\limits_{n = 0}^\infty  {\sum\limits_{m =  - n}^n {{B_{nm}}{{\left( {\frac{R}{r}} \right)}^{n + 1}}{Y_{nm}}(\theta ,\varphi )} }.
+	\end{equation}
+
+	Аналогічно розглядаємо розв’язок усередині кулі, де, однак, поле має бути регулярним в нулі (\emph{в центрі немає якихось точкових зарядів}); тому в~\eqref{star_prb:L} слід відкинути члени з від'ємними степенями змінної $r < R$ :
+	\begin{equation}\label{ddstar_prb:L}
+		\pot_\mathrm{in}(r,\theta ,\varphi ) = \sum\limits_{n = 0}^\infty  {\sum\limits_{m =  - n}^n {{{\tilde A}_{nm}}{{\left( {\frac{r}{R}} \right)}^n}{Y_{nm}}(\theta ,\varphi )} }
+	\end{equation}
+	Маємо дві граничні умови на поверхні кулі ($r = R$). Умову для тангенціальних компонент напруженості електричного поля в даній задачі можна замінити умовою неперервності потенціалу
+	\[
+		\pot_\mathrm{out}(R,\theta ,\varphi ) = {\pot_\mathrm{in}}(R,\theta ,\varphi ).
+	\]
+	Це дає  $\tilde{A}_{nm} = B_{mn}$.
+	Друга гранична умова використовує нормальні компоненти індукції $D_n =  - \epsilon \vect{n} \cdot \vect{\nabla}\pot  =  - \epsilon \frac{\partial \pot }{\partial r}$ , вона дає
+	\[
+		- \left. {\frac{{\partial {\pot_\mathrm{out}}}}{{\partial r}}} \right|_{r = R} + \varepsilon {\left. {\frac{{\partial {\pot_\mathrm{in}}}}{{\partial r}}} \right|_{r = R}} = 4\pi \sum\limits_{n = 0}^\infty  {\sum\limits_{m =  - n}^n {{s_{nm}}{Y_{nm}}(\theta ,\varphi )} }.
+	\]
+	Підстановка~\eqref{dstar_prb:L}, \eqref{ddstar_prb:L} з урахуванням  $\tilde{A}_{nm} = B_{mn}$ визначає ці коефіцієнти:
+	\[
+		\left( n + 1 + n\varepsilon  \right)B_{nm} = 4\pi s_{nm}.
+	\]
+	Отже, остаточно маємо:
+	\[
+		\pot(r,\theta,\phi) =
+		\begin{cases}
+			4\pi \sum\limits_{n = 0}^\infty  {\sum\limits_{m =  - n}^n {\frac{{{s_{nm}}}}{{n + 1 + n\varepsilon }}{{\left( {\frac{r}{R}} \right)}^n}{Y_{nm}}(\theta ,\varphi )} } , \quad r < R \\
+			4\pi \sum\limits_{n = 0}^\infty  {\sum\limits_{m =  - n}^n {\frac{{{s_{nm}}}}{{n + 1 + n\varepsilon }}{{\left( {\frac{R}{r}} \right)}^{n + 1}}{Y_{nm}}(\theta ,\varphi )} } , \quad r \ge R.
+		\end{cases}
+	\]
+
+\end{Solution}
+\begin{Solution}{6.{18}}
+    $\Hfield_2 = \Hfield_1 + \left( \frac{\mu_1}{\mu_2} - 1 \right)\vect{n}\left( \vect{n} \cdot \Hfield_1 \right) + \frac{4\pi}{c}\left[\vect{n}\times\vect{i}\right] $.
+\end{Solution}
+\begin{Solution}{6.{20}}
+	$\vect{A} =
+		\begin{cases}
+			-\frac{4\pi a}{c}\mu r \vect{e}_z, r < R \\
+			-\frac{4\pi a}{c}\mu R \vect{e}_z, r \ge R.
+		\end{cases}
+	$
+\end{Solution}
+\begin{Solution}{6.{22}}
+	$F = \frac{\epsilon_2 - \epsilon_1}{(\epsilon_2 + \epsilon_1)\epsilon_1} \frac{q}{4d^2}$.
+\end{Solution}
+\begin{Solution}{6.{23}}
+	В діелектрику виникає зображення диполя, з моментом $\vect{p}' = -\vect{p}\frac{\epsilon - 1}{\epsilon + 1}$.
+
+	Сумарний момент сил, що діє на диполь
+    \[
+        \left[\vect{p}\times\Efield\right] + \left[\vect{p}\times\left( \frac{3(\vect{p}'\vect{r})\vect{r}}{r^5} - \frac{\vect{p}'}{r^3} \right) \right] = 0
+    \]
+Звідси для положень рівноваги маємо $\alpha=0$ та $\alpha = \pi$ . При $\xi = \left|\frac{E}{\frac{\epsilon - 1}{\epsilon + 1} \frac38\frac{p}{d^3}}\right|<1$  також маємо $\alpha = \pi \pm \arccos\xi$.
+Положення рівноваги $\alpha = 0$  є стійким. Положення рівноваги $\alpha = \pi$ є нестійким при при $\xi >1$ , але стає стійким при $\xi < 1$. Положення, що відповідають $\alpha = \pi \pm \arccos\xi$  при $\xi <1$, є нестійкими.
+\end{Solution}
+\begin{Solution}{6.{24}}
+	$\phi = \sqrt{8mg/(\epsilon-1)}$.
+\end{Solution}
+\begin{Solution}{6.{25}}
+	$\sigma_\text{зв'яз} = - \frac{\epsilon - 1}{\epsilon + 1} \frac{qd}{2\pi(x^2  +h^2)^{3/2}}$, де $x$~-- координата вздовж межі розділу, $q_\text{зв'яз} = - \frac{\epsilon - 1}{\epsilon + 1}q$.
+\end{Solution}
+\begin{Solution}{6.{26}}
+	$F_1 = \frac{\epsilon_1 - \epsilon_2}{(\epsilon_1 + \epsilon_2)\epsilon_1} \frac{q_1^2}{4d^2} + \frac{2}{\epsilon_1 + \epsilon_2} \frac{q_1q_2}{4d^2}$,
+	$F_2 = \frac{\epsilon_2 - \epsilon_1}{(\epsilon_1 + \epsilon_2)\epsilon_2} \frac{q_2^2}{4d^2} + \frac{2}{\epsilon_1 + \epsilon_2} \frac{q_1q_2}{4d^2}$.
+\end{Solution}

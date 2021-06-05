@@ -1,0 +1,509 @@
+% !TeX program = lualatex
+% !TeX encoding = utf8
+% !TeX spellcheck = uk_UA
+% !TeX root =../FTProblems.tex
+
+%=========================================================
+\Opensolutionfile{answer}[\currfilebase/\currfilebase-Answers]
+\Writetofile{answer}{\protect\section*{\nameref*{\currfilebase}}}
+\chapter{Випромінювання та \mbox{поширення} електромагнітних хвиль}\label{\currfilebase}
+%=========================================================
+%\epigraph{\Annabelle  It's of no use whatsoever. This is just an experiment that proves Maestro Maxwell was right --- we just have these mysterious electromagnetic waves that we cannot see with the naked eye. But they are there.% 
+%}{Heinrich Hertz}
+
+\begin{Theory}%[Потенціали Ліенара-Віхерта]
+	Потенціали полів, які створюються точковим зарядом $q$, що рухається по заданій траєкторії $\vect{r}_q = \vect{r}_q(t_q)$ дається виразами:
+	\begin{equation}\label{Lienard-Wikhert}
+		\begin{aligned}
+			\pot(t,\vect{r}) =  \frac{q}{\left( R_q - \frac{\vect{v}_q\cdot \vect{R}_q}{c}\right) }, \quad
+			\vect{A}(t,\vect{r}) =\frac{q\vect{v}_q/c}{\left( R_q - \frac{\vect{v}_q\cdot \vect{R}_q}{c} \right)},
+		\end{aligned}
+	\end{equation}
+	де 
+    \begin{equation*}
+        \vect{R}_q =  \vect{r} - \vect{r}_q(t_q), \quad R_q = |\vect{R}_q|, \quad  \vect{v}_q = \dot{r}_q(t_q),
+    \end{equation*}
+    а $t_q$ є розв'язком рівняння
+	\begin{equation}\label{Lienard-Wikhert-time}
+		t_q = t - \frac{|\vect{r} - \vect{r}_q(t_q)|}{c}.
+	\end{equation}
+
+	\begin{center}
+		\begin{tikzpicture}[scale=1]
+			\coordinate (O) at (-4,-3);
+			\draw[-latex] (O) -- ([yshift=3cm]O) node[left] {$z$};
+			\draw[-latex] (O) -- ([xshift=3cm]O)  node[below] {$y$};
+			\draw[-latex] (O) -- ([shift={(225:3)}]O)  node[left] {$x$};
+			\draw[red, thick] (-2,2) .. controls (-1,0) and (1,0) .. (2,-2)  coordinate[pos=0.2] (A) coordinate[pos=0.8] (B);
+			\fill[black] (A) circle (1pt);
+			\draw[-latex] (A) -- +(-45:1.5) node[below] {$\vect{v}_q$};
+			\fill[black] (B) circle (1pt);
+			\draw[-latex] (A) -- node[above] {$\vect{R}_q(t_q)$} (5,1.5) coordinate[pos=0.1] (C1) coordinate (C);
+			%	\draw[-latex] (A) -- (C1) ;
+			\draw[-latex] ([xshift=-2cm, yshift=1cm]A) node[left, text width=10em] {\itshape\small Положення частинки в момент $t_q = t - R_q/c$} to [bend right] (A);
+			\draw[-latex] ([xshift=0cm, yshift=-1cm]B) node[below, text width=10em] {\itshape\small Положення частинки в момент $t$} to [bend right] (B);
+			\fill[black] (C) circle (1pt);
+			\draw[-latex] (O) -- node[above=5pt] {$\vect{r}_q$} (A);
+			\draw[-latex] (O) -- node[pos=0.7, above] {$\vect{r}$} (C);
+%			\node[below right, text width=5em] at (C) ;
+%			\draw[-latex, dashed] (B) -- node[below=5pt] {$\vect{R}_q(t)$}  (C);
+		\end{tikzpicture}
+		\captionof{figure}{До розрахунку запізнюючих потенціалів}
+		\label{pic:retardion}
+	\end{center}
+
+	Поля випромінювання електричного диполя, розташованого в початку координат $\vect{r} = 0$, у хвильовій зоні:
+	\begin{align}\label{eq:dipole_radiation}
+		\Bfield(t, \vect{r}) & = \frac{\left[ \ddot{\vect{p}}\left(t - \frac{r}{c}\right)\times \vect{n}\right] }{c^2 r}                                                                       \\
+		\Efield(t, \vect{r}) & = \left[ \Bfield \times\vect{n}\right] = \frac{\left[ \left[ \ddot{\vect{p}}\left(t - \frac{r}{c}\right)\times \vect{n}\right]\times \vect{n}\right]  }{c^2 r},
+	\end{align}
+	де $\vect{n} = \frac{\vect{r}}{r}$~--- одиничний вектор в напрямку точки спостереження.
+
+	Діаграма спрямованості дипольного випромінювання:
+	\begin{equation}\label{eq:diagram_direction}
+		\frac{dN}{do} = \frac{\ddot{\vect{p}}^2}{4\pi c^3}\sin^2\theta.
+	\end{equation}
+	Повна потужність випромінювання  в усіх напрямках:
+	\begin{equation}\label{eq:power}
+		N = \frac{2}{3c^3}\ddot{\vect{p}}^2.
+	\end{equation}
+
+	Тензор поляризації (наближено монохроматичного) світла:
+	\begin{equation}\label{eq:polarization_tensor}
+		\rho_{\alpha\beta} = \frac{\left\langle E_{0\alpha} E_{0\beta}^* \right\rangle }{\left\langle \Efield_0\Efield^*_0\right\rangle },
+	\end{equation}
+	де $\Efield_0$~--- амплітуда хвилі, індекси пробігають по два значення $\alpha,\beta = 1,2$, що відповідає осям $y$ та $z$, а вісь $x$ напрямлена вздовж напрямку розповсюдження хвилі.
+
+	Ступінню поляризації називається величина $P$, яка визначається як:
+	\begin{equation}\label{eq:polarization_lewel}
+		|\rho_{ij}| = \frac14(1 - P^2),
+	\end{equation}
+	де $|\rho_{ik}|$ визначник тензора поляризації~\eqref{eq:polarization_tensor}.
+\end{Theory}
+
+
+
+
+\section{Співвідношення невизначеностей}
+
+%=========================================================
+\begin{problem}
+Електричний сигнал має форму
+\[
+	\phi(t) = \frac{1}{\sqrt{4\pi\sigma}} \exp\left( -\frac{t^2}{2\sigma^2}\right).
+\]
+Розрахувати (прямим обчисленням) величину $\left\langle \Delta t^2 \right\rangle \left\langle \left(\Delta \omega  - \left\langle \omega  \right\rangle\right)^2 \right\rangle$  у співвідношенні невизначеностей.
+\begin{solution}
+	$1/4$ ( реалізується знак рівності у співвідношенні невизначеностей)
+\end{solution}
+\end{problem}
+
+
+\begin{problem}
+Коли в співвідношенні невизначеностей для хвильових пакетів
+\[
+	\left\langle \Delta t^2 \right\rangle\left\langle \Delta \omega^2 \right\rangle \ge \frac14
+\]
+має місце знак рівності? Відповідь обґрунтувати й знайти відповідну форму сигналу.
+\end{problem}
+
+
+\section{Монохроматичні хвилі. Інтерференція та поляризація хвиль}
+
+%=========================================================
+%\begin{problem}
+%    В монохроматичній плоскій електромагнітній хвилі, що поширюється у вакуумі, електричне поле в деякій точці та в деякій момент дорівнює $E_0$. Чому дорівнює вектор Пойнтінга густини потоку електромагнітної енергії?
+%\end{problem}
+
+%=========================================================
+\begin{problem}
+Гармонічні коливання двох електричних диполів відбуваються з однаковою частотою $\omega$, але зсунуті по фазі на $\frac{\pi}{2}$. Амплітуди дипольних моментів дорівнюють $p_0$ і утворюють кут $\frac{\pi}{2}$ один з одним. Відстань між диполями мала порівняно з довжиною хвилі. Знайти середню за часом потужність випромінювання системи.
+\end{problem}
+
+%=========================================================
+\begin{problem}
+Гармонічні коливання двох електричних диполів синфазні і відбуваються з однаковою частотою $\omega$. Амплітуди дипольних моментів дорівнюють $p_0$ і утворюють кут $\frac{\pi}{2}$ один з одним. Відстань між диполями мала порівняно з довжиною хвилі. Знайти середню за часом потужність випромінювання системи.
+\end{problem}
+
+%=========================================================
+\begin{problem}
+Два електричних диполя розташовані на прямій на відстані $m\frac{\lambda}{2}$, $m \in \mathbb{N}$. Їх дипольні моменти напрямлені перпендикулярні до цієї прямої, вони синфазні, дорівнюють одне одному та осцилюють з частотою $\omega  = \frac{2\pi c}{\lambda}$ та амплітудою $p_0$. Знайти кутовий розподіл випромінювання та повну інтенсивність.
+\end{problem}
+
+%=========================================================
+\begin{problem}
+Два електричних диполя розташовані на осі аплікат з ортом $\vect{e}_z$  на відстані $d \ll \lambda$ . Їх дипольні моменти дорівнюють:
+\begin{align*}
+	\vect{p}_1(t) & = p_0\vect{e}_z\exp(-i\omega t),                                           \\
+	\vect{p}_2(t) & = p_0\vect{e}_x\exp\left[ - i\left(\omega t + \frac{\pi}{2}\right)\right].
+\end{align*}
+Знайти тензор поляризації випромінювання у напрямку, перпендикулярному дo $\vect{e}_z$ та $\vect{e}_x$.
+%\begin{solution}
+%	Електричні поля випромінювання диполів у напрямку, перпендикулярному $\vect{e}_z$:
+%	\begin{align*}
+%		\Efield_1 & = E_0\vect{e}e^{-i\omega t}, \\
+%		\Efield_2 & = \Efield_1e^{-i\frac\pi2},
+%	\end{align*}
+%	де
+%	\[
+%		E_0 = \frac{\omega^2 p_0}{cr^2}.
+%	\]
+%
+%	Тому, сумарне поле $\Efield = \Efield_1 + \Efield_2$ буде дорівнювати:
+%	\[
+%		\Efield =\sqrt2 E_0\vect{e}_ze^{-i(\omega t + \pi/4)}.
+%	\]
+%    Ненульова компонента тензора поляризації $\rho_{zz} = 1$.
+%\end{solution}
+\end{problem}
+
+%=========================================================
+%\begin{problem}
+%Два електричних диполя розташовані на осі аплікат з ортом $\vect{e}_z$  на відстані $d \ll \lambda$ . Їх дипольні моменти дорівнюють:
+%\begin{align*}
+%	\vect{p}_1(t) = p_0\vect{e}_z\exp(-i\omega t), \\
+%	\vect{p}_2(t) = p_0\vect{e}_x\exp(-i\omega t ).
+%\end{align*}
+%Знайти тензор поляризації випромінювання у напрямку, перпендикулярному дo $\vect{e}_z$ та $\vect{e}_x$.
+%%\begin{solution}
+%%    $\{\rho\} = 
+%%\begin{pmatrix}
+%%0 & 1 \\
+%%1 & 0 
+%%\end{pmatrix}$.
+%%\end{solution}
+%\end{problem}
+
+%=========================================================
+\begin{problem}
+Два електричних диполя розташовані на осі аплікат з ортом $\vect{e}_z$  на відстані $d \ll \lambda$ . Їх дипольні моменти дорівнюють:
+\begin{align*}
+	\vect{p}_1(t) = p_0\vect{e}_z\exp(-i\omega t)\cos\xi, \\
+	\vect{p}_2(t) = p_0\vect{e}_z\exp(-i\omega t )\sin\xi.
+\end{align*}
+Знайти кутовий розподіл випромінювання та повну інтенсивність. Випадкова величина  $\xi$ рівномірно розподілена на проміжку $0 \le \xi \le 2\pi$.
+\end{problem}
+
+%=========================================================
+\begin{problem}
+Два електричних диполя розташовані на осі аплікат з ортом $\vect{e}_z$  на відстані $d \ll \lambda$ . Їх дипольні моменти дорівнюють:
+\begin{align*}
+	\vect{p}_1(t) & = p_0\vect{e}_z\exp(-i\omega t)\cos\xi,        \\
+	\vect{p}_2(t) & = p_0\vect{e}_z\exp(-i\omega t +\pi/2)\sin\xi.
+\end{align*}
+Знайти ступінь поляризації та тензор поляризації випромінювання у напрямку, перпендикулярному до $\vect{e}_z$. Випадкова величина $\xi$ рівномірно розподілена на проміжку $0 \le \xi \le 2\pi$.
+\end{problem}
+
+%=========================================================
+\begin{problem}
+Два електричних диполя розташовані на прямій на відстані $m\frac\lambda2$ ($m = 1,2, \ldots$) один від одного. Їх дипольні моменти напрямлені вздовж цієї прямої, вони синфазні, дорівнюють одне одному та осцилюють з частотою $\omega = \frac{2\pi c}{\lambda}$ та амплітудою $p_0$. Знайти кутовий розподіл випромінювання (діаграму спрямованості) та повну інтенсивність.
+\end{problem}
+
+
+\section{Випромінювання та розсіювання електромагнічних хвиль}
+
+
+%=========================================================
+\begin{problem}
+Отримайте потенціали Ліенара-Віхерта~\eqref{Lienard-Wikhert} із загальних формул для запізнюючих потенціалів~\eqref{Retarded_potentials}.
+\end{problem}
+
+
+%=========================================================
+\begin{problem}
+Доведіть, що у випадку заряду, який рухається зі швидкістю $\vect{v} = \const$ запізнюючі потенціали~\eqref{Lienard-Wikhert} дають значення, які співпадають з <<миттєвими>> потенціалами:
+\[
+	\pot =  \frac{q}{R_t\sqrt{1-\frac{v^2}{c^2}\sin^2\theta}}, \quad
+	\vect{A} =\frac{q\vect{v}}{R_t\sqrt{1-\frac{v^2}{c^2}\sin^2\theta}},
+\]
+де $R_t = |\vect{r} - \vect{r}_q(t)|$~--- відстань від заряду до точки спостереження в момент спостереження (див. рис.~\ref{pic:retardion}), а $\theta$~--- кут між $\vect{R}_t$ та $\vect{v}$.
+\begin{solution}
+	При $\vect{v} = \const$  вираз
+	\[
+		\vect{R}_q - \frac{\vect{v}}{c} R_q = \vect{R}_q -\vect{v}(t - t_q) = \vect{R}_t,
+	\]
+	тобто є вектором проведеним від заряду до точки спостереження в момент самого спостереження.
+	Знаменник потенціалів Ліенара-Віхерта можна записати як:
+	\[
+		R_q - \frac{\vect{v}}{c} R_q = R_t\sqrt{1-\frac{v^2}{c^2}\sin^2\theta}.
+	\]
+\end{solution}
+\end{problem}
+
+
+%=========================================================
+\begin{problem}
+Обчислити електричне і магнітне поля рухомого заряду використовуючи потенціали Ліенара-Віхерта~\eqref{Lienard-Wikhert}.
+%\begin{solution}
+%	Для знаходження електричного поля з виразів для потенціалів Ліенара-Віхерта~\eqref{Lienard-Wikhert}:
+%	\[
+%		\phi =  \frac{q}{\left( R - \frac{\vect{v}\cdot \vect{R}}{c}\right) }, \quad
+%		\vect{A} =\frac{q\vect{v}}{\left( R - \frac{\vect{v}\cdot \vect{R}}{c} \right)},
+%	\]
+%	використаємо формулу~\eqref{E=phi+A}:
+%	\[
+%		\Efield = -\frac{1}{c}\frac{\partial \vect{A}}{\partial t} - \vect{\nabla}\phi.
+%	\]
+%
+%	Оскільки $R = c(t - t')$, а $t' = t'(t,x,y,z)$ є функцією часу і координат точки спостереження $(x,y,z,t)$, то $R$ є неявною функцією координат і часу точки спостереження. Отже,  знайдемо похідні для $R$, які нам знадобляться для знаходження полів:
+%	\begin{align*}
+%		\frac{\partial R}{\partial t'}                                             & = c\left( \frac{dt}{dt'} - 1 \right),                                        \\
+%		\frac{\partial R^2}{\partial t'}                                           & = 2R\frac{\partial R}{\partial t'} ,                                         \\
+%		\frac{\partial \vect{R}}{\partial t'}  = \frac{\partial (\vect{r} - \vect{r}')}{\partial t'} &= - \vect{v},\\ 
+%		\frac{\partial R^2}{\partial t'} = \frac{\partial \vect{R}^2}{\partial t'} & = 2\vect{R}\frac{\partial \vect{R}}{\partial t'}  = -2\vect{R}\cdot\vect{v} ,\\
+%		\frac{\partial t'}{\partial t}                                             & = \frac{1}{1- \frac{1}{\dfrac{\vect{v}\cdot\vect{R}}{cR}}}\\
+%		\vect{\nabla}t' &= -\frac1c \vect{\nabla}R(t') = -\frac1c\left( \frac{\partial \vect{R}}{\partial t'} \vect{\nabla}t' + \frac{\vect{R}}{R}\right)  \\
+%		\vect{\nabla}t' &= - \frac{\vect{R}}{c\left( R - \dfrac{\vect{v}\cdot\vect{R}}{c}\right) }.
+%	\end{align*}
+%
+%	Знайдемо похідну вектор-потенціалу $\vect{A}$ по часу спостереження $t$.
+%	\begin{multline*}
+%		\frac{\partial\vect{A}}{\partial t} =q\frac{\partial \vect{v}(t')}{\partial t}\left(\frac{1}{ R - \frac{\vect{v}\cdot \vect{R}}{c}}\right)+q\vect{v}(t')\frac{\partial}{\partial t} \left(\frac{1}{{ R - \frac{\vect{v}\cdot \vect{R}}{c} }}\right) = \\
+%		=q\frac{\partial \vect{v}(t')}{\partial t'}\left(\frac{1}{ R - \frac{\vect{v}\cdot \vect{R}}{c}}\right)\frac{\partial t'}{\partial t} + q\vect{v}(t')\frac{\partial}{\partial t'} \left(\frac{1}{{ R - \frac{\vect{v}\cdot \vect{R}}{c} }}\right)\frac{\partial t'}{\partial t},
+%	\end{multline*}
+%
+%\end{solution}
+\end{problem}
+
+%=========================================================
+\begin{problem}
+Доведіть, що радіально осцилююча однорідно заряджена сфера не випромінює електромагнітні хвилі.
+\end{problem}
+
+%=========================================================
+\begin{problem}
+Довести, що система, яка складається з $n$ заряджених частинок, у яких однаковий питомий заряд, за відсутності зовнішніх полів не буде мати дипольного випромінювання. Частинки взаємодію за законом Кулона. Релятивістськими поправками і реакцією випромінювання знехтувати.
+\begin{solution}
+	Дипольний момент системи
+	\[
+		\vect{p} = \frac{q_i}{m_i} \sum\limits_{i = 1}^n m_i \vect{r}_i = \frac{q_i}{m_i} M\vect{R}_\mathrm{CM},
+	\]
+	де $\vect{R}_\mathrm{CM}$~--- радіус-вектор центра мас системи. Нехтуючи втратами імпульсу на випромінювання, у першому наближенні за відсутності зовнішніх полів $\ddot{\vect{R}}_\mathrm{CM} = 0$, отже інтенсивність випромінювання дорівнює нулю.
+\end{solution}
+\end{problem}
+
+%=========================================================
+\begin{problem}
+Модуль вектора індукції магнітного поля дипольного випромінювання, що  створюється системою струмів на великій відстані $r$, має вигляд:
+\[
+	B(t,r,\theta,\phi) = r^{-n}f\left(t - \frac{r}{c},\theta, \phi\right),
+\]
+де $f$~--- довільна функція вказаних аргументів. Чому дорівнює $n$?
+\end{problem}
+
+%=========================================================
+\begin{problem}
+Заряд $q$ рухається з малою швидкістю $\vect{v}$ та прискоренням $\dot{\vect{v}}$  в обмеженій області простору. Знайти наближені вирази електромагнітного поля $\Efield$, $\Bfield$ частинки в точках, відстань до яких від частинки набагато більша у порівнянні з розмірами області руху заряду. Визначити також кутовий розподіл випромінювання та повну потужність випромінювання.
+\begin{solution}%
+	Поля $\Efield(t) = \frac{q\vect{n}\times[ \vect{n} \times \dot{\vect{v}}] }{c^2r}$,
+	$\Bfield(t) = \frac{q\dot{\vect{v}}\times\vect{n}}{c^2r}$,
+	розподіл випромінювання $\frac{dN}{do} = \frac{q^2}{4\pi c^3}[\dot{\vect{v}}\times\vect{n}]^2$, повна потужність $N = \frac{2q^2}{3c^3}\dot{\vect{v}}^2$. Прискорення $ \dot{\vect{v}} $ є функцією $t - \frac{r}{c}$.
+\end{solution}
+\end{problem}
+
+%=========================================================
+\begin{problem}
+Визначити середню повну потужність випромінювання диполя $\vect{p}_e$, що обертається в одній площині з постійною кутовою швидкістю~$\omega$.
+\begin{solution}
+	$I = \frac{2p^2\omega^4}{3c^3}$.
+\end{solution}
+\end{problem}
+
+%=========================================================
+\begin{problem}
+Два електричні диполі, що розташовані на осі $OX$ і орієнтовані уздовж осі $OZ$, осцилюють з однаковою амплітудою $p_0$ і точно в протифазі. Їх $x$-координати відрізняються на $\nfrac\lambda2$. Обчисліть вектор Пойнтінга на великих відстанях від цієї системи.
+\begin{solution}
+	$\vect{S} = \frac{p_0^2ck^4}{2\pi r^2}\sin^2\theta\sin^2\left(\frac\pi2\cos\phi\sin\theta\right)\ \vect{n}$, де $k=\nfrac{2\pi}{\lambda}$, $r,\theta,\phi$~--- сферичні координати, $\vect{n} = \nfrac{\vect{r}}{r}$.
+\end{solution}
+\end{problem}
+
+%=========================================================
+\begin{problem}% Батыгин, 1978, 778
+Дві нерелятивістські частинки з зарядами $q_1$ та $q_2$ і масами $m_1$ та $m_2$ здійснюють коловий рух на відстані $r$ одна від одної. Знайдіть потужність випромінювання. Віддачею випромінювання на рух частинок знехтувати.
+\begin{solution}
+	Згідно~\eqref{eq:power} і з урахуванням $\vect{p} = q_1\vect{r}_1 + q_2\vect{r}_2 = \mu\left( \frac{q_1}{m_1}  - \frac{q_2}{m_2}\right)\vect{r} $, де $\mu$~--- приведена маса, а $\vect{r} = \vect{r}_2 - \vect{r}_1$, маємо:
+	\[
+		N(t) = \frac{2\mu^2}{3c^3}\left( \frac{q_1}{m_1}  - \frac{q_2}{m_2}\right)^2\ddot{\vect{r}}^2(t).
+	\]
+	Згідно рівнянню руху зарядів $\mu\ddot{\vect{r}} = {q_1q_2}\frac{\vect{r}}{r^3}$, отримуємо
+	\[
+		N(t) = \frac{2q_1^2q_2^2}{3c^3} \left( \frac{q_1}{m_1} - \frac{q_2}{m_2}\right)^2 \frac{1}{r^4}.
+	\]
+\end{solution}
+\end{problem}
+
+%=========================================================
+\begin{problem}
+Використовуючи рівняння~\eqref{eq:dipole_radiation} знайдіть рівняння силових ліній напруженості електричного та магнітного поля диполя, який знаходиться у початку координат і має момент $\vect{p} = p_0\cos\omega t \vect{e}_z$. Покажіть, що існують точки, де поля дорівнюють нулю в будь-який момент часу.
+\end{problem}
+
+
+%\section{Магнітодипольне та квадрупольне випромінювання}
+
+%=========================================================
+\begin{problem}
+Сила струму в тонкому круглому витку змінюється за законом $I = I_0 \sin\omega t$. Визначити діаграму спрямованості випромінювання цього витка та повну потужність випромінювання в хвильовій зоні.
+\end{problem}
+
+%=========================================================
+\begin{problem}
+В тонкій нерухомій квадратній рамці зі стороною $a$ протікає струм за законом $I = I_0e^{-b t^2}$. Знайдіть повну енергію довгохвильового випромінювання за час $-\infty < t < \infty$.
+\begin{solution}
+	$\mathcal{E} = \frac{I_0^2a^4b}{c^5}\sqrt{2\pi b}$.
+\end{solution}
+\end{problem}
+
+
+%=========================================================
+\begin{problem}
+У тонкому прямому проводі розташованому на осі $OZ$  довжиною $L = m\lambda/2$ ($m = 1,2,3, \ldots$), збуджено струм $I(t,z) = I_0 e^{-i\omega t}\sin(kz)$, де $k = \frac{\omega}{c} = \frac{m\pi}{L}$, $z \in [0,L]$. Знайти діаграму напрямленості $\frac{dN}{do}$  як функцію кута $\theta$  в сферичних координатах.
+\begin{solution}
+	$\left\langle {dN/do} \right\rangle  = \frac{I_0^2}{2\pi c}\frac{\left[\sin(m\pi \sin^2\theta/2) \right]^2}{(\sin\theta)^2}$
+\end{solution}
+\end{problem}
+
+%=========================================================
+\begin{problem}\label{prb:rad_rotated_disk}
+Однорідно заряджений тонкий диск радіусом $R$ обертається навколо свого діаметра з постійною кутовою швидкістю $\omega$. Заряд диска дорівнює $q$. Знайти інтенсивність випромінювання такої системи.
+\begin{solution}
+	$I = \frac{q^2R^4\omega^6}{10c^5} $.
+\end{solution}
+\end{problem}
+
+%=========================================================
+%\begin{problem}\label{prb:rad_rotated_ball}
+%Однорідна куля радіусом $R$ обертається навколо свого діаметра з постійною кутовою швидкістю $\omega$. Вісь обертання нахилена під кутом $\theta$ до напрямку зовнішнього постійного однорідного магнітного поля $\Bfield$ (рис.~\ref{rad_rotated_ball}). Заряд і маса кулі $q$ і $m$. Визначити інтенсивність випромінювання такої системи.
+%\begin{solution}
+%	$I = \frac{q^2\omega^2}{600c} \left( \frac{qBR}{mc^2}\right)^4 \sin^2\theta $.
+%\end{solution}
+%\end{problem}
+%%---------------------------------------------------------
+%\begin{center}
+%	\begin{tikzpicture}
+%		\begin{scope}[rotate=-45]
+%			\draw [ball color =red!50] (0,0) circle (1);
+%			\draw[dashed] (0,0) -- (0,1);
+%			\draw[-latex] (0,1) -- +(0,1) node[above] {$\omega$};
+%			\draw (-1,0) arc (-180:0:1 and 0.25) ;
+%			\draw [dashed] (1,0) arc (0:180:1 and 0.25);
+%		\end{scope}
+%		\draw[dashed] (0,0) -- (0,1);
+%		\draw[-latex] (0,1) -- +(0,1) node[above] {$\Bfield$};
+%		\draw (0,0.5)  arc (90:45:0.5) node[pos=0.7, above] {$\theta$};
+%	\end{tikzpicture}
+%	\captionof{figure}{До задачі~\ref{prb:rad_rotated_ball}}
+%	\label{rad_rotated_ball}
+%\end{center}
+%%---------------------------------------------------------
+
+%=========================================================
+%\begin{problem}
+%При розпаді нерухомого ядра радіуса $R$ утворилася
+%$\alpha$-частинка зі швидкістю, що дорівнює нулю. Заряд $\alpha$-частинки $q$, а її радіус дуже малий у порівнянні з $R$. В результаті
+%кулонівського відштовхування $\alpha$-частинка віддалилась на нескінченність.
+%Знайти діаграму спрямованості випромінювання з урахуванням малого доданка порядку $v/c \ll 1$, де $v$`--- швидкість $\alpha$-частинки на нескінченності
+%\begin{solution}
+%	Магнітодипольне випромінювання відсутнє.  Шукаємо квадрупольне випромінювання.
+%
+%	Діаграма спрямованості
+%	\[
+%		\frac{dI}{do} = \frac{q^2}{15\pi R}\left( \frac{v}{c}\right)^3\left( 1+ \frac58\frac{v}{c}\cos\theta\right) \sin^2\theta.
+%	\]
+%\end{solution}
+%\end{problem}
+
+
+%\section{Радіаційне тертя}
+
+%=========================================================
+%\begin{problem}
+%Знайдіть силу, з якою заряджена сферично-симетрична частинка діє сама на себе (сила самодії) при прискореному поступальному нерелятивістському русі ($v \ll c$). Запізнення і скорочення Лоренца не враховуйте.
+%\begin{solution}
+%	Силу, що діє між двома довільними елементами частинки $dq_1$ та $dq_2$ можна записати у вигляді:
+%	\[
+%		d\vect{F} = \frac{dq_1dq_2}{r^2}\frac{\dot{\vect{v}} - \vect{r}_0(\vect{r}\cdot\dot{v})}{c}.
+%	\]
+%	де $\vect{r}$~--- радіус-вектор, напрямлений від елемента  $dq_1$ до $dq_2$.
+%
+%	В останній формулі кулонівська частина не врахована, оскільки є сферично-симетричною, тому не дає вкладу в самодію, як і квазістаціонарне  магнітне  поле, а тому врахована лише частина сили, яка залежить від прискорення.
+%
+%	Повну силу, що діє на частинку знайдемо проінтегрувавши останній вираз:
+%	\[
+%		\vect{F} = \int d\vect{F} = -\frac43\frac{\dot{\vect{v}}}{c^2} \int \frac{dq_1dq_2}{r} = -\frac43\frac{E_0\dot{\vect{v}}}{c^2},
+%	\]
+%	де $E_0 = \int \frac{dq_1dq_2}{r}$~--- енергія покою електромагнітного поля частинки. Ввівши масу спокою $m = \frac{E_0}{c^2}$, отримуємо вираз для сили самодії:
+%	\[
+%		\vect{F} = -m_0\dot{\vect{v}},
+%	\]
+%	який співпадає з силою інерції.
+%\end{solution}
+%\end{problem}
+
+
+%=========================================================
+\begin{problem}
+На дві плоскі паралельні металеві сітки подали напругу, завдяки чому між ними діє електричне поле $\Efield$, яке  наближено вважаємо однорідним.  Відстань між сітками $d$, зовні сіток поля немає. Нерелятивістська частинка з масою $m$ та зарядом $q$ влітає в область, де діє електричне поле, перетинаючи обидві сітки.
+Кут між вектором $ \Efield $ і напрямком швидкості $ \vect{v}_0 $ частинки при вльоті дорівнював $ 0<\alpha<\pi/2 $. Знайти енергію, що втрачає частинка на дипольне випромінювання під час прольоту між сітками.
+\begin{solution}
+	$W = \frac{2qEv_0d}{3mc^3}\left( \sqrt{\frac{2qEd}{mv_0^2}+\cos^2\alpha} - \cos\alpha\right) $.
+\end{solution}
+\end{problem}
+
+%=========================================================
+\begin{problem}
+У класичній моделі атома Резерфорда електрон з масою $m$ і зарядом $e$ обертається по коловій орбіті навколо нерухомого ядра з зарядом $Z|e|$. Знайти закон зменшення повної енергії електрона, яке обумовлене дипольним випромінюванням. Обчислити час, після закінчення якого електрон впаде на ядро внаслідок втрати енергії на дипольне випромінювання. У початковий момент часу електрон знаходиться на відстані $R$ від ядра.
+\begin{solution}
+	$I = \frac{2e^2}{3c^3} \left( \frac{Ze^2}{mR^2}\right)^2 $, $t = \frac{m^2c^3R^3}{4Ze^4}$.
+\end{solution}
+\end{problem}
+
+%=========================================================
+%\section{Розсіювання електромагнітних хвиль}
+%=========================================================
+
+
+
+%=========================================================
+\begin{problem}
+На нерелятивістський заряд $e$, маси $m$, що розташований у точці $\vect{r}$, падає монохроматична електромагнітна хвиля $\vect{E} = \vect{E}_0e^{-i\omega t}$. Визначити диференціальний та повний переріз розсіювання електромагнітних хвиль. Власна частота коливань заряду $\omega_0$.
+\begin{solution}
+	При дії хвилі $\vect{E} = \vect{E}_0e^{-i\omega t}$, де $\vect{E}_0 = \const$, що падає, частинка рухається згідно рівняння
+	\[
+		m \left( \ddot{\vect{r}} + 2\gamma\dot{\vect{r}} + \omega_0^2\vect{r}\right) = e\Efield e^{-i\omega t}.
+	\]
+	Шукаємо розв’язок у вигляді $\vect{r}  = \vect{r}_0e^{-i\omega t}$. Дипольний момент $\vect{p}  = e\vect{r}_0e^{-i\omega t}$ .
+
+	Отже,
+	\[
+		\vect{p} = \frac{e^2\vect{E}_0\exp{- i\omega t}}{m\left[ {\omega _0^2 - \omega ^2 - 2i\gamma \omega } \right]}.
+	\]
+
+	У хвильовій зоні $\vect{B} = \frac{\ddot{\vect{p}} \times \vect{n}}{rc^2} =  - \omega^2 \frac{\vect{p} \times \vect{n}}{rc^2}$.
+	Густина потоку енергії розсіяного випромінювання (середнє за часом) $\Pi  = \frac{c}{8\pi}{\omega ^4}\frac{{\left| {\left[ {{\vect{p}} \times {\vect{n}}} \right]} \right|}^2}{{{r^2}{c^4}}}$.
+
+	Отже, диференціальний переріз розсіювання:
+	\[\frac{{d\sigma }}{{do}} = r_e^2\frac{{{\omega ^4}{{(\sin \theta )}^2}}}{{{{({\omega ^2} - \omega _0^2)}^2} + 4{\gamma ^2}{\omega ^2}}},
+	\]
+	де $r_e = \frac{e^2}{mc^2}$~--- класичний заряд електрона, $\theta  = (\widehat{\vect{n},\Efield_0})$.
+
+	Повний переріз розсіювання:
+	\[
+		\sigma  = \frac{{8\pi }}{3}r_e^2\frac{{{\omega ^4}}}{{{{({\omega ^2} - \omega _0^2)}^2} + 4{\gamma ^2}{\omega ^2}}}
+	\]
+\end{solution}
+\end{problem}
+
+%=========================================================
+\begin{problem}
+Запишіть диференціальний і повний перерізи розсіювання лінійно поляризованого і неполяризованого світла осцилятором із
+тертям, а також перерізи поглинання.
+\end{problem}
+
+%=========================================================
+\begin{problem}
+На два вільних заряди (зарядом  $q$), що розташовані на осі аплікат $OZ$ на відстані  $b= n\lambda/2$ один від одного, падає монохроматична електромагнітна хвиля з напруженістю електричного поля $\Efield = \Efield_0\cos(\omega t - kx)$. Вектор $\Efield_0$  паралельний осі $OZ$. Амплітуда коливань зарядів під дією поля значно менша за довжину хвилі, швидкість нерелятивістська. Знайти диференціальний переріз розсіювання. Оцінити кут між сусідніми пелюстками  перерізу діаграми розсіювання у площині $XOZ$ при $n \gg 1$  в околі напрямку $\theta = \theta_0$  ( $\theta$ кут між  $\vect{n}$ та $\vect{e}_z$).
+\end{problem}
+
+
+\Closesolutionfile{answer}
+

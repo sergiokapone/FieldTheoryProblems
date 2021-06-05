@@ -1,0 +1,168 @@
+% !TeX program = lualatex
+% !TeX encoding = utf8
+% !TeX spellcheck = uk_UA
+
+
+\documentclass[]{ProblemBook}
+
+
+
+\begin{document}
+
+%=========================================================
+\begin{problem}
+    Металевий циліндр радіусу $a$ внесли у зовнішнє однорідне магнітне поле  $B_z = B_0e^{-i\omega t}$, яке паралельне до його осі. Система знаходиться у вакуумі.
+\begin{enumerate*}[label=\alph*)]
+    \item Знайдіть густину струму Фуко всередині циліндра нехтуючи ефектами самоіндукції.
+    \item Знайдіть першу поправку до магнітного поля та густини струму Фуко в циліндрі врахувавши ефекти самоіндукції.
+\end{enumerate*}
+ Порівняйте результати з точним розв'язком. 
+\begin{solution}
+
+\noindent\hrulefill
+
+Використовуючи закон Фарадея $\oint\limits_L \Efield\cdot d\vect{r}  = - \frac1c \iint\limits_S \frac{\partial\Bfield}{\partial t}\cdot d\vect{S}$
+\[
+    2\pi r E_{\phi}^{(0)} = -\frac1{c} (-i\omega\mu)B_0e^{-i\omega t} \pi r^2,
+\]
+маємо
+\[
+    E_{\phi}^{(0)} =  B_0e^{-i\omega t} \frac{i\mu\omega}{2c}r.
+\]
+Використовуючи закон Ома, знайдемо густину струмів Фуко:
+\[
+    j_{\phi}^{(0)} = B_0e^{-i\omega t} \frac{i\lambda\mu \omega}{2c}r.
+\]
+Введемо коефіцієнт $k^2 = \frac{4i\pi\mu\lambda\omega}{c^2}$:
+\[
+    j_{\phi}^{(0)}(r) = B_0e^{-i\omega t} \frac{k^2c}{8\pi}r.
+\]
+\end{solution}
+
+Поправки
+
+\bigskip
+
+Знайдемо першу поправку до магнітного поля, зумовлену виникненням струму Фуко. Ці струми Фуко утворюють вкладені один в одний <<соленоїди>>, тому магнітне поле цих струмів можна знайти як
+\[
+    H_z^{(1)} = \int\limits_r^{a} \frac{4\pi}{c} j_{\phi}^{(0)}(r')dr' = B_0e^{-i\omega t} \frac{k^2}{4}(a^2 - r^2). 
+\]
+З урахуванням цієї поправки, повне магнітне поле буде в циліндрі:
+\[
+    H_z =  B_0e^{-i\omega t}\left[ 1 + \frac{k^2}{4}(a^2 - r^2) \right]. 
+\]
+
+Знайдемо першу поправку до електричного поля:
+
+\[
+    2\pi r E_\phi^{(1)} = -\frac1c \mu \dot{H}_z^{(1)} \pi r^2, 
+\]
+звідки
+\[
+    E_\phi^{(1)} =  \frac{\mu i \omega}{c} \frac{k^2}{4}B_0e^{-i\omega t} r(a^2 - r^2),
+\]
+а перша поправка до густини струму
+\[
+    j_\phi^{(1)} = \lambda E_\phi^{(1)} = \frac{\lambda\mu i \omega}{c} \frac{k^2}{4}B_0e^{-i\omega t} (a^2 - r^2) = \frac{k^4c}{16\pi} B_0e^{-i\omega t} r(a^2 - r^2),
+\]
+отже густина струму Фуко 
+\[
+    j_{\phi} = j_\phi^{(0)} + j_\phi^{(1)} = \frac{k^2c}{8\pi}B_0e^{-i\omega t}r\left[ 1 + \frac{k^2}{4}\left( a^2 - r^2\right) \right]. 
+\]
+З останнього виразу видно, що впливом самоіндукції можна нехтувати у випадку, якщо $ka \ll 1$, тобто при низьких частотах.
+
+Порівняємо з точним розв'язком:
+
+Магнітне поле в середині циліндра:
+\[
+    H_z = \frac{J_0(kr)}{J_0(ka)}B_0e^{-i\omega t}.
+\]
+Оскільки $J_0(kr) \approx 1 - \frac{k^2r^2}{4}$, $J_0(ka) \approx 1 - \frac{k^2a^2}{4}$, а
+\begin{multline*}
+    H_z \approx \frac{1 - \frac{k^2r^2}{4}}{1 - \frac{k^2a^2}{4}}B_0e^{-i\omega t} \approx \left( 1 - \frac{k^2r^2}{4} \right)\left( 1 + \frac{k^2a^2}{4} \right) B_0e^{-i\omega t} \approx\\\approx B_0e^{-i\omega t}\left[ 1 + \frac{k^2}{4}(a^2 - r^2)\right] .
+\end{multline*}
+
+Точний вираз для густини струму
+\[
+    j_\phi = \frac{kc}{4\pi}\frac{J_1(kr)}{J_0(ka)} B_0e^{-i\omega t}.
+\]
+Наближений вираз для $J_1(kr) \approx \frac{kr}{2} - \frac{k^3r^3}{8}$:
+\begin{multline*}
+   j_\phi \approx \frac{kc}{4\pi} \left( \frac{kr}{2} - \frac{k^3r^3}{8} \right) \left( 1 + \frac{k^2a^2}{4} \right) = \\ =
+   \frac{kc}{4\pi} B_0e^{-i\omega t} \left( \frac{kr}{2}  + \frac{k^3a^2r}{8} - \frac{k^3r^3}{8} \right)   =  \frac{k^2c}{8\pi} B_0e^{-i\omega t} r\left[ 1 + \frac{k^2}{4}\left( a^2 - r^2\right) \right]
+\end{multline*}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}%
+[
+			axis lines = middle,
+			axis line style={-stealth},
+			% === Підпис координатних осей ===
+            xtick = \empty,
+            ytick = \empty,
+			xlabel={$r$},
+			ylabel={$j$},
+		    % === Налаштування розміру графіка ===
+   			width=1\linewidth,
+   			height=1\linewidth,
+   			% === Розширення границь осей ===
+   			enlargelimits={abs=0.2},
+]
+
+\addplot[blue, domain=0:1, samples=500] {sqrt(1/x)*e^(-(1-x)/(1e-1))};
+\draw[dashed] (axis cs:1,0) node[below] {$a$} -- (axis cs:1,1);
+\draw[dashed] (axis cs:0,1) node[left] {$a$} -- (axis cs:1,1);
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{problem}
+
+
+\begin{center}
+  \begin{tikzpicture}
+    \begin{axis}[axis lines = middle,
+			axis line style={-stealth},
+			minor grid style = {line width=.1pt,draw=gray!10},
+            width=\textwidth, height=0.5*\textwidth, xlabel=$x$,
+            xtick=\empty,
+%            ytick={-0.5,0.5,1},
+            legend style={draw=none},
+    ]
+    \addplot+[id=parable,domain=-20:20, samples=500, mark=none, width=2pt, color=red, thick]
+    gnuplot{besj0(x)};% node[pin=95:{$J_0(x)$}]{};
+    \addplot+[id=parable,domain=-20:20, samples=500, mark=none, width=2pt, color=blue, thick]
+    gnuplot{besj1(x)};% node[pin=130:{$J_1(x)$}]{};
+    \addplot+[id=parable2,domain=-20:20, samples=500, mark=none, width=2pt, color=green!50!black, thick]
+    gnuplot{2*1/x*besj1(x)-besj0(x)};% node[pin=-140:{$J_2(x)$}]{};
+    \legend{$J_0(x)$,$J_1(x)$,$J_2(x)$}
+   \end{axis}
+  \end{tikzpicture}
+
+    {Графіки функцій Бесселя $J_m$ для $m = 0,1,2$.}
+\end{center}
+
+\begin{center}
+  \begin{tikzpicture}
+    \begin{axis}[axis lines = middle,
+			axis line style={-stealth},
+			minor grid style = {line width=.1pt,draw=gray!10},
+            width=\textwidth, height=0.5*\textwidth, xlabel=$x$,
+            xtick=\empty,
+%            ytick={-0.5,0.5,1},
+            legend style={at={(current axis.south east)}, anchor = south east, draw=none},
+    ]
+    \addplot+[id=parable,domain=0:20, restrict y to domain=-1.5:1, samples=500, mark=none, width=2pt, color=red, thick]
+    gnuplot{besy0(x)};% node[pin=95:{$J_0(x)$}]{};
+    \addplot+[id=parable,domain=0:20, restrict y to domain=-1.5:1, samples=1000, mark=none, width=2pt, color=blue, thick]
+    gnuplot{besy1(x)};% node[pin=130:{$J_1(x)$}]{};
+    \addplot+[id=parable2,domain=0:20, restrict y to domain=-1.5:1, samples=1000, mark=none, width=2pt, color=green!50!black, thick]
+    gnuplot{2*1/x*besy1(x)-besy0(x)};% node[pin=-140:{$J_2(x)$}]{};
+    \legend{$N_0(x)$,$N_1(x)$,$N_2(x)$}
+   \end{axis}
+  \end{tikzpicture}
+
+    {Графіки функцій Неймана $N_m$ для $m = 0,1,2$.}
+\end{center}
+
+\end{document}
