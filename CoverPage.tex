@@ -1,7 +1,4 @@
-% !TeX program = lualatex
-% !TeX encoding = utf8
-% !TeX spellcheck = uk_UA
-% !TeX root =../FTProblems.tex
+% !TeX root =./FTProblems.tex
 
 %========================================================================================================
 %
@@ -20,7 +17,7 @@
 					toprule=0.10cm,
 					bottomrule=0.10cm,
 					overlay={%
-						\node (picture) at ([xshift=4cm]frame.west) {\includegraphics{logo_PTI}};
+						\node (picture) at ([xshift=4cm]frame.west) {\includegraphics[width=3.5cm]{logo_IPT}};
 					}
 			]%
 			\begin{flushright}
@@ -32,8 +29,8 @@
 			\begin{alignat*}{3}
 				\vect{\nabla}&\times&&\Efield &&= -\dfrac{1}{c}\dfrac{\partial\Bfield}{\partial t} \\
 				\vect{\nabla}&\,\cdot&&\Bfield &&= 0 \\
-				\vect{\nabla}&\,\cdot&&\Dfield &&= 4\pi\rho \\ 
-				\vect{\nabla}&\times&&\Hfield &&= \dfrac{4\pi}{c} \vect{j}+\dfrac{1}{c}\dfrac{\partial\Dfield}{\partial t} 
+				\vect{\nabla}&\,\cdot&&\Dfield &&= 4\pi\rho \\
+				\vect{\nabla}&\times&&\Hfield &&= \dfrac{4\pi}{c} \vect{j}+\dfrac{1}{c}\dfrac{\partial\Dfield}{\partial t}
 			\end{alignat*}
 			\end{Large}
 			\vspace*{2em}
@@ -46,7 +43,7 @@
 				overlay={%
 				\node[%
 							fill=white,
-							rounded corners = 15pt,	
+							rounded corners = 15pt,
 							draw=themecolorlight,
 							line width=0.15cm,
 							inner sep=0pt,
@@ -64,7 +61,7 @@
 			\centering
 			\Huge\sffamily\bfseries\textcolor{white}{\realtitle}\\
 			\huge\sffamily\bfseries\textcolor{white}{\subtitle}
-			\end{tcolorbox}	
+			\end{tcolorbox}
 			\vfill
 		 	\begin{Large}\color{themecolordark!90!black}
 			\begin{gather*}
@@ -80,12 +77,12 @@
 					\MakeUppercase{Київ~\the\year} \\
 %					КПІ ім. Ігоря Сікорського \\
 %					\the\year
-				\end{center}			       	
+				\end{center}
 			\end{tcolorbox}
 		\end{center}
 		\clearpage
 	\end{alwayssingle}
-\setcounter{page}{1}	
+\setcounter{page}{1}
 }
 
 
@@ -99,21 +96,21 @@
 	\begin{alwayssingle}
 		\begin{center}
 				\MakeUppercase{Міністерство освіти і науки України}
-				
+
 				\bigskip
 				\MakeUppercase{Національний технічний університет України}\\
 				<<КИЇВСЬКИЙ ПОЛІТЕХНІЧНИЙ ІНСТИТУТ \\ імені ІГОРЯ СІКОРСЬКОГО>>
 				\vspace*{100pt}
-		
+
 				{\large В.~І.~Жданов,
 						С.~М.~Пономаренко,
 						В.~Б.~Долгошей
 						}
 				\vspace*{50pt}
-			
+
 				{\Huge\sffamily\bfseries\realtitle}\\[1em]
-				{\huge\sffamily\bfseries\subtitle}	
-			
+				{\huge\sffamily\bfseries\subtitle}
+
 			\vspace*{50pt}
 			\begin{center}\itshape
 			Рекомендовано Методичною радою КПІ ім. Ігоря Сікорського як навчальний посібник для здобувачів ступеня бакалавра за спеціальностями 105 <<Прикладна фізика та наноматеріали>>, 113 <<Прикладна математика>>
@@ -124,10 +121,10 @@
 				\MakeUppercase{Київ} \\
 				КПІ ім. Ігоря Сікорського \\
 				\the\year
-			\end{center}			       	
+			\end{center}
 		\end{center}
 		\clearpage
-	\end{alwayssingle}	
+	\end{alwayssingle}
 }
 
 
@@ -138,7 +135,7 @@
 %========================================================================================================
 \newcommand\makeinfopage{
 	\begin{alwayssingle}
-		\noindent%	
+		\noindent%
 		\begin{minipage}[t]{0.5\textwidth}
 				\begin{flushleft}
 					УДК  537\\
@@ -154,8 +151,11 @@
                 \end{flushleft}
         \end{minipage}\hfill
         \begin{minipage}[t]{0.78\linewidth}
-                \href{http://www.nas.gov.ua/UA/PersonalSite/Pages/default.aspx?PersonID=0000006576}{В.~О.~Кочелап}, д.ф.-м.н., професор, член-кореспондент НАН України, завідувач відділу теоретичної фізики Інституту фізики напівпровідників ім. В.~Є. Лашкарьова\\[1ex]
-                \href{http://apd.ipt.kpi.ua/blog/author/19}{Я.~Д.~Кривенко-Еметов}, к.ф.-м.н., доцент кафедри прикладної фізики, Фізико-технічного інституту КПІ ім. Ігоря Сікорського
+                \href{http://www.nas.gov.ua/UA/PersonalSite/Pages/default.aspx?PersonID=0000006576}{В.~О.~Кочелап}, д.ф.-м.н., професор,
+                член-кореспондент НАН України, завідувач відділу теоретичної фізики Інституту фізики напівпровідників ім. В.~Є. Лашкарьова
+%                \\[1ex]
+%                \href{http://apd.ipt.kpi.ua/blog/author/19}{Я.~Д.~Кривенко-Еметов}, к.ф.-м.н., доцент кафедри прикладної фізики, Фізико-технічного
+%інституту КПІ ім. Ігоря Сікорського
         \end{minipage}
 
 		\bigskip\noindent%
@@ -165,7 +165,7 @@
                 \end{flushleft}
         \end{minipage}\hfill
         \begin{minipage}[t]{0.78\linewidth}
-                \href{http://ipt.kpi.ua/litvinova}{Т.~В.~Литвинова}, к.т.н., доцент, перший заступник директора Фізико-технічного інституту КПІ ім. Ігоря Сікорського 
+                \href{http://ipt.kpi.ua/litvinova}{Т.~В.~Литвинова}, к.т.н., доцент, перший заступник директора Фізико-технічного інституту КПІ ім. Ігоря Сікорського
         \end{minipage}
 
 		\begin{center}\itshape\small
@@ -189,7 +189,7 @@
         \begin{minipage}[t]{\textwidth}\small
                 \realtitle: \subtitle\ [Електронний ресурс] : навч. посіб. для студ. спеціальностей
                 105 <<Прикладна фізика та наноматеріали>> та 113 <<Прикладна математика>> /  В.~І. Жданов, С.~М. Пономаренко, В.~Б. Долгошей ; КПІ ім. Ігоря Сікорського.~--- Електронні текстові дані
-            (1 файл: 570~кБ). – Київ : КПІ ім. Ігоря Сікорського, \the\year. --- \the\numexpr\getpagerefnumber{LastPage}-1\relax~с.
+            (1 файл: 570~кБ). – Київ : КПІ ім. Ігоря Сікорського, \the\year. --- \the\numexpr\getpagerefnumber{LastPages}-1\relax~с.
         \end{minipage}
 
 %		\noindent%
@@ -202,18 +202,18 @@
 %				В.~Б. Долгошей %
 %				--- К.:~КПІ ім. Ігоря Сікорського, \the\year. --~\the\numexpr\getpagerefnumber{LastPage}-1\relax~с. -- Бібліогр.: с.~\pageref{BibPage}\relax. \ifelectronic\relax\else-- 80~прим.\fi
 %			\end{tabular}
-%		\end{flushleft} 
+%		\end{flushleft}
 		\vfill
 
 		Наведено \TotalValue{totalproblems} задач з курсу класичної електродинаміки. До більшості задач подано відповіді. Задачі різноманітні як за змістом, так і за складністю. Поряд із задачами, які ілюструють основні поняття і закони електродинаміки, до збірника включена певна кількість більш складних задач, які допомагають суттєвішому вивченню предмета.
 
 		Для студентів фізико-технічного інституту КПІ ім. Ігоря Сікорського, які навчаються за спеціальностями 105~<<Прикладна фізика та наноматеріали>> та 113 <<Прикладна математика>>.
-		
+
 		\vfill
-				
+
 %		\begin{flushleft}\small
 %			Ілюстративний матеріал підручника підготовлений за допомогою пакету \href{http://pgf.sourceforge.net}{TikZ/Pgf}. Верстка тексту проведена в видавничій системі \LaTeXe{} (компілятор Lua\LaTeX) на базі системи комп'ютерної верстки \TeX{} (Збірка  \href{https://www.tug.org/texlive/}{\TeX Live~\the\year}) з використанням оболонки \href{https://www.texstudio.org}{\TeX Studio}.
-%		\end{flushleft}	
+%		\end{flushleft}
 	\hfill
 	\begin{minipage}[t]{0.65\linewidth}\small
         \textcopyright{} В.~І. Жданов, С.~М. Пономаренко, В.~Б. Долгошей, \the\year\,р. \\
@@ -227,7 +227,7 @@
 %%                                                                        %%
 %%                              Last Page                                 %%
 %%                                                                        %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\makelastpage}{%
 \clearpage%
 \thispagestyle{empty}%
@@ -263,6 +263,6 @@
 %    м. Київ, 03056 \\
 %    Тел. (044) 204-81-78
 %\end{center}
-}	
+}
 
 

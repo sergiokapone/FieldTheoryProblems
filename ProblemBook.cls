@@ -134,9 +134,9 @@
 %\definecolor{iptgreen}{RGB}{34,102,101}
 %\definecolor{themecolordark}{RGB}{0,163,243}
 %\definecolor{themecolorlight}{RGB}{191,233,251}
-\definecolor{themecolordark}{RGB}{34,102,101}
-\definecolor{themecolorlight}{RGB}{153,168,167}
-% ---------------------------------------- Кольори секцій -----------------------------------------------
+\definecolor{themecolordark}{RGB}{0,46,100}
+\definecolor{themecolorlight}{RGB}{0,100,170}
+% ------------- Кольори секцій ------------------------------
 \definecolor{titlebgdark}{RGB}{0,103,102}
 \definecolor{titlebglight}{RGB}{191,233,251}
 
@@ -218,7 +218,9 @@
 \setlength\epigraphwidth{0.7\textwidth}
 \setlength\epigraphrule{0pt}
 \renewcommand{\textflush}{flushepinormal}
-\RequirePackage{lastpage,refcount}
+\RequirePackage{refcount}
+\RequirePackage[pagecontinue]{pageslts}
+\pagenumbering{arabic}
 \RequirePackage[disable]{todonotes}
 \RequirePackage{pdftexcmds}
 \RequirePackage[most, many]{tcolorbox}
