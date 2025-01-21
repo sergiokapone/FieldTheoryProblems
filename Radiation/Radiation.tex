@@ -8,7 +8,7 @@
 \Writetofile{answer}{\protect\section*{\nameref*{\currfilebase}}}
 \chapter{Випромінювання та \mbox{поширення} електромагнітних хвиль}\label{\currfilebase}
 %=========================================================
-%\epigraph{\Annabelle  It's of no use whatsoever. This is just an experiment that proves Maestro Maxwell was right --- we just have these mysterious electromagnetic waves that we cannot see with the naked eye. But they are there.% 
+%\epigraph{\Annabelle  It's of no use whatsoever. This is just an experiment that proves Maestro Maxwell was right --- we just have these mysterious electromagnetic waves that we cannot see with the naked eye. But they are there.%
 %}{Heinrich Hertz}
 
 \begin{Theory}%[Потенціали Ліенара-Віхерта]
@@ -19,7 +19,7 @@
 			\vect{A}(t,\vect{r}) =\frac{q\vect{v}_q/c}{\left( R_q - \frac{\vect{v}_q\cdot \vect{R}_q}{c} \right)},
 		\end{aligned}
 	\end{equation}
-	де 
+	де
     \begin{equation*}
         \vect{R}_q =  \vect{r} - \vect{r}_q(t_q), \quad R_q = |\vect{R}_q|, \quad  \vect{v}_q = \dot{r}_q(t_q),
     \end{equation*}
@@ -68,17 +68,35 @@
 		N = \frac{2}{3c^3}\ddot{\vect{p}}^2.
 	\end{equation}
 
-	Тензор поляризації (наближено монохроматичного) світла:
-	\begin{equation}\label{eq:polarization_tensor}
-		\rho_{\alpha\beta} = \frac{\left\langle E_{0\alpha} E_{0\beta}^* \right\rangle }{\left\langle \Efield_0\Efield^*_0\right\rangle },
-	\end{equation}
-	де $\Efield_0$~--- амплітуда хвилі, індекси пробігають по два значення $\alpha,\beta = 1,2$, що відповідає осям $y$ та $z$, а вісь $x$ напрямлена вздовж напрямку розповсюдження хвилі.
+%	Тензор поляризації (наближено монохроматичного) світла:
+%	\begin{equation}\label{eq:polarization_tensor}
+%		\rho_{\alpha\beta} = \frac{\left\langle E_{0\alpha} E_{0\beta}^* \right\rangle }{\left\langle \Efield_0\Efield^*_0\right\rangle },
+%	\end{equation}
+%	де $\Efield_0$~--- амплітуда хвилі, індекси пробігають по два значення $\alpha,\beta = 1,2$, що відповідає осям $y$ та $z$, а вісь $x$ напрямлена
+%вздовж напрямку розповсюдження хвилі.
+%
+%	Ступінню поляризації називається величина $P$, яка визначається як:
+%	\begin{equation}\label{eq:polarization_lewel}
+%		|\rho_{ij}| = \frac14(1 - P^2),
+%	\end{equation}
+%	де $|\rho_{ik}|$ визначник тензора поляризації~\eqref{eq:polarization_tensor}.
+При розгляді поляризації випромінювання треба зважати на векторну природу польових функції, зокрема, напруженості електричного поля. Зауважимо, що для
+електромагнітної хвилі, що поширюється у фіксованому напрямку, досить розглядати лише електричне поле; воно визначає також і вектор напруженості
+магнітного поля.
 
-	Ступінню поляризації називається величина $P$, яка визначається як:
-	\begin{equation}\label{eq:polarization_lewel}
-		|\rho_{ij}| = \frac14(1 - P^2),
+Розглянемо випадкове поле випромінювання, що поширюється в напрямку осі $x_3$, з напруженістю електричного поля  $\Efield = (E_1,E_2,0) \equiv
+(E_x,E_y,0)$, причому будемо вважати, що поле є суперпозицією монохроматичних хвиль $\approx e^{-\omega t}$  з близькими частотами. Напрямок вектора
+$\Efield$, що є ортогональним напрямку поширення хвилі, визначає поляризацію. Для випадкового поля $\Efield$ введемо тензор поляризації (за
+Ландау-Ліфшицем «Теорія поля»):
+	\begin{equation}\label{eq:polarization_tensor}
+		\rho_{ij} = \frac{\left\langle E_{i} E_{j}^* \right\rangle }{\left\langle |E_1|^2\right\rangle + \left\langle |E_2|^2\right\rangle },\quad i,j =
+		1,2.
 	\end{equation}
-	де $|\rho_{ik}|$ визначник тензора поляризації~\eqref{eq:polarization_tensor}.
+Оскільки область значень $\det||\rho|| = $ є відрізком $[0,1/4]$, можна записати:
+	\begin{equation}\label{eq:polarization_lewel}
+		\det||\rho|| = \frac14(1 - P^2),\quad 0\le P \le 1,
+	\end{equation}
+де параметр $P$ називають ступінню поляризації; він приймає значення від $0$ (неполяризоване світло) до $1$.
 \end{Theory}
 
 
@@ -166,10 +184,10 @@
 %\end{align*}
 %Знайти тензор поляризації випромінювання у напрямку, перпендикулярному дo $\vect{e}_z$ та $\vect{e}_x$.
 %%\begin{solution}
-%%    $\{\rho\} = 
+%%    $\{\rho\} =
 %%\begin{pmatrix}
 %%0 & 1 \\
-%%1 & 0 
+%%1 & 0
 %%\end{pmatrix}$.
 %%\end{solution}
 %\end{problem}
@@ -249,7 +267,7 @@
 %	\begin{align*}
 %		\frac{\partial R}{\partial t'}                                             & = c\left( \frac{dt}{dt'} - 1 \right),                                        \\
 %		\frac{\partial R^2}{\partial t'}                                           & = 2R\frac{\partial R}{\partial t'} ,                                         \\
-%		\frac{\partial \vect{R}}{\partial t'}  = \frac{\partial (\vect{r} - \vect{r}')}{\partial t'} &= - \vect{v},\\ 
+%		\frac{\partial \vect{R}}{\partial t'}  = \frac{\partial (\vect{r} - \vect{r}')}{\partial t'} &= - \vect{v},\\
 %		\frac{\partial R^2}{\partial t'} = \frac{\partial \vect{R}^2}{\partial t'} & = 2\vect{R}\frac{\partial \vect{R}}{\partial t'}  = -2\vect{R}\cdot\vect{v} ,\\
 %		\frac{\partial t'}{\partial t}                                             & = \frac{1}{1- \frac{1}{\dfrac{\vect{v}\cdot\vect{R}}{cR}}}\\
 %		\vect{\nabla}t' &= -\frac1c \vect{\nabla}R(t') = -\frac1c\left( \frac{\partial \vect{R}}{\partial t'} \vect{\nabla}t' + \frac{\vect{R}}{R}\right)  \\
