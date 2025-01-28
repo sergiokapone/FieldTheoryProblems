@@ -8,7 +8,7 @@
 \Writetofile{answer}{\protect\section*{\nameref*{\currfilebase}}}
 \chapter{Електро- та магнітостатика у вакуумі}\label{\currfilebase}
 %=========================================================
-%\epigraph{\Annabelle  ...взаимное притяжение электрической жидкости, именуемой положительной, и электрической жидкости, именуемой обычно отрицательной, состоит в обратном отношении квадратов расстояний... 
+%\epigraph{\Annabelle  ...взаимное притяжение электрической жидкости, именуемой положительной, и электрической жидкости, именуемой обычно отрицательной, состоит в обратном отношении квадратов расстояний...
 %}{Шарль Огюстен Кулон}
 
 \section{Прості задачі на рівняння Максвелла}
@@ -53,7 +53,7 @@
 \begin{problem}
 Виходячи із закону Біо-Савара-Лапласа показати, що для замкнутого контуру зі струмом $I$ напруженість магнітного поля в деякій точці $P$ з координатами $(x,y,z)$ виражається формулою $\Bfield = \frac{I}{c} \vect{\nabla}\Omega$, де $\Omega$~--- тілесний кут, під яким контур видно з цієї точки.
 \begin{solution}
-    Тілесний кут, під яким видно поверхню $S$ з точки $r$: 
+    Тілесний кут, під яким видно поверхню $S$ з точки $r$:
     \[
         \Omega(\vect{r}) = \int\limits_S d\vect{S}'\frac{\vect{r}' - \vect{r}}{|\vect{r}' - \vect{r}|^3}.
     \]
@@ -173,7 +173,7 @@ $\vect{a}^2 = 1$, а $\Bfield_0$ та $\vect{a}$~--- постійні векто
 	\end{equation}
 	де $\vect{r}'$~--- радіус-вектор елемента заряду $\rho(\vect{r'}) dV'$, а $\vect{r}$~--- радіус-вектор точки спостереження.
 
-Енергія електростатичного поля з потенціалом $\pot(\vect{r})$, створюваного об’ємними зарядами з густиною $\rho(\vect{r})$  та зарядами з поверхневою густиною $\sigma$  на межі розділу середовищ $S$:  
+Енергія електростатичного поля з потенціалом $\pot(\vect{r})$, створюваного об’ємними зарядами з густиною $\rho(\vect{r})$  та зарядами з поверхневою густиною $\sigma$  на межі розділу середовищ $S$:
 
 
 \begin{equation}\label{eq:We}
@@ -202,7 +202,7 @@ W_e = \frac{1}{8\pi}\int {dV} \, \Efield^2(\vect{r}) = \frac{1}{2}\int\limits_\i
 	\end{equation}
 	де $\vect{r}'$~--- радіус-вектор елемента струму $\vect{j'}(\vect{r}') dV'$, а $\vect{r}$~--- радіус-вектор точки спостереження.
 
-Енергія магнітостатичного поля з вектор-потенціалом $\vect{A}$, створюваного об’ємними струмами з густиною $\vect{j}$ та струмами з поверхневою  густиною $\vect{i}$  на межі розділу середовищ $S$:  
+Енергія магнітостатичного поля з вектор-потенціалом $\vect{A}$, створюваного об’ємними струмами з густиною $\vect{j}$ та струмами з поверхневою  густиною $\vect{i}$  на межі розділу середовищ $S$:
 \begin{equation}\label{eq:Wm}
     W_m = \frac{1}{{8\pi }}\int dV \,\Bfield^2(\vect{r}) = \frac{1}{2}\int dV \, \vect{j}(\vect{r}) \cdot \vect{A}(\vect{r}) + \frac{1}{2}\int {dS} \, \vect{i}(\vect{r}) \cdot \vect{A}(\vect{r}).
 \end{equation}
@@ -289,7 +289,7 @@ W_e = \frac{1}{8\pi}\int {dV} \, \Efield^2(\vect{r}) = \frac{1}{2}\int\limits_\i
 	\begin{equation*}\label{continuity}
 		\left.\pot(x,y,z)\right|_{z \to 0^+} = \left.\pot(x,y,z)\right|_{z \to 0^-},
 	\end{equation*}
-	а умова~\eqref{EnBc} дає 
+	а умова~\eqref{EnBc} дає
 	\begin{equation*}\label{boundary}
 		-\left. \frac{\partial \pot(x,y,z)}{dz}\right|_{z \to 0^+} + \left. \frac{\partial \pot(x,y,z)}{dz}\right|_{z \to 0^-} =4\pi\sigma(x,y).
 	\end{equation*}
@@ -311,7 +311,7 @@ W_e = \frac{1}{8\pi}\int {dV} \, \Efield^2(\vect{r}) = \frac{1}{2}\int\limits_\i
 	\begin{equation*}
 		\pot (x,y,z) = C \sin\left( \frac{x}{L} \right)   \cos\left( \frac{2y}{L} \right)  \cdot e^{-\gamma |z|}.
 	\end{equation*}
-	
+
 З граничної умови \eqref{EnBc} визначаємо $C$.
 
 Відповідь а):
@@ -321,7 +321,7 @@ W_e = \frac{1}{8\pi}\int {dV} \, \Efield^2(\vect{r}) = \frac{1}{2}\int\limits_\i
 	\end{equation*}
 \end{solution}
 
-Випадок б) розглядається аналогічно. У випадку в) треба розкласти $\sin^2$ на тригонометричні функції подвійного аргументу. 
+Випадок б) розглядається аналогічно. У випадку в) треба розкласти $\sin^2$ на тригонометричні функції подвійного аргументу.
 
 \end{problem}
 
@@ -331,7 +331,7 @@ W_e = \frac{1}{8\pi}\int {dV} \, \Efield^2(\vect{r}) = \frac{1}{2}\int\limits_\i
 \begin{solution}
 	$\pot  = \frac{{2{\sigma _0}ab}}{{\sqrt {{a^2} + {b^2}} }}{e^{ - \alpha |z|}}\sin \left( {\frac{{\pi x}}{a}} \right)\sin \left( {\frac{{\pi y}}{b}} \right)$, де $\alpha  = \frac{\pi }{{ab}}\sqrt {{a^2} + {b^2}}$.
 
-    Зауважимо, що, енергію системи зручно за допомогою формули~\eqref{eq:We} 
+    Зауважимо, що, енергію системи зручно за допомогою формули~\eqref{eq:We}
 	$W_e =  \frac{{\sigma _0^2{a^2}{b^2}}}{{\sqrt {{a^2} + {b^2}} }}$.
 \end{solution}
 \end{problem}
@@ -340,9 +340,9 @@ W_e = \frac{1}{8\pi}\int {dV} \, \Efield^2(\vect{r}) = \frac{1}{2}\int\limits_\i
 \begin{problem}[Клітка Фарадея]\label{prb:Faraday_cage}
 Маємо два паралельних масива нескінченно довгих тонких заряджених провідників, напрямлених паралельно осі $z$, які формують нескінченні <<сітки>>, які простягаються до нескінченності по осі $-\infty < x < \infty$. Кожен провідник несе рівномірно розподілений заряд густиною $\lambda$. Дві сітки знаходяться на відстані $d$, як показано на рисунку. Відстань між сусідніми провідниками однієї сітки $a$. Знайдіть потенціал електричного поля у просторі між сітками.
 \begin{solution}
-	Знайдемо спочатку потенціал нижньої <<сітки>> ($z = 0$). 
+	Знайдемо спочатку потенціал нижньої <<сітки>> ($z = 0$).
 
-Поверхневу густину заряду 
+Поверхневу густину заряду
 \[
     \sigma(x) = \lambda\sum\limits_{k = -\infty}^{\infty} \delta(x - ka)
 \]
@@ -422,7 +422,7 @@ W_e = \frac{1}{8\pi}\int {dV} \, \Efield^2(\vect{r}) = \frac{1}{2}\int\limits_\i
 \]
 де $a$~--- деяка додатна константа.
 \begin{solution}
-	Розпишемо потенціал як: 
+	Розпишемо потенціал як:
     \[
 	\pot = \frac{q}{r}e^{-\frac{r}{a}} = \frac{q}{r} +  \frac{q}{r}\left(e^{-\frac{r}{a}} - 1\right) .
     \]
@@ -483,14 +483,14 @@ W_e = \frac{1}{8\pi}\int {dV} \, \Efield^2(\vect{r}) = \frac{1}{2}\int\limits_\i
 на поверхні кулі радіуса $R$, усередині і зовні зарядів немає. Знайти потенціал зовні та усередині кулі.
 \begin{solution}
 	\begin{enumerate}[label=\alph*)]
-		\item%	
+		\item%
 		      \begin{equation}
 			      \pot = \begin{cases}
 				      \frac43\pi\sigma_0r \cos\theta, \quad r<R \\[1em]
 				      \frac{\frac43\pi\sigma_0R^3}{r^2} \cos\theta, \quad r \ge R.
 			      \end{cases}
 		      \end{equation}
-		\item%	
+		\item%
 		      \begin{equation}
 			      \pot = \begin{cases}
 				      \frac43\pi\sigma_0r \cos\theta + 4\pi\sigma_1 R, \quad r<R \\[1em]
@@ -559,7 +559,7 @@ W_e = \frac{1}{8\pi}\int {dV} \, \Efield^2(\vect{r}) = \frac{1}{2}\int\limits_\i
 %\subsection{Циліндричні координати}
 
 %=========================================================
-\begin{problem}%3.23 --- Griffiths D.J. Solutions manual for Introduction to electrodynamics 3ed --- 
+\begin{problem}%3.23 --- Griffiths D.J. Solutions manual for Introduction to electrodynamics 3ed ---
 Отримайте розв'язок рівняння Лапласа~\eqref{eq:Laplase_Cylindrical} методом розділення змінних в циліндричних координатах для випадку циліндричної симетрії (не залежності від координати $z$).
 \end{problem}
 
@@ -718,10 +718,10 @@ W_e = \frac{1}{8\pi}\int {dV} \, \Efield^2(\vect{r}) = \frac{1}{2}\int\limits_\i
 	Рівняння Пуассона для вектор-потенціалу дає:
 	\[\Delta {A_z} =  - \frac{{4\pi }}{c}{a_0}{\left( {\frac{r}{R}} \right)^3} \cdot {\sin ^3}(\varphi ) =  - \frac{{\pi {a_0}}}{c}{\left( {\frac{r}{R}} \right)^3}\left( {3\sin (\varphi ) - \sin (3\varphi )} \right)
 	\]
-    за умови $\lim\limits_{r\to\infty} A_z = 0$, враховуючи, що на поверхні циліндру 
+    за умови $\lim\limits_{r\to\infty} A_z = 0$, враховуючи, що на поверхні циліндру
     \[
         \left. A_z\right|_{r \underset{0<r<R}{\to} R} = \left. A_z\right|_{r \underset{r>R}{\to} R}, \quad  \left. \frac{\partial A_z}{\partial r}\right|_{r \underset{0<r<R}{\to} R} = \left. \frac{\partial A_z}{\partial r}\right|_{r \underset{r>R}{\to} R},
-    \]    
+    \]
 розв'язком рівняння є
 	\[
 		A_z =
@@ -738,19 +738,59 @@ W_e = \frac{1}{8\pi}\int {dV} \, \Efield^2(\vect{r}) = \frac{1}{2}\int\limits_\i
 \begin{Theory}
 	%---------------------------------------------------------
 	\begin{center}
-		\begin{tikzpicture}
-			\pgfmathsetseed{10}
-			\fill[gray!20] plot [smooth cycle, samples=8,domain={1:8}] (\x*360/8+6*rnd:1cm+2cm*rnd);
-			\coordinate (O) at (-1.5,0);
-			\draw[-latex] (O) -- +(3,0) node[below] {$y$};
-			\draw[-latex] (O) -- +(0,3) node[left] {$z$};
-			\draw[-latex] (O) -- +(225:2.5) node[left] {$x$};
-			\node[below] at (O) {$O$};
-			\draw[-latex] (O) --  node[pos=0.5, anchor=west] {$\vect{r'}$} +(65:1.5) coordinate (endp);
-			\draw[-latex] (O) -- node[pos=0.5, below] {$\vect{r}$} +(25:10) coordinate (end) ;
-			\draw[-latex] (endp) -- (end) node[pos=0.45, above, sloped] {$\vect{r} - \vect{r'}$};
-			\draw[ball color=red!50, opacity=0.5] (endp) circle (0.1) node[above=10pt, opacity=1] {$\rho(\vect{r'})dV'$};
-		\end{tikzpicture}
+	% Размер куба
+	\def\cx{.33} % относительный размер куба
+
+	% Создание стиля узла для куба
+	\tikzset{
+		cube/.style={
+				append after command={
+						\pgfextra{
+							% Сторона сверху
+							\fill[#1!20, draw=#1]
+							(\tikzlastnode.south west) --
+							($(\tikzlastnode.south west) + (\cx,0,0)$) --
+							($(\tikzlastnode.south west) + (\cx,\cx,0)$) --
+							($(\tikzlastnode.south west) + (0,\cx,0)$) --
+							cycle;
+							% Передняя сторона
+							\fill[#1!10, draw=#1]
+							($(\tikzlastnode.south west) + (0,\cx,0)$) --
+							($(\tikzlastnode.south west) + (0,\cx,-\cx)$) --
+							($(\tikzlastnode.south west) + (\cx,\cx,-\cx)$) --
+							($(\tikzlastnode.south west) + (\cx,\cx,0)$) --
+							cycle;
+							% Правая сторона
+							\fill[#1!30, draw=#1]
+							($(\tikzlastnode.south west) + (\cx,0,0)$) --
+							($(\tikzlastnode.south west) + (\cx,\cx,0)$) --
+							($(\tikzlastnode.south west) + (\cx,\cx,-\cx)$) --
+							($(\tikzlastnode.south west) + (\cx,0,-\cx)$) --
+							cycle;
+						}
+					}
+			}
+	}
+	\begin{tikzpicture}[>=latex]
+		\coordinate (O) at (-1, -0.5, 0);
+		\draw[->] (O) -- ++(0, 2, 0) node[above] {$z$};
+		\draw[->] (O) -- ++(0, 0, 4) node[left]  {$x$};
+		\draw[->] (O) -- ++(2, 0, 0) node[below] {$y$};
+
+		\pgfmathsetseed{42}
+		\fill[gray!50, opacity=0.5] (0.5, 0.5, 0) plot[domain=0:360, smooth cycle] ({\x}:{0.2*rnd + 1.7});
+
+		\node[cube=red] (q) at (0.5,1.8,1)  {};
+		\node[above=6pt] at (q) {$\rho(\vect{r}') dV'$};
+
+		\node[circle, inner sep=0.5, fill] (P) at (xyz polar cs:angle=45, x radius=10, y radius=4) {};
+
+		\draw[->, red] (O) --  (q) node[anchor=east, text=black, pos=0.6, inner sep=1pt] {$\vect{r}'$};
+		\draw[->, blue] (q) -- node[above, sloped] {$\vect{r} - \vect{r}'$} (P);
+		\draw[->] (O) -- (P) node[below, sloped, pos=0.8] {$\vect{r}$} ;
+		\node[below] at (P) {$P$};
+%		\draw[->, red, thick] (P) -- ($(q)!1.2!(P)$) node[above] {$d\Efield(\vect{r})$};
+	\end{tikzpicture}
 		\captionof{figure}{Поле системи зарядів на далеких відстанях}
 	\end{center}
 	%---------------------------------------------------------
@@ -812,7 +852,7 @@ W_e = \frac{1}{8\pi}\int {dV} \, \Efield^2(\vect{r}) = \frac{1}{2}\int\limits_\i
 \begin{center}
 	%---------------------------------------------------------
 	\begin{minipage}[t]{0.45\linewidth}\centering
-		\begin{tikzpicture}
+		\begin{tikzpicture}[scale=0.75]
 			\draw[-latex] (0,0) -- +(3,0) node[below] {$y$};
 			\draw[-latex] (0,0) -- +(0,3) node[left] {$z$};
 			\draw[dashed] (0,0) -- +(0,-3);
@@ -828,7 +868,7 @@ W_e = \frac{1}{8\pi}\int {dV} \, \Efield^2(\vect{r}) = \frac{1}{2}\int\limits_\i
 	\end{minipage}
 	%---------------------------------------------------------
 	\begin{minipage}[t]{0.45\linewidth}\centering
-		\begin{tikzpicture}
+		\begin{tikzpicture}[scale=0.75]
 			\draw[-latex] (-3,0) -- (3,0) node[below] {$x$};
 			\draw[-latex] (0,-3) -- (0,3) node[left] {$y$};
 			\draw[dashed] (-2,2) rectangle (2,-2);
@@ -1014,7 +1054,7 @@ W_e = \frac{1}{8\pi}\int {dV} \, \Efield^2(\vect{r}) = \frac{1}{2}\int\limits_\i
 
 %=========================================================
 \begin{problem}
-    Знайдіть енергію взаємодії електронної хмари з ядром в атомі водню. Заряд електрона розподілений в атомі з об'ємною густиною 
+    Знайдіть енергію взаємодії електронної хмари з ядром в атомі водню. Заряд електрона розподілений в атомі з об'ємною густиною
     \[
         \rho(r) = \frac{e}{\pi a^3}e^{-\frac{2r}{a}},
    \]
