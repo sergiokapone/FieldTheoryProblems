@@ -15,10 +15,14 @@
 
 Інтегральна форма макроскопічних рівнянь:
 \begin{align}
-	\oiint\limits_S \Dfield\cdot d\vect{S} & = 4\pi\iiint\limits_{V}\rho dV,   \label{essInt I}                                                                                                         \\
-	\oiint\limits_S \Bfield\cdot d\vect{S} & = 0,   \label{essInt II}                                                                                                                                   \\
-	\oint\limits_L \Efield\cdot d\vect{r}  & = - \frac1c \iint\limits_S \frac{\partial\Bfield}{\partial t}\cdot d\vect{S},  \label{Int III}                                                             \\
-	\oint\limits_L \Hfield\cdot d\vect{r}  & =\dfrac{4\pi}{c} \iint\limits_S \vect{j}\cdot d\vect{S} +\frac{1}{c} \iint\limits_S  \frac{\partial\Dfield}{\partial t}\cdot d\vect{S},  \label{essInt IV}
+	\oiint\limits_{\partial\Omega} \Dfield\cdot d\vect{S} & = 4\pi\iiint\limits_{\Omega}\rho dV,   \label{essInt
+	I}                                                                                                         \\
+	\oiint\limits_{\partial\Omega} \Bfield\cdot d\vect{S} & = 0,   \label{essInt
+	II}                                                                                                                                   \\
+	\oint\limits_{\partial S} \Efield\cdot d\vect{r}  & = - \frac1c \iint\limits_S \frac{\partial\Bfield}{\partial t}\cdot d\vect{S},  \label{Int
+	III}                                                             \\
+	\oint\limits_{\partial S} \Hfield\cdot d\vect{r}  & =\dfrac{4\pi}{c} \iint\limits_S \vect{j}\cdot d\vect{S} +\frac{1}{c} \iint\limits_S
+	\frac{\partial\Dfield}{\partial t}\cdot d\vect{S},  \label{essInt IV}
 \end{align}
 де $ \Efield $~-- вектор напруженості електричного поля;\\
 \hspace*{3ex}$ \Bfield $~-- вектор індукції магнітного поля; \\

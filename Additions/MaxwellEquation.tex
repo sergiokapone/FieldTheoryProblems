@@ -16,11 +16,17 @@
 
 Інтегральна форма мікроскопічних рівнянь:
 \begin{align}
-	\oiint\limits_S \Efield\cdot d\vect{S} & = 4\pi\iiint\limits_{V}\rho dV   \label{Int I},                                                                                                         \\
-	\oiint\limits_S \Bfield\cdot d\vect{S} & = 0   \label{Int II},                                                                                                                                   \\
-	\oint\limits_L \Efield\cdot d\vect{r}  & = - \frac1c \iint\limits_S \frac{\partial\Bfield}{\partial t}\cdot d\vect{S}  \label{Int III},                                                          \\
-	\oint\limits_L \Bfield\cdot d\vect{r}  & =\dfrac{4\pi}{c} \iint\limits_S \vect{j}\cdot d\vect{S} +\frac{1}{c} \iint\limits_S  \frac{\partial\Efield}{\partial t}\cdot d\vect{S}  \label{Int IV}.
+	\oiint\limits_{\partial\Omega} \Efield\cdot d\vect{S} & = 4\pi\iiint\limits_{\Omega}\rho dV   \label{Int
+	I},                                                                                                         \\
+	\oiint\limits_{\partial\Omega} \Bfield\cdot d\vect{S} & = 0   \label{Int
+	II},                                                                                                                                   \\
+	\oint\limits_{\partial S} \Efield\cdot d\vect{r}  & = - \frac1c \iint\limits_S \frac{\partial\Bfield}{\partial t}\cdot d\vect{S}  \label{Int
+	III},                                                          \\
+	\oint\limits_{\partial S} \Bfield\cdot d\vect{r}  & =\dfrac{4\pi}{c} \iint\limits_S \vect{j}\cdot d\vect{S} +\frac{1}{c} \iint\limits_S
+	\frac{\partial\Efield}{\partial t}\cdot d\vect{S}  \label{Int IV},
 \end{align}
+де $\Omega$ --- довільний нерухомий об'єм, $\partial\Omega$ --- його межа; $S$ --- довільна нерухома орієнтована поверхня, $\partial S$ --- замкнений
+контур, що її обмежує.
 
 Диференціальна форма  мікроскопічних рівнянь:
 \begin{flalign}
@@ -105,8 +111,10 @@ $\vect{n}$~--- вектор нормалі з середовища $2$  в се�
 
 У випадку ізольованої системи зарядів та струмів розв'язками цих рівнянь є \emph{запізнюючі потенціали}:
 \begin{equation}\label{Retarded_potentials}
-	\phi(\vect{r} , t) = \int\limits_{}\frac{\rho\left( \vect{r}', t - \frac{|\vect{r} - \vect{r}'|}{c}\right) }{|\vect{r} - \vect{r}'|}dV', \quad
-	\vect{A}(\vect{r} , t) = \frac1c\int\limits_{}\frac{\vect{j}\left( \vect{r}', t - \frac{|\vect{r} - \vect{r}'|}{c}\right) }{|\vect{r} - \vect{r}'|}dV'.
+	\phi(\vect{r} , t) = \iiint\limits_{\Omega}\frac{\rho\left( \vect{r}', t - \frac{|\vect{r} - \vect{r}'|}{c}\right) }{|\vect{r} - \vect{r}'|}dV',
+	\quad
+	\vect{A}(\vect{r} , t) = \frac1c\iiint\limits_{\Omega}\frac{\vect{j}\left( \vect{r}', t - \frac{|\vect{r} - \vect{r}'|}{c}\right) }{|\vect{r} -
+	\vect{r}'|}dV'.
 \end{equation}
 
 %\renewcommand{\theequation}{\thechapter.\arabic{equation}}

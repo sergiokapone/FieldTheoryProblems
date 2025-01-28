@@ -105,18 +105,20 @@
 
 Теорема Остроградського-Гаусса:
 \begin{equation}\label{OGTheorem}
-	\oiint\limits_{\partial V} \vect{A}\cdot d\vect{S} = \iiint\limits_V \divg\vect{A} dV.
+	\oiint\limits_{\partial \Omega} \vect{A}\cdot d\vect{S} = \iiint\limits_{\Omega} \divg\vect{A} dV,
 \end{equation}
+де $\Omega$~--- об'єм, $\partial\Omega$ --- його межа.
 
 Теорема Стокса:
 \begin{equation}\label{Stoksheorem}
-	\oint\limits_L \vect{A}\cdot d\vect{l} = \iint\limits_S \rot\vect{A} \cdot d\vect{S},
+	\oint\limits_{\partial S} \vect{A}\cdot d\vect{l} = \iint\limits_S \rot\vect{A} \cdot d\vect{S},
 \end{equation}
-де $S$~--- поверхня, натягнута на контур $L$.
+де $S$~--- поверхня, що спирається на контур $\partial S$.
 
 Теорема Гріна:
 \begin{equation}\label{Grin}
-	\iiint\limits_{V}(\phi \nabla ^{2}\psi -\psi \nabla ^{2}\phi )\ dV=\iint \limits_{\partial V}(\phi \vect{\nabla} \psi -\psi \vect{\nabla} \phi )\cdot d\vect{S}.
+	\iiint\limits_{\Omega}(\phi \nabla ^{2}\psi -\psi \nabla ^{2}\phi )\ dV=\iint \limits_{\partial \Omega}(\phi \vect{\nabla} \psi -\psi \vect{\nabla}
+	\phi )\cdot d\vect{S}.
 \end{equation}
 
 
