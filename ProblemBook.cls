@@ -209,6 +209,7 @@
 \setlength{\extrarowheight}{0.75ex}
 \RequirePackage[justification=centering,labelsep=period]{caption}
 \RequirePackage{multirow}
+\RequirePackage{subcaption}
 % ------------------------------------- Фалові операції -------------------------------------------------
 \RequirePackage{currfile}
 % ------------------------------------- Пакети LaTeX3 ---------------------------------------------------

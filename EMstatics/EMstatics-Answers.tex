@@ -1,5 +1,5 @@
 \protect \section *{\nameref *{EMstatics}}
-\begin{Solution}{2.{1}}
+\begin{Solution}{2.{6}}
 	\begin{enumerate*}[label=\alph*)]
 		\item $\rho = q\delta(\vect{r})$;
 		\item $\rho = \frac{q}{2\pi R^2}\delta(r - R)\delta(\cos\theta)$;
@@ -8,7 +8,7 @@
 		\item $\rho = \sigma (\theta)\delta (r - R)$.
 	\end{enumerate*}
 \end{Solution}
-\begin{Solution}{2.{4}}
+\begin{Solution}{2.{9}}
     Тілесний кут, під яким видно поверхню $S$ з точки $r$:
     \[
         \Omega(\vect{r}) = \int\limits_S d\vect{S}'\frac{\vect{r}' - \vect{r}}{|\vect{r}' - \vect{r}|^3}.
@@ -26,10 +26,10 @@
 		\Bfield = \frac{I}{c} \oint  d\vect{l}' \times  \frac{\vect{r} - \vect{r}'}{|\vect{r} - \vect{r}'|^3} = \frac{I}{c} \vect{\nabla}\Omega.
 	\]
 \end{Solution}
-\begin{Solution}{2.{8}}
+\begin{Solution}{2.{13}}
 	$\vect{B}(r) = \frac{4\pi}{cr^2}\left[ \vect{e}_0 \times \vect{r} \right]\int\limits_0^r j(r)r dr$.
 \end{Solution}
-\begin{Solution}{2.{18}}
+\begin{Solution}{2.{23}}
     Розв'яжемо задачу за допомогою рівняння Лапласа в декартовій системі координат  та граничних умов на площині $z = 0$. Умова~\eqref{EtauBc} виконується за неперервності потенціалу
 	\begin{equation*}\label{continuity}
 		\left.\pot(x,y,z)\right|_{z \to 0^+} = \left.\pot(x,y,z)\right|_{z \to 0^-},
@@ -65,13 +65,13 @@
 		\pot = \frac{2\pi\sigma_0 L}{\sqrt{5}}e^{-\frac{\sqrt{5}}{L}|z|}\sin\left( \frac{x}{L}\right) \cos\left( \frac{2y}{L}\right) .
 	\end{equation*}
 \end{Solution}
-\begin{Solution}{2.{19}}
+\begin{Solution}{2.{24}}
 	$\pot  = \frac{{2{\sigma _0}ab}}{{\sqrt {{a^2} + {b^2}} }}{e^{ - \alpha |z|}}\sin \left( {\frac{{\pi x}}{a}} \right)\sin \left( {\frac{{\pi y}}{b}} \right)$, де $\alpha  = \frac{\pi }{{ab}}\sqrt {{a^2} + {b^2}}$.
 
     Зауважимо, що, енергію системи зручно за допомогою формули~\eqref{eq:We}
 	$W_e =  \frac{{\sigma _0^2{a^2}{b^2}}}{{\sqrt {{a^2} + {b^2}} }}$.
 \end{Solution}
-\begin{Solution}{2.{20}}
+\begin{Solution}{2.{25}}
 	Знайдемо спочатку потенціал нижньої <<сітки>> ($z = 0$).
 
 Поверхневу густину заряду
@@ -107,7 +107,7 @@
 Нехай $d \gg a$. Тоді в області $0<y<d$, при $a \ll y \ll d$ та $d - y \gg a$ (між сітками, але досить далеко від кожної з них) сумарний потенціал стає майже постійним $\pot(y) \approx  - 2\pi \lambda d/a$, а електричне поле, відповідно, нульовим~--- електричні поля двох сіток компенсують одне одного.  Саме цим пояснюється дія клітки Фарадея.
 
 \end{Solution}
-\begin{Solution}{2.{22}}
+\begin{Solution}{2.{27}}
 	$
 		\pot(r) =
 		\begin{cases}
@@ -117,7 +117,7 @@
 		\end{cases}
 	$
 \end{Solution}
-\begin{Solution}{2.{23}}
+\begin{Solution}{2.{28}}
 	Розпишемо потенціал як:
     \[
 	\pot = \frac{q}{r}e^{-\frac{r}{a}} = \frac{q}{r} +  \frac{q}{r}\left(e^{-\frac{r}{a}} - 1\right) .
@@ -133,7 +133,7 @@
 	\]
 	звідки видно, що екранований кулонівський потенціал створюється точковим зарядом, навколо якого розподілена <<хмара>> електричного заряду. Такий характер розподілу зустрічається, наприклад, в електролітах, або плазмі.
 \end{Solution}
-\begin{Solution}{2.{24}}
+\begin{Solution}{2.{29}}
 	Оскільки ми маємо азимутальну симетрію в розподілі заряду, будемо шукати потенціал у вигляді:
 	\begin{equation}
 		\pot(r, \theta) = \begin{cases}
@@ -156,7 +156,7 @@
 		\sigma = \frac{1}{4\pi} \left( \left. \frac{\partial \pot_{\mathrm{in}}}{\partial r}\right|_{r \to R} - \left. \frac{\partial \pot_{\mathrm{out}}}{\partial r}\right|_{r \to R} \right) =  \frac{3\pot_0}{4\pi R} \cos\theta.
 	\end{equation}
 \end{Solution}
-\begin{Solution}{2.{25}}
+\begin{Solution}{2.{30}}
 	\begin{enumerate}[label=\alph*)]
 		\item%
 		      \begin{equation}
@@ -174,17 +174,17 @@
 		      \end{equation}
 	\end{enumerate}
 \end{Solution}
-\begin{Solution}{2.{27}}
+\begin{Solution}{2.{32}}
 	$\pot_\text{ind}(\vect{r}) =  - \frac{Q}{r}\sum\limits_{n = 1}^N \sum\limits_{m =  - n}^n {C_{nm}{\left( \frac{R}{r} \right)^n}} Y_{nm}(\theta ,\varphi )$
 \end{Solution}
-\begin{Solution}{2.{31}}
+\begin{Solution}{2.{36}}
 	$\pot (r) =
 		\begin{cases}
 			\frac{{2\pi }}{{2n + 3}}{\rho _0}{R^2}\left[ {\frac{{2n + 3}}{{2n + 1}}{{\left( {\frac{r}{R}} \right)}^n} - {{\left( {\frac{r}{R}} \right)}^{n + 2}}} \right]{P_n}(\cos (\theta )) , \quad r<R \\
 			\frac{{4\pi {\rho _0}{R^2}}}{{(2n + 3)(2n + 1)}}{\left( {\frac{R}{r}} \right)^{n + 1}}{P_n}(\cos (\theta )) , \quad r>R
 		\end{cases}$
 \end{Solution}
-\begin{Solution}{2.{35}}
+\begin{Solution}{2.{40}}
 	$
 		\pot(r, \phi, z) =
 		\begin{cases}
@@ -193,7 +193,7 @@
 		\end{cases}
 	$
 \end{Solution}
-\begin{Solution}{2.{41}}
+\begin{Solution}{2.{46}}
 	Спосіб 1 (використання закону Біо-Савара-Лапласа).
 	\[
 		\Bfield(\vect{r}) = \frac1c \int dV' \vect{j} \times \frac{(\vect{r} - \vect{r}')}{|\vect{r} - \vect{r}'|^3}
@@ -270,7 +270,7 @@
 	\]
 	що збігається з відповіддю, отриманою в попередньому способі.
 \end{Solution}
-\begin{Solution}{2.{42}}
+\begin{Solution}{2.{47}}
 	Рівняння Пуассона для вектор-потенціалу дає:
 	\[\Delta {A_z} =  - \frac{{4\pi }}{c}{a_0}{\left( {\frac{r}{R}} \right)^3} \cdot {\sin ^3}(\varphi ) =  - \frac{{\pi {a_0}}}{c}{\left( {\frac{r}{R}} \right)^3}\left( {3\sin (\varphi ) - \sin (3\varphi )} \right)
 	\]
@@ -287,7 +287,7 @@
 		\end{cases}
 	\]
 \end{Solution}
-\begin{Solution}{2.{47}}
+\begin{Solution}{2.{52}}
 	Проведемо вісь $OZ$ вздовж поля $\Bfield = (0, 0, B)$.
 	\begin{enumerate*}[label=\alph*)]
 		\item $A_x = -\frac12 By$, $A_y = \frac12 Bx$, $A_z = 0$;
@@ -297,10 +297,10 @@
 або у векторній формі 	$\vect{A} = \frac12 \left[ \Bfield\times \vect{r} \right] $.
 	З огляду калібрувальної інваріантності вектор-потенціал не визначений однозначно. Тут наведені найбільш зручні представлення вектор-потенціалу однорідного поля в різних системах координат.
 \end{Solution}
-\begin{Solution}{2.{48}}
+\begin{Solution}{2.{53}}
 	Потенціал кулі є квадрупольним, $\pot(z) = \frac{\pi^2\rho_0 R^5}{48z^3}$.
 \end{Solution}
-\begin{Solution}{2.{51}}
+\begin{Solution}{2.{56}}
 	$\Bfield =
 		\begin{cases}
 			\frac{2q}{3c}\frac1R\vect{\omega}, \quad r < R \\
@@ -309,17 +309,17 @@
 	$
 	де $\vect{p}_m = \frac{qR^2}{3c}\vect{\omega}$~--- магнітний момент сфери.
 \end{Solution}
-\begin{Solution}{2.{52}}
+\begin{Solution}{2.{57}}
 	$B_z = \frac{324\pi a}{5c}j_0$.
 \end{Solution}
-\begin{Solution}{2.{54}}
+\begin{Solution}{2.{59}}
     $W = \sum\limits_{l=0}^{\infty}\sum\limits_{m=-l}^{l}a_{lm}Q_{lm}^*$.
 \end{Solution}
-\begin{Solution}{2.{55}}
+\begin{Solution}{2.{60}}
     \begin{multline*}
     	W = -(\vect{p}_1\cdot \Efield_2) = -\frac{3(\vect{p}_1\cdot\vect{r})(\vect{p}_2\cdot\vect{r})}{r^5}  + \frac{(\vect{p}_1\cdot\vect{p}_2)}{r^3} =\\ = -\frac{p_1p_2}{d^3}\left[ 3\cos\theta_1\cos\theta_2 - \cos(\theta_1 - \theta_2)\right] ,
     \end{multline*}
 \end{Solution}
-\begin{Solution}{2.{56}}
+\begin{Solution}{2.{61}}
 	$F = \frac{6R^6}{l^4} E_0^2$.
 \end{Solution}
