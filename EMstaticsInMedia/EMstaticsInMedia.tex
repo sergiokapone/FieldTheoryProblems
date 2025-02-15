@@ -72,39 +72,6 @@
 1$   (декартові координати). Зовні --- вакуум. Знайти (макроскопічну) напруженість та індукцію електричного поля, які створені зарядами шару.
 \end{problem}
 
-%=========================================================
-\begin{problem}\label{prb:flux_rotated_hemisphere}
-Знайти потік індукції однорідного магнітного поля $\Bfield$ поверхню нахиленої напівкулі (рис.~\ref{pic:flux_rotated_hemisphere}). Вектор $\Bfield$
-спрямований  вертикально; площина основи нахилена на кут $\alpha$ до горизонтальної площини.
-\end{problem}
-
-%---------------------------------------------------------
-\begin{figure}[h!]\centering
-    \begin{tikzpicture}[>=latex]
-        \foreach[count=\c] \x in {0.9,...,3.6}{
-            \draw[->, blue] (\x, -2.5) -- ++(0, 4.5)
-            \ifnum\c=2
-            node[above] {$\Bfield$}
-            \fi
-            ;
-        }
-        \begin{scope}[
-            rotate around={-45:(1,0)},
-            opacity=0.75]
-            \draw[fill=gray!30] (0,0) arc (180:0:2) arc(0:-180:2 and {2*0.2});
-        \draw[dashed] (0,0) arc (180:0:2 and {2*0.2});
-        \draw[dotted] (0,0) -- (4,0);
-        \draw[dotted] (4,0) -- ++(45:-2);
-        \draw (4,0)  ++(-1.5,0) arc(180:{180+45}:1.5) node[pos=0.5, anchor=east] {$\alpha$};
-        \end{scope}
-
-    \end{tikzpicture}
-\caption{До задачі~\ref{prb:flux_rotated_hemisphere}}
-\label{pic:flux_rotated_hemisphere}
-\end{figure}
-%---------------------------------------------------------
-
-
 
 %=========================================================
 \begin{problem}%
