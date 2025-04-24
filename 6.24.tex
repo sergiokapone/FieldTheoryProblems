@@ -1,0 +1,149 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{physics}
+
+	\usepackage{fontspec}
+	\setsansfont{CMU Sans Serif}%{Arial}
+	\setmainfont{CMU Serif}%{Times New Roman}
+	\setmonofont{CMU Typewriter Text}%{Consolas}
+	\defaultfontfeatures{Ligatures={TeX}}
+	\usepackage[math-style=TeX]{unicode-math}
+
+\usepackage[%
+	a4paper,%
+	footskip=1cm,%
+	headsep=0.3cm,%
+	top=2cm, %поле сверху
+	bottom=2cm, %поле снизу
+	left=2cm, %поле ліворуч
+	right=2cm, %поле праворуч
+    ]{geometry}
+
+\begin{document}
+
+
+У нескінченому прямому циліндричному провіднику радіуса \( R \) тече струм із густиною:
+\[
+\vb{j}(r) = \frac{a}{r} \vb{e}_z,
+\]
+де \( a = \text{const} \), \( r \) — відстань від осі циліндра. Магнітна проникність: \( \mu =
+\text{const} \) всередині провідника та \( \mu_0 \) (вакуум) зовні. Потрібно знайти векторний
+потенціал \( \vb{A}(r) \) з умовою калібрування \( \nabla\cdot \vb{A} = 0 \).
+
+\section{Розв'язок}
+Векторний потенціал \( \vb{A} \) має лише \( z \)-компоненту: \( \vb{A} = A_z(r) \vb{e}_z \). Рівняння
+для \( A_z(r) \):
+\[
+\nabla^2 A_z = -\mu \frac{a}{r}.
+\]
+
+\subsection{Внутрішня область (\( r \leq R \))}
+У циліндричних координатах:
+\[
+\frac{1}{r} \dv{r} \left( r \dv{A_z}{r} \right) = -\mu \frac{a}{r}.
+\]
+Інтегруємо:
+\[
+\dv{r} \left( r \dv{A_z}{r} \right) = -\mu a.
+\]
+Перше інтегрування:
+\[
+r \dv{A_z}{r} = -\mu a r + C_1.
+\]
+Поділимо на \( r \):
+\[
+\dv{A_z}{r} = -\mu a + \frac{C_1}{r}.
+\]
+Друге інтегрування:
+\[
+A_z(r) = -\mu a r + C_1 \ln r + C_2.
+\]
+Оскільки \( A_z \) має бути скінченним при \( r = 0 \), то \( C_1 = 0 \). Тому:
+\[
+A_z^{\text{in}}(r) = -\mu a r + C_2.
+\]
+
+\subsection{Зовнішня область (\( r \geq R \))}
+Тут \( \vb{j} = 0 \), тому:
+\[
+\frac{1}{r} \dv{r} \left( r \dv{A_z}{r} \right) = 0.
+\]
+Інтегруємо:
+\[
+r \dv{A_z}{r} = C_3.
+\]
+Поділимо на \( r \):
+\[
+\dv{A_z}{r} = \frac{C_3}{r}.
+\]
+Інтегруємо ще раз:
+\[
+A_z^{\text{out}}(r) = C_3 \ln r + C_4.
+\]
+
+\subsection{Умови зшивання при \( r = R \)}
+\begin{enumerate}
+    \item Неперервність \( A_z \):
+    \[
+    -\mu a R + C_2 = C_3 \ln R + C_4.
+    \]
+    \item Неперервність \( \dv{A_z}{r} \):
+    \[
+    -\mu a = \frac{C_3}{R}.
+    \]
+\end{enumerate}
+З другого рівняння:
+\[
+C_3 = -\mu a R.
+\]
+Підставляємо \( C_3 \) у перше рівняння:
+\[
+-\mu a R + C_2 = -\mu a R \ln R + C_4.
+\]
+Виберемо \( C_4 = 0 \) (калібрувальна свобода), тоді:
+\[
+C_2 = \mu a R (1 - \ln R).
+\]
+
+\subsection{Фінальні вирази}
+\begin{itemize}
+    \item Всередині провідника (\( r \leq R \)):
+    \[
+    A_z^{\text{in}}(r) = \mu a (R - r) - \mu a R \ln R.
+    \]
+    \item Зовні провідника (\( r \geq R \)):
+    \[
+    A_z^{\text{out}}(r) = -\mu a R \ln r.
+    \]
+\end{itemize}
+Можна опустити загальну константу \( -\mu a R \ln R \), оскільки вона не впливає на магнітне поле \(
+\vb{B} = \curl \vb{A} \). Тому остаточно:
+\[
+\boxed{
+\vb{A}(r) =
+\begin{cases}
+\mu a (R - r) \vu{e}_z, & r \leq R, \\
+-\mu a R \ln \left( \dfrac{r}{R} \right) \vu{e}_z, & r \geq R.
+\end{cases}
+}
+\]
+
+\subsection*{Перевірка}
+\begin{itemize}
+    \item Умова калібрування \( \nabla\cdot \vb{A} = \pdv{A_z}{z} = 0 \) виконується.
+    \item На межі \( r = R \):
+    \[
+    A_z^{\text{вн}}(R) = 0, \quad A_z^{\text{зов}}(R) = -\mu a R \ln R.
+    \]
+    Щоб була неперервність, потрібно додати константу \( \mu a R \ln R \) до \( A_z^{\text{in}} \), що
+    вже зроблено.
+    \item Похідна на межі:
+    \[
+    \dv{A_z^{\text{вн}}}{r} \bigg|_{r=R} = -\mu a, \quad \dv{A_z^{\text{out}}}{r} \bigg|_{r=R} = -\mu
+    a.
+    \]
+    Умова зшивання похідної виконується.
+\end{itemize}
+
+\end{document}
