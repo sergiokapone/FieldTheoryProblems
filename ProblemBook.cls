@@ -193,7 +193,7 @@
 	\newcommand{\Laplasian}{\Delta}
 }
 
-\RequirePackage{mhchem}
+\RequirePackage[version=4]{mhchem}
 % ---------------------------------------- Таблиці ------------------------------------------------------
 \RequirePackage{booktabs}
 \RequirePackage{tabularx}
@@ -550,7 +550,7 @@
   \RequirePackage[backend=biber,
 bibstyle=gost-numeric,
 maxnames = 10,
- babel=other,
+ autolang=other,
 isbn=true,
 url=false,
 defernumbers=true
