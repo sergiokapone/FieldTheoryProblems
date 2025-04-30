@@ -399,7 +399,7 @@
 
 
 \RequirePackage[pagestyles, explicit]{titlesec}
-\RequirePackage{titletoc}
+\RequirePackage[dotinlabels]{titletoc}
 
 \newlength\chapnumb
 \setlength\chapnumb{4cm}
