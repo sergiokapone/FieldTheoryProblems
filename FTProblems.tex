@@ -69,12 +69,15 @@ biblatex,
 }
 
 \pagestyle{main}
+\setcounter{chapter}{-1}
+\input{Vanaliz/Vanaliz.tex}
 \part{Мікроскопічна теорія}
 \epigraph{\Annabelle  Неможливо позбутися відчуття, що ці математичні формули існують незалежно від нас і володіють власним розумом, що вони мудріші за нас, мудріше навіть тих, хто їх відкрив, і що ми дістаємо з них більше, ніж спочатку було закладено\ldots}{Heinrich Hertz}
 
 \input{Additions/MaxwellEquation}
 \multiinclude{\ChaptersOne}[]
 
+\addtocontents{toc}{\protect\clearpage}
 \part{Електродинаміка суцільних середовищ}
 \epigraph{\Annabelle  Вважаю, що більш приземлені та матеріальні науки аж ніяк не можуть бути зневажені у порівнянні з піднесеним вивченням розуму і духу \ldots}{James Clerk Maxwell}
 \input{Additions/MaxwellEquationMacro}
@@ -109,24 +112,15 @@ biblatex,
 	ZhdanovFT,
 	ZhdanovESS,
     ZhdanovRelativity,
-	TerletskyElectroDyn,
-	Jackson,
+	Fedorchenko1992,
+    Suhakov1975,
+	Jackson1998,
 	GriffithsElectro,
-	PennerUgarov,
-	Tamm,
 	GreinerElectrodynamics,
-	LL2,
-	LL8,
-	Vlasov,
-	% ==========================
-	BatyginElectroRus,
+	LandauLifshitz1975,
+	LandauLifshitz1984,
+    BatyginToptygin1978en,
 	Grechko,
-	Kramm,
-	Zhyrnov,
-	AlekseevElectro,
-	VekshteinElectro,
-	Ginldenburg,
-    ZangwillElectro,
 }
 
 
@@ -142,28 +136,20 @@ biblatex,
 	ZhdanovFT,
 	ZhdanovESS,
     ZhdanovRelativity,
-	Jackson,
+    Fedorchenko1992,
+    Suhakov1975,
+	Jackson1998,
 	GriffithsElectro,
-	PennerUgarov,
-	Tamm,
 	GreinerElectrodynamics,
-	LL2,
-	TerletskyElectroDyn,
-	Vlasov,
-	LL8,
-    ZangwillElectro,
+	LandauLifshitz1975,
+	LandauLifshitz1984,
 }
 
 
 \printbibliography[category=Problems, heading=subheading, title={Задачники}]
 \addtocategory{Problems}{%
-	BatyginElectroRus,
+    BatyginToptygin1978en,
 	Grechko,
-	Kramm,
-	Zhyrnov,
-	AlekseevElectro,
-	VekshteinElectro,
-	Ginldenburg,
 }
 
 \makelastpage

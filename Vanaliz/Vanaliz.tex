@@ -1,0 +1,150 @@
+% !TeX program = lualatex
+% !TeX encoding = utf8
+% !TeX spellcheck = uk_UA
+% !TeX root =../FTProblems.tex
+
+%=========================================================
+\Opensolutionfile{answer}[\currfilebase/\currfilebase-Answers]
+\Writetofile{answer}{\protect\section*{\nameref*{\currfilebase}}}
+\chapter{Співвідношення векторного аналізу в декартових координатах }\label{\currfilebase}
+%=========================================================
+
+\begin{Theory}
+В декартових координатах використовуємо позначення:
+\[
+\{x, y, z\} = \{x_1, x_2, x_3\} =  \vect{r}.
+\]
+Латинські індекси \(i, j, k\) пробігатимуть допустимі значення 1,2,3. Якщо індекси у виразі повторюються, це означає суму по цих індексах (правило Ейнштейна).
+
+Сукупність усіх частинних похідних від скалярного поля \(\psi( \vect{r}) = \psi(x_1, x_2, x_3)\) утворює градієнт:
+\[
+\nabla F =
+\begin{bmatrix}
+\frac{\partial F}{\partial x_1}, & \frac{\partial F}{\partial x_2}, & \frac{\partial F}{\partial x_3}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\frac{\partial F}{\partial x}, & \frac{\partial F}{\partial y}, & \frac{\partial F}{\partial z}
+\end{bmatrix}
+= \Grad{F},
+\]
+або покомпонентно:
+\[
+(\nabla F)_i = \frac{\partial F}{\partial x_i} = \partial_i F.
+\]
+Тут і надалі \((X)_i = X_i\) означає \(i\)-ту компоненту вектора \(X\).
+
+Означимо дивергенцію векторного поля \( \vect{A}( \vect{r})\):
+\[
+\Div\vect{A} = \partial_j A_j = \nabla \cdot  \vect{A};
+\]
+та оператор Лапласа:
+\[
+\Delta F = \partial_j \partial_j F = \frac{\partial^2 F}{\partial x_1^2} + \frac{\partial^2 F}{\partial x_2^2} + \frac{\partial^2 F}{\partial x_3^2}.
+\]
+Тут \(F = F( \vect{r}) = F(x_1, x_2, x_3)\) -- скалярна функція; але це може бути і компонента векторного поля в декартових координатах.
+
+Введемо абсолютно антисиметричний символ \(\epsilon_{ijk}\): \(\epsilon_{123} = 1\) (символ Леві-Чівіти):
+\[
+\epsilon_{ijk} = -\epsilon_{jik} = -\epsilon_{ikj}.
+\]
+
+Користуючись властивостями визначника, легко перевірити, що:
+
+\[
+\varepsilon_{ijk} =
+\begin{vmatrix}
+\delta_{1i} & \delta_{2i} & \delta_{3i} \\
+\delta_{1j} & \delta_{2j} & \delta_{3j} \\
+\delta_{1k} & \delta_{2k} & \delta_{3k}
+\end{vmatrix},
+\]
+де $\delta_{ij}$ -- символ Кронекера.
+
+За допомогою цього символу можна записати $i$-ту компоненту векторного добутку:
+\[
+[ \vect{A} \times  \vect{B}]_i = \epsilon_{ijk} A_j B_k
+\]
+($A_i$, $B_i$ -- компоненти векторів $ \vect{A}$ та $ \vect{B}$), а також \textbf{ротор векторного поля}:
+\[
+(\boldsymbol{\nabla} \times \vect{A})_i = \varepsilon_{ijk} \partial_j A_k.
+\]
+
+Формула Остроградського--Гаусса (див. «Додатки», \eqref{OGTheorem}):
+\begin{equation}\label{eq:OGF}
+    \iiint\limits_\Omega (\vect{\nabla} \cdot \vect{A})  d\Omega = \oiint\limits_{\partial \Omega}  \vect{A} \cdot d \vect{S};
+\end{equation}
+$\Omega$ -- об'єм, $\partial \Omega$ -- його межа.
+\end{Theory}
+
+
+%=========================================================
+\begin{problem}%
+Виходячи з поданих означень, перевірити співвідношення
+	\begin{enumerate}[label=\alph*)]
+		\item $\divg (F\vect{A}) = \partial (FA_i) = A_i \partial F + F \partial A_i = \vect{A} \cdot \nabla F + F\ \divg \vect{A}$;
+		\item $\rot(F\vect{A})_i = \varepsilon_{ijk} \partial_j (FA_k) = \varepsilon_{ijk} (\nabla F)_j A_k + F \varepsilon_{ijk} \partial_j A_k$, або $\rot(F\vect{A}) = [\nabla F \times \vect{A}] + F \rot\vect{A}$.
+        \item Дивергенція векторного добутку $\divg[\vect{A} \times \vect{B}] = \vect{B} \cdot \rot \vect{A} - \vect{A} \cdot \rot\vect{B}$.
+	\end{enumerate}
+\end{problem}
+
+%=========================================================
+\begin{problem}%
+Отримати формулу для \textbf{згортки двох символів} Леві-Чивіти
+\begin{equation}\label{eq:LCh}
+\epsilon_{ijk}\epsilon_{irs} = \delta_{jr}\delta_{ks} - \delta_{js}\delta_{kr}.
+\end{equation}
+
+Вказівка: записати
+\[
+\varepsilon_{ijk}\varepsilon_{irs} =
+\begin{vmatrix}
+\delta_{ii} & \delta_{ir} & \delta_{is} \\
+\delta_{ji} & \delta_{jr} & \delta_{js} \\
+\delta_{ki} & \delta_{kr} & \delta_{ks}
+\end{vmatrix},
+\]
+розкрити визначник за правилом трикутників та взяти суму по $k=r$.
+\end{problem}
+
+
+%=========================================================
+\begin{problem}%
+Отримати за допомогою \eqref{eq:LCh} формулу <<BAC-CAB>>:
+\[
+ [\vect{A} \times [ \vect{B} \times  \vect{C}]] =  \vect{B}( \vect{A} \cdot  \vect{C}) -  \vect{C}( \vect{A} \cdot  \vect{B})
+\]
+\end{problem}
+
+
+
+%=========================================================
+\begin{problem}
+За допомогою \eqref{eq:LCh} вивести формулу $\vect{\nabla} \times (\vect{\nabla} \times \vect{A}) = \vect{\nabla}(\vect{\nabla} \cdot \vect{A}) - \Delta \vect{A}$, де $(\Delta \vect{A})_i = \partial_j \partial_j A_i$ (для компонент векторного поля в декартових координатах).
+\end{problem}
+
+%=========================================================
+\begin{problem}
+Наслідки формули Остроградського–Гаусса \eqref{eq:OGF}:
+\begin{enumerate}[label=\alph*)]
+\item $\iint\limits_{\Omega} \vect{\nabla} F \, dV = \oint\limits_{\partial\Omega} F \, d\vect{S}$.
+\item $\iiint\limits_{\Omega} \rot \vect{A} \, dV = \iint\limits_{\partial\Omega} [d\vect{S} \times \vect{A}]$.
+\item Довести формулу Гріна \eqref{Grin}) з «Додатків».
+\end{enumerate}
+\end{problem}
+
+%=========================================================
+\begin{problem}%
+За допомогою формули Стокса (Додатки, \eqref{Stoksheorem}) перетворити такі інтеграли по замкнутому контуру $C$, що обмежує кусок поверхні $S$:
+\begin{enumerate}[label=\alph*)]
+\item $\oint\limits_{\partial S} u \, df = \iint\limits_{S} [\nabla u \times \nabla f] \cdot d\vect{S}$;
+\item $\oint\limits_{\partial S} u \, d\vect{l} = \iint\limits_{S} d\vect{S} \times \nabla u$.
+\end{enumerate}
+$u$, $f$ -- Скалярні функції.
+
+Зауваження: орієнтація поверхні $S$ має відповідати напрямку обходу по контуру $\partial S$
+\end{problem}
+
+
+\Closesolutionfile{answer}
+

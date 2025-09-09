@@ -47,7 +47,7 @@
     \]
 Більше того, тут має сенс <<вгадати>> $X(x) = \sin\left(\frac{x}{L}\right) $, $Y(y) =
 \cos\left(\frac{2y}{L}\right) $, щоб відповідні функції можна було скомпенсувати в граничних умовах.
-Якщо розв’язок буде підібрано так, щоб виконувалося рівняння Лапласа та граничні умови~\eqref{EtauBc},
+Розв'язок має бути вибрано так, щоб виконувалося рівняння Лапласа та граничні умови~\eqref{EtauBc},
 \eqref{EnBc}.%, це однозначно фіксує розв'язок в силу теореми єдиності.
 Підстановка в рівняння Лапласа дає рівняння на $Z(z)$:
 
@@ -72,49 +72,10 @@
 \begin{Solution}{2.{25}}
 	$\pot  = \frac{{2{\sigma _0}ab}}{{\sqrt {{a^2} + {b^2}} }}{e^{ - \alpha |z|}}\sin \left( {\frac{{\pi x}}{a}} \right)\sin \left( {\frac{{\pi y}}{b}} \right)$, де $\alpha  = \frac{\pi }{{ab}}\sqrt {{a^2} + {b^2}}$.
 
-    Зауважимо, що, енергію системи зручно за допомогою формули~\eqref{eq:We}
+    Зауважимо, що, енергію системи зручно за обчислювати за допомогою формули~\eqref{eq:We}
 	$W_e =  \frac{{\sigma _0^2{a^2}{b^2}}}{{\sqrt {{a^2} + {b^2}} }}$.
 \end{Solution}
-\begin{Solution}{2.{26}}
-	Знайдемо спочатку потенціал нижньої <<сітки>> ($z = 0$).
-
-Поверхневу густину заряду
-\[
-    \sigma(x) = \lambda\sum\limits_{k = -\infty}^{\infty} \delta(x - ka)
-\]
-можна розкласти в ряд Фур'є за допомогою формули:
-	\[
-		\sum\limits_{k = -\infty}^{\infty} \delta(x - ka) =  \frac{1}{a} + \frac{2}{a}\sum\limits_{m=1}^{\infty}\cos(2\pi mx/a).
-	\]
-відомої з теорії періодичних узагальнених функцій\footnote{див. наприклад В.~С.~Владимиров. Обобщенные функции в математической физике. М.: Наука, 1979}.
-
-Користуючись принципом суперпозиції, для кожного з доданків в $\sigma(x)$  будуємо розв’язок окремо, а потім розглянемо суму.
-
-Сталий доданок в $\sigma(x)$  відповідає полю однорідно зарядженої площини з потенціалом $2\pi\lambda|y|/a$. Періодичні доданки, що містять $\cos(2\pi mx/a)$, розглядаємо аналогічно задачі~\ref{prb:charged_plates}.
-
-Потенціал нижньої сітки має вигляд
-
-
-	\[
-		\pot(x,y) = -\frac{2\pi\lambda}{a}|y| + 2\lambda\sum\limits_{m = 1}^{\infty} \frac1m \cos(2\pi mx/a)e^{-2\pi m|y|/a}.
-	\]
-
-	Для верхньої  <<сітки>> потенціал знаходиться аналогічно, і результат можна отримати заміною $y \to y - d$.
-
-    Сумарний потенціал в області $0 < y <d$
-
-
-	\[
-		\pot(y) = -2\pi\lambda\frac{d}{a} + 2\lambda\sum\limits_{m = 1}^{\infty} \frac1m \left[ e^{-2\pi my/a} +  e^{-2\pi m (d - y)/a} \right] \cos(2\pi mx/a).
-	\]
-
-Нехай $d \gg a$. Тоді в області $0<y<d$, при $a \ll y \ll d$ та $d - y \gg a$ (між сітками, але досить
-далеко від кожної з них) сумарний потенціал стає майже постійним $\pot(y) \approx  - 2\pi \lambda
-d/a$, а електричне поле, відповідно, нульовим~--- електричні поля двох сіток компенсують одне одного.
-%Саме цим пояснюється дія клітки Фарадея.
-
-\end{Solution}
-\begin{Solution}{2.{28}}
+\begin{Solution}{2.{27}}
 	$
 		\pot(r) =
 		\begin{cases}
@@ -124,7 +85,7 @@ d/a$, а електричне поле, відповідно, нульовим~-
 		\end{cases}
 	$
 \end{Solution}
-\begin{Solution}{2.{29}}
+\begin{Solution}{2.{28}}
 	Розпишемо потенціал як:
     \[
 	\pot = \frac{q}{r}e^{-\frac{r}{a}} = \frac{q}{r} +  \frac{q}{r}\left(e^{-\frac{r}{a}} - 1\right) .
@@ -140,7 +101,7 @@ d/a$, а електричне поле, відповідно, нульовим~-
 	\]
 	звідки видно, що екранований кулонівський потенціал створюється точковим зарядом, навколо якого розподілена <<хмара>> електричного заряду. Такий характер розподілу зустрічається, наприклад, в електролітах, або плазмі.
 \end{Solution}
-\begin{Solution}{2.{30}}
+\begin{Solution}{2.{29}}
 	Оскільки ми маємо азимутальну симетрію в розподілі заряду, будемо шукати потенціал у вигляді:
 	\begin{equation}
 		\pot(r, \theta) = \begin{cases}
@@ -151,7 +112,7 @@ d/a$, а електричне поле, відповідно, нульовим~-
 
 	Випадок (а)
 
-	З урахуванням граничних умов сфері:
+	З урахуванням граничних умов на сфері:
 	\begin{equation}
 		\pot = \begin{cases}
 			\pot_0\frac{r}{R} \cos\theta, \quad r<R \\
@@ -163,7 +124,7 @@ d/a$, а електричне поле, відповідно, нульовим~-
 		\sigma = \frac{1}{4\pi} \left( \left. \frac{\partial \pot_{\mathrm{in}}}{\partial r}\right|_{r \to R} - \left. \frac{\partial \pot_{\mathrm{out}}}{\partial r}\right|_{r \to R} \right) =  \frac{3\pot_0}{4\pi R} \cos\theta.
 	\end{equation}
 \end{Solution}
-\begin{Solution}{2.{31}}
+\begin{Solution}{2.{30}}
 	\begin{enumerate}[label=\alph*)]
 		\item%
 		      \begin{equation}
@@ -181,17 +142,17 @@ d/a$, а електричне поле, відповідно, нульовим~-
 		      \end{equation}
 	\end{enumerate}
 \end{Solution}
-\begin{Solution}{2.{33}}
+\begin{Solution}{2.{32}}
 	$\pot_\text{ind}(\vect{r}) =  - \frac{Q}{r}\sum\limits_{n = 1}^N \sum\limits_{m =  - n}^n {C_{nm}{\left( \frac{R}{r} \right)^n}} Y_{nm}(\theta ,\varphi )$
 \end{Solution}
-\begin{Solution}{2.{37}}
+\begin{Solution}{2.{36}}
 	$\pot (r) =
 		\begin{cases}
 			\frac{{2\pi }}{{2n + 3}}{\rho _0}{R^2}\left[ {\frac{{2n + 3}}{{2n + 1}}{{\left( {\frac{r}{R}} \right)}^n} - {{\left( {\frac{r}{R}} \right)}^{n + 2}}} \right]{P_n}(\cos (\theta )) , \quad r<R \\
 			\frac{{4\pi {\rho _0}{R^2}}}{{(2n + 3)(2n + 1)}}{\left( {\frac{R}{r}} \right)^{n + 1}}{P_n}(\cos (\theta )) , \quad r>R
 		\end{cases}$
 \end{Solution}
-\begin{Solution}{2.{41}}
+\begin{Solution}{2.{40}}
 	$
 		\pot(r, \phi, z) =
 		\begin{cases}
@@ -200,7 +161,7 @@ d/a$, а електричне поле, відповідно, нульовим~-
 		\end{cases}
 	$
 \end{Solution}
-\begin{Solution}{2.{47}}
+\begin{Solution}{2.{46}}
 	Спосіб 1 (використання закону Біо-Савара-Лапласа).
 	\[
 		\Bfield(\vect{r}) = \frac1c \int dV' \vect{j} \times \frac{(\vect{r} - \vect{r}')}{|\vect{r} - \vect{r}'|^3}
@@ -216,7 +177,9 @@ d/a$, а електричне поле, відповідно, нульовим~-
 	\[
 		\int {d\Omega'} [{\vect{n}}' \times [{\vect{a}} \times {\vect{n}}']] = \int {d\Omega'} [\vect{a} - \vect{n}'(\vect{a} \cdot {\vect{n}}')],
 	\]
-	можна бачити (з міркувань симетрії), що  $\int d\Omega n_x n_z = \int d\Omega n_н n_z $, а отже, інтеграл  $\int {d\Omega'} [{\vect{n}}' \times [{\vect{a}} \times {\vect{n}}']] $ має напрямок вздовж $z$, тому, його легко обчислити:
+	можна бачити (з міркувань симетрії), що
+%    $\int d\Omega n_x n_z = \int d\Omega n_н n_z $, а отже,
+    інтеграл  $\int {d\Omega'} [{\vect{n}}' \times [{\vect{a}} \times {\vect{n}}']] $ має напрямок вздовж $z$, тому, його легко обчислити:
 	\begin{multline}
 		\int d\Omega' [{\vect{n}}' \times [{\vect{a}} \times {\vect{n}}']] = {\vect{a}}\int {d\Omega'} \left( {[{\vect{n}}' \times [{{\vect{e}}_z} \times {\vect{n}}']] \cdot {{\vect{e}}_z}} \right) = \\
 		= \vect{a}\int\limits_0^\pi  {d\theta } \sin \theta \int\limits_0^{2\pi } {d\varphi } \left[ {1 - {\cos^2}\theta } \right] = \vect{a}\frac{8\pi}{3}.
@@ -277,24 +240,7 @@ d/a$, а електричне поле, відповідно, нульовим~-
 	\]
 	що збігається з відповіддю, отриманою в попередньому способі.
 \end{Solution}
-\begin{Solution}{2.{48}}
-	Рівняння Пуассона для вектор-потенціалу дає:
-	\[\Delta {A_z} =  - \frac{{4\pi }}{c}{a_0}{\left( {\frac{r}{R}} \right)^3} \cdot {\sin ^3}(\varphi ) =  - \frac{{\pi {a_0}}}{c}{\left( {\frac{r}{R}} \right)^3}\left( {3\sin (\varphi ) - \sin (3\varphi )} \right)
-	\]
-    за умови $\lim\limits_{r\to\infty} A_z = 0$, враховуючи, що на поверхні циліндру
-    \[
-        \left. A_z\right|_{r \underset{0<r<R}{\to} R} = \left. A_z\right|_{r \underset{r>R}{\to} R}, \quad  \left. \frac{\partial A_z}{\partial r}\right|_{r \underset{0<r<R}{\to} R} = \left. \frac{\partial A_z}{\partial r}\right|_{r \underset{r>R}{\to} R},
-    \]
-розв'язком рівняння є
-	\[
-		A_z =
-		\begin{cases}
-			- \frac{\pi a_0R^2}{8c}\left[ \left( \frac{r}{R} \right)^5 - \frac{3r}{R} \right] \sin\phi  + \\ +  \frac{\pi a_0R^2}{8c}\left[ \frac{1}{16}{\left( \frac{r}{R} \right)^5} - \frac{1}{12} \left( \frac{r}{R} \right)^3 \right]  \sin3\phi, \quad r < R, \\
-			\frac{\pi a_0}{4c}\frac{R^3}{r} \sin\phi  - \frac{{\pi {a_0}}}{{48c}}{R^2}{\left( {\frac{R}{r}} \right)^3}  \sin3\phi, \quad r > R.
-		\end{cases}
-	\]
-\end{Solution}
-\begin{Solution}{2.{53}}
+\begin{Solution}{2.{51}}
 	Проведемо вісь $OZ$ вздовж поля $\Bfield = (0, 0, B)$.
 	\begin{enumerate*}[label=\alph*)]
 		\item $A_x = -\frac12 By$, $A_y = \frac12 Bx$, $A_z = 0$;
@@ -304,10 +250,10 @@ d/a$, а електричне поле, відповідно, нульовим~-
 або у векторній формі 	$\vect{A} = \frac12 \left[ \Bfield\times \vect{r} \right] $.
 	З огляду калібрувальної інваріантності вектор-потенціал не визначений однозначно. Тут наведені найбільш зручні представлення вектор-потенціалу однорідного поля в різних системах координат.
 \end{Solution}
-\begin{Solution}{2.{54}}
+\begin{Solution}{2.{52}}
 	Потенціал кулі є квадрупольним, $\pot(z) = \frac{\pi^2\rho_0 R^5}{48z^3}$.
 \end{Solution}
-\begin{Solution}{2.{57}}
+\begin{Solution}{2.{55}}
 	$\Bfield =
 		\begin{cases}
 			\frac{2q}{3c}\frac1R\vect{\omega}, \quad r < R \\
@@ -316,17 +262,17 @@ d/a$, а електричне поле, відповідно, нульовим~-
 	$
 	де $\vect{p}_m = \frac{qR^2}{3c}\vect{\omega}$~--- магнітний момент сфери.
 \end{Solution}
-\begin{Solution}{2.{58}}
+\begin{Solution}{2.{56}}
 	$B_z = \frac{324\pi a}{5c}j_0$.
 \end{Solution}
-\begin{Solution}{2.{60}}
+\begin{Solution}{2.{58}}
     $W = \sum\limits_{l=0}^{\infty}\sum\limits_{m=-l}^{l}a_{lm}Q_{lm}^*$.
 \end{Solution}
-\begin{Solution}{2.{61}}
+\begin{Solution}{2.{59}}
     \begin{multline*}
     	W = -(\vect{p}_1\cdot \Efield_2) = -\frac{3(\vect{p}_1\cdot\vect{r})(\vect{p}_2\cdot\vect{r})}{r^5}  + \frac{(\vect{p}_1\cdot\vect{p}_2)}{r^3} =\\ = -\frac{p_1p_2}{d^3}\left[ 3\cos\theta_1\cos\theta_2 - \cos(\theta_1 - \theta_2)\right] ,
     \end{multline*}
 \end{Solution}
-\begin{Solution}{2.{62}}
+\begin{Solution}{2.{60}}
 	$F = \frac{6R^6}{l^4} E_0^2$.
 \end{Solution}

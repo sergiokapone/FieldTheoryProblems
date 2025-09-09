@@ -191,6 +191,10 @@
 	\DeclareMathOperator{\const}{const}
 	\DeclareMathOperator{\inv}{inv}
 	\newcommand{\Laplasian}{\Delta}
+	\let\epsilon\varepsilon
+	\DeclareMathOperator{\Div}{div}
+	\DeclareMathOperator{\Rot}{rot}
+    \DeclareMathOperator{\Grad}{grad}
 }
 
 \RequirePackage[version=4]{mhchem}
