@@ -225,7 +225,7 @@
 \setlength\epigraphrule{0pt}
 \renewcommand{\textflush}{flushepinormal}
 \RequirePackage{refcount}
-\RequirePackage[pagecontinue]{pageslts}
+\RequirePackage[]{pageslts}
 \pagenumbering{arabic}
 \RequirePackage[disable]{todonotes}
 \RequirePackage{pdftexcmds}
@@ -551,13 +551,14 @@
 %========================================================================================================
 
 \ifbiblatex
-  \RequirePackage[backend=biber,
+\RequirePackage[backend=biber,
 bibstyle=gost-numeric,
 maxnames = 10,
  autolang=other,
 isbn=true,
 url=false,
-defernumbers=true
+defernumbers=true,
+sorting=none,
 ]{biblatex}
   \newbibmacro{string+url}[1]{%
   	\iffieldundef{url}{#1}{\href{\thefield{url}}{#1}}%
@@ -576,6 +577,9 @@ defernumbers=true
     \renewcommand{\bibname}{Література}%
     }
 \fi
+
+\newcommand*{\addtocategoryNoCi}[2]{\addtocategory{#1}{#2}\nocite{#2}}
+
 
 %========================================================================================================
 %
