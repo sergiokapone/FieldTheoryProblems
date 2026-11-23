@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -7,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Класична електродинаміка. Збірник задач — Спеціальна теорія відносності</title>
 <link rel="stylesheet" type="text/css" href="assets/conspect.css" />
-
 <script>
 // Lwarp MathJax emulation code
 //
@@ -24,260 +22,196 @@
 // number is auto-incremented by MathJax between equations.
 //
 MathJax = {
-
-   subequations: "0",
-   section: "",
-   loader: {
-
-       load: ['[tex]/tagformat', '[tex]/textmacros'],
-   },
-   startup: {
-
-       ready() {
-          // These would be replaced by import commands if you wanted to make
-          // a proper extension.
-          const Configuration = MathJax._.input.tex.Configuration.Configuration;
-          const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
-          const Macro = MathJax._.input.tex.Symbol.Macro;
-          const TexError = MathJax._.input.tex.TexError.default;
-          const ParseUtil = MathJax._.input.tex.ParseUtil.default;
-          const expandable = MathJax._.util.Options.expandable;
-
+subequations: "0",
+section: "",
+loader: {
+load: ['[tex]/tagformat', '[tex]/textmacros'],
+},
+startup: {
+ready() {
+// These would be replaced by import commands if you wanted to make
+// a proper extension.
+const Configuration = MathJax._.input.tex.Configuration.Configuration;
+const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+const Macro = MathJax._.input.tex.Symbol.Macro;
+const TexError = MathJax._.input.tex.TexError.default;
+const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+const expandable = MathJax._.util.Options.expandable;
 // Insert the replacement string into the TeX string, and check
 // that there haven't been too many maxro substitutions (prevents
 // infinite loops).
 const useArgument = (parser, text) => {
-
-   parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-   parser.i = 0;
-   if (++parser.macroCount > parser.configuration.options.maxMacros) {
-
-       throw new TexError('MaxMacroSub1',
-       'MathJax maximum macro substitution count exceeded; ' +
-       'is there a recursive macro call?');
-   }
+parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+parser.i = 0;
+if (++parser.macroCount > parser.configuration.options.maxMacros) {
+throw new TexError('MaxMacroSub1',
+'MathJax maximum macro substitution count exceeded; ' +
+'is there a recursive macro call?');
 }
-
+}
 // Create the command map for:
-
 // \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-
 new CommandMap('Lwarp-macros', {
-
 ifstar: 'IfstarFunction',
-
 ifnextchar: 'IfnextcharFunction',
-
 ifblank: 'IfblankFunction',
-
 ifstrequal: 'IfstrequalFunction',
-
 gsubstitute: 'GsubstituteFunction',
-
 seteqnumber: 'SeteqnumberFunction'
-
 }, {
-
 // This function implements an ifstar macro.
-
 IfstarFunction(parser, name) {
-
-     const resultstar = parser.GetArgument(name);
-
-     const resultnostar = parser.GetArgument(name);
-
-     const star = parser.GetStar();                                  // true if there is a *
-
-     useArgument(parser, star ? resultstar : resultnostar);
-
+const resultstar = parser.GetArgument(name);
+const resultnostar = parser.GetArgument(name);
+const star = parser.GetStar(); // true if there is a *
+useArgument(parser, star ? resultstar : resultnostar);
 },
-
 // This function implements an ifnextchar macro.
 IfnextcharFunction(parser, name) {
-
-   let whichchar = parser.GetArgument(name);
-   if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-
-       // $ syntax highlighting
-       whichchar = String.fromCodePoint(parseInt(whichchar));
-   }
-   const resultnextchar = parser.GetArgument(name);
-   const resultnotnextchar = parser.GetArgument(name);
-   const gotchar = (parser.GetNext() === whichchar);
-   useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+let whichchar = parser.GetArgument(name);
+if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+// $ syntax highlighting
+whichchar = String.fromCodePoint(parseInt(whichchar));
+}
+const resultnextchar = parser.GetArgument(name);
+const resultnotnextchar = parser.GetArgument(name);
+const gotchar = (parser.GetNext() === whichchar);
+useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
 },
-
 // This function implements an ifblank macro.
 IfblankFunction(parser, name) {
-
-   const blankarg = parser.GetArgument(name);
-   const resultblank = parser.GetArgument(name);
-   const resultnotblank = parser.GetArgument(name);
-   const isblank = (blankarg.trim() == "");
-   useArgument(parser, isblank ? resultblank : resultnotblank);
+const blankarg = parser.GetArgument(name);
+const resultblank = parser.GetArgument(name);
+const resultnotblank = parser.GetArgument(name);
+const isblank = (blankarg.trim() == "");
+useArgument(parser, isblank ? resultblank : resultnotblank);
 },
-
 // This function implements an ifstrequal macro.
 IfstrequalFunction(parser, name) {
-
-   const strequalfirst = parser.GetArgument(name);
-   const strequalsecond = parser.GetArgument(name);
-   const resultequal = parser.GetArgument(name);
-   const resultnotequal = parser.GetArgument(name);
-   const isequal = (strequalfirst == strequalsecond);
-   useArgument(parser, isequal ? resultequal : resultnotequal);
+const strequalfirst = parser.GetArgument(name);
+const strequalsecond = parser.GetArgument(name);
+const resultequal = parser.GetArgument(name);
+const resultnotequal = parser.GetArgument(name);
+const isequal = (strequalfirst == strequalsecond);
+useArgument(parser, isequal ? resultequal : resultnotequal);
 },
-
-// This function implements a gsub macro.                            gsubthird);
+// This function implements a gsub macro.
 GsubstituteFunction(parser, name) {
-
-   const gsubfirst = parser.GetArgument(name);
-   const gsubsecond = parser.GetArgument(name);
-   const gsubthird = parser.GetArgument(name);
-   let gsubresult=gsubfirst.replace(gsubsecond,
-   useArgument(parser, gsubresult);
+const gsubfirst = parser.GetArgument(name);
+const gsubsecond = parser.GetArgument(name);
+const gsubthird = parser.GetArgument(name);
+let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+useArgument(parser, gsubresult);
 },
-
 // This function modifies the equation numbers.
-
 SeteqnumberFunction(parser, name) {
-
-      // Get the macro parameters
-
-      const star = parser.GetStar();                                 // true if there is a *
-
-      const optBrackets = parser.GetBrackets(name); // contents of optional brackets
-
-      const newsubequations = parser.GetArgument(name); // the subequations argument
-
-      const neweqsection = parser.GetArgument(name); // the eq section argument
-
-      const neweqnumber = parser.GetArgument(name); // the eq number argument
-
-      MathJax.config.subequations=newsubequations ; // a string with boolean meaning
-
-      MathJax.config.section=neweqsection ;                          // a string with numeric meaning
-
-      parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-
+// Get the macro parameters
+const star = parser.GetStar(); // true if there is a *
+const optBrackets = parser.GetBrackets(name); // contents of optional brackets
+const newsubequations = parser.GetArgument(name); // the subequations argument
+const neweqsection = parser.GetArgument(name); // the eq section argument
+const neweqnumber = parser.GetArgument(name); // the eq number argument
+MathJax.config.subequations=newsubequations ; // a string with boolean meaning
+MathJax.config.section=neweqsection ; // a string with numeric meaning
+parser.tags.counter = parser.tags.allCounter = neweqnumber ;
 }
-
 });
-
 // Create the Lwarp-macros package
 Configuration.create('Lwarp-macros', {
-
-   handler: {macro: ['Lwarp-macros']}
+handler: {macro: ['Lwarp-macros']}
 });
-
 MathJax.startup.defaultReady();
-
 // For forward references:
 MathJax.startup.input[0].preFilters.add(({math}) => {
-
-   if (math.inputData.recompile){
-          MathJax.config.subequations = math.inputData.recompile.subequations;
-          MathJax.config.section = math.inputData.recompile.section;
-
-   }
+if (math.inputData.recompile){
+MathJax.config.subequations = math.inputData.recompile.subequations;
+MathJax.config.section = math.inputData.recompile.section;
+}
 });
 MathJax.startup.input[0].postFilters.add(({math}) => {
-
-   if (math.inputData.recompile){
-          math.inputData.recompile.subequations = MathJax.config.subequations;
-          math.inputData.recompile.section = MathJax.config.section;
-
-   }
+if (math.inputData.recompile){
+math.inputData.recompile.subequations = MathJax.config.subequations;
+math.inputData.recompile.section = MathJax.config.section;
+}
 });
-
-          // For \left, \right with unicode-math:
-          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-          const {Symbol} = MathJax._.input.tex.Symbol;
-          const {MapHandler} = MathJax._.input.tex.MapHandler;
-          const delimiter = MapHandler.getMap('delimiter');
-          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-   } // ready
+// For \left, \right with unicode-math:
+const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+const {Symbol} = MathJax._.input.tex.Symbol;
+const {MapHandler} = MathJax._.input.tex.MapHandler;
+const delimiter = MapHandler.getMap('delimiter');
+delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+} // ready
 }, // startup
-
-   tex: {                                                            'textmacros']},
-       packages: {'[+]': ['tagformat', 'Lwarp-macros',
-       tags: "ams",                                                  n);
-              tagformat: {                                           String.fromCharCode(96+n));
-                     number: function (n) {
-                             if(MathJax.config.subequations==0)
-                                    return(MathJax.config.section +
-                             else
-                                    return(MathJax.config.section +
-                     },
-              },
-
-   }
+tex: {
+packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+tags: "ams",
+tagformat: {
+number: function (n) {
+if(MathJax.config.subequations==0)
+return(MathJax.config.section + n);
+else
+return(MathJax.config.section + String.fromCharCode(96+n));
+},
+},
+}
 }
 </script>
-
 <script
-       id="MathJax-script"
-       src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
-
+id="MathJax-script"
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
 ></script>
-
 </head>
 <body>
-
-<a id="main-html-autopage-168"></a>
+<a id="main-html-autopage-71"></a>
 <div class="pagegrid">
-
 <nav class="topnavigation"><a href="main-html.html" class="linkhome" >
 Головна</a></nav>
 <div class="sidetoccontainer">
-
 <nav class="sidetoc">
-
 <div class="sidetoctitle">
 <p>
 <span class="sidetocthetitle">Класична електродинаміка. Збірник задач</span>
 </p>
 <p class="sidetoc-meta"><a href="../index.html">Про посібник</a><span aria-hidden="true">·</span><a href="../FTProblems.pdf">PDF</a></p>
 </div>
-
 <div class="sidetoccontents">
 <p>
 <a href="main-html.html" class="linkhome" >
@@ -287,244 +221,195 @@ MathJax.startup.input[0].postFilters.add(({math}) => {
 <a href="preface.html#autosec-6" class="tocchapter" >
 Передмова</a>
 </p>
-
 <p>
 <a href="vanaliz.html#autosec-9" class="tocchapter" >
 <span class="sectionnumber">0</span><span class="toctitle">&#x2003;Співвідношення векторного аналізу в декартових координатах </span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-18" class="tocpart" >
+<a href="maxwellmicro.html#autosec-12" class="tocpart" >
 <span class="sectionnumber">I</span><span class="toctitle">&#x2003;Мікроскопічна теорія</span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-19" class="tocchapter" >
+<a href="maxwellmicro.html#autosec-13" class="tocchapter" >
 <span class="sectionnumber">1</span><span class="toctitle">&#x2003;Система мікроскопічних рівнянь Максвелла</span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-20" class="tocsection" >
+<a href="maxwellmicro.html#autosec-14" class="tocsection" >
 <span class="sectionnumber">1.1</span><span class="toctitle">&#x2003;Рівняння Максвелла</span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-21" class="tocsection" >
+<a href="maxwellmicro.html#autosec-15" class="tocsection" >
 <span class="sectionnumber">1.2</span><span class="toctitle">&#x2003;Закони збереження (диференціальна форма)</span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-22" class="tocsection" >
+<a href="maxwellmicro.html#autosec-16" class="tocsection" >
 <span class="sectionnumber">1.3</span><span class="toctitle">&#x2003;Граничні умови для границі розділу двох середовищ</span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-23" class="tocsection" >
+<a href="maxwellmicro.html#autosec-17" class="tocsection" >
 <span class="sectionnumber">1.4</span><span class="toctitle">&#x2003;Потенціали електромагнітного поля</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-26" class="tocchapter" >
+<a href="emstatics.html#autosec-20" class="tocchapter" >
 <span class="sectionnumber">2</span><span class="toctitle">&#x2003;Електро- та магнітостатика у вакуумі</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-27" class="tocsection" >
+<a href="emstatics.html#autosec-21" class="tocsection" >
 <span class="sectionnumber">2.1</span><span class="toctitle">&#x2003;Прості задачі на рівняння Максвелла</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-68" class="tocsection" >
+<a href="emstatics.html#autosec-44" class="tocsection" >
 <span class="sectionnumber">2.2</span><span class="toctitle">&#x2003;Рівняння Пуассона та Лапласа. Граничні задачі електростатики</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-69" class="tocsection" >
+<a href="emstatics.html#autosec-45" class="tocsection" >
 <span class="sectionnumber">2.3</span><span class="toctitle">&#x2003;Метод електричних зображень</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-74" class="tocsection" >
+<a href="emstatics.html#autosec-46" class="tocsection" >
 <span class="sectionnumber">2.4</span><span class="toctitle">&#x2003;Пошук розв’язків методом розкладання за системою ортогональних функцій</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-98" class="tocsection" >
+<a href="emstatics.html#autosec-47" class="tocsection" >
 <span class="sectionnumber">2.5</span><span class="toctitle">&#x2003;Розкладання потенціалів за мультиполями</span></a>
 </p>
-
 <p>
-<a href="radiation.html#autosec-129" class="tocchapter" >
+<a href="radiation.html#autosec-64" class="tocchapter" >
 <span class="sectionnumber">3</span><span class="toctitle">&#x2003;Випромінювання та поширення електромагнітних хвиль</span></a>
 </p>
-
 <p>
-<a href="radiation.html#autosec-133" class="tocsection" >
+<a href="radiation.html#autosec-68" class="tocsection" >
 <span class="sectionnumber">3.1</span><span class="toctitle">&#x2003;Співвідношення невизначеностей</span></a>
 </p>
-
 <p>
-<a href="radiation.html#autosec-136" class="tocsection" >
+<a href="radiation.html#autosec-69" class="tocsection" >
 <span class="sectionnumber">3.2</span><span class="toctitle">&#x2003;Монохроматичні хвилі. Інтерференція та поляризація хвиль</span></a>
 </p>
-
 <p>
-<a href="radiation.html#autosec-147" class="tocsection" >
+<a href="radiation.html#autosec-70" class="tocsection" >
 <span class="sectionnumber">3.3</span><span class="toctitle">&#x2003;Випромінювання та розсіювання електромагнітних хвиль</span></a>
 </p>
-
 <p>
-<a href="relativity.html#autosec-170" class="tocchapter" >
+<a href="relativity.html#autosec-73" class="tocchapter" >
 <span class="sectionnumber">4</span><span class="toctitle">&#x2003;Спеціальна теорія відносності</span></a>
 </p>
-
 <p>
-<a href="relativity.html#autosec-171" class="tocsection" >
+<a href="relativity.html#autosec-74" class="tocsection" >
 <span class="sectionnumber">4.1</span><span class="toctitle">&#x2003;Перетворення Лоренца та закони збереження</span></a>
 </p>
-
 <p>
-<a href="relativity.html#autosec-182" class="tocsection" >
+<a href="relativity.html#autosec-75" class="tocsection" >
 <span class="sectionnumber">4.2</span><span class="toctitle">&#x2003;Електродинаміка в релятивістських позначеннях</span></a>
 </p>
-
 <p>
-<a href="relativity.html#autosec-188" class="tocsection" >
+<a href="relativity.html#autosec-76" class="tocsection" >
 <span class="sectionnumber">4.3</span><span class="toctitle">&#x2003;Рух заряджених частинок в електромагнітному полі</span></a>
 </p>
-
 <p>
-<a href="relativity.html#autosec-198" class="tocsection" >
+<a href="relativity.html#autosec-77" class="tocsection" >
 <span class="sectionnumber">4.4</span><span class="toctitle">&#x2003;Випромінювання релятивістських заряджених частинок</span></a>
 </p>
-
 <p>
-<a href="maxwellmacro.html#autosec-202" class="tocpart" >
+<a href="maxwellmacro.html#autosec-80" class="tocpart" >
 <span class="sectionnumber">II</span><span class="toctitle">&#x2003;Електродинаміка суцільних середовищ</span></a>
 </p>
-
 <p>
-<a href="maxwellmacro.html#autosec-203" class="tocchapter" >
+<a href="maxwellmacro.html#autosec-81" class="tocchapter" >
 <span class="sectionnumber">5</span><span class="toctitle">&#x2003;Система макроскопічних рівнянь Максвелла</span></a>
 </p>
-
 <p>
-<a href="maxwellmacro.html#autosec-204" class="tocsection" >
+<a href="maxwellmacro.html#autosec-82" class="tocsection" >
 <span class="sectionnumber">5.1</span><span class="toctitle">&#x2003;Макроскопічні рівняння Максвелла</span></a>
 </p>
-
 <p>
-<a href="maxwellmacro.html#autosec-205" class="tocsection" >
+<a href="maxwellmacro.html#autosec-83" class="tocsection" >
 <span class="sectionnumber">5.2</span><span class="toctitle">&#x2003;Співвідношення для лінійних ізотропних середовищ</span></a>
 </p>
-
 <p>
-<a href="maxwellmacro.html#autosec-206" class="tocsection" >
+<a href="maxwellmacro.html#autosec-84" class="tocsection" >
 <span class="sectionnumber">5.3</span><span class="toctitle">&#x2003;Умови на границі розділу двох середовищ</span></a>
 </p>
-
 <p>
-<a href="emmedia.html#autosec-209" class="tocchapter" >
+<a href="emmedia.html#autosec-87" class="tocchapter" >
 <span class="sectionnumber">6</span><span class="toctitle">&#x2003;Діелектрики та магнетики в статичних полях</span></a>
 </p>
-
 <p>
-<a href="quasistationary.html#autosec-247" class="tocchapter" >
+<a href="quasistationary.html#autosec-95" class="tocchapter" >
 <span class="sectionnumber">7</span><span class="toctitle">&#x2003;Квазістаціонарні поля і струми</span></a>
 </p>
-
 <p>
-<a href="quasistationary.html#autosec-248" class="tocsection" >
+<a href="quasistationary.html#autosec-96" class="tocsection" >
 <span class="sectionnumber">7.1</span><span class="toctitle">&#x2003;Розтікання зарядів в провідниках. Струми Фуко</span></a>
 </p>
-
 <p>
-<a href="quasistationary.html#autosec-263" class="tocsection" >
+<a href="quasistationary.html#autosec-97" class="tocsection" >
 <span class="sectionnumber">7.2</span><span class="toctitle">&#x2003;Магнітні поля в надпровідниках</span></a>
 </p>
-
 <p>
-<a href="waves.html#autosec-275" class="tocchapter" >
+<a href="waves.html#autosec-100" class="tocchapter" >
 <span class="sectionnumber">8</span><span class="toctitle">&#x2003;Електромагнітні хвилі в середовищі</span></a>
 </p>
-
 <p>
-<a href="waves.html#autosec-276" class="tocsection" >
+<a href="waves.html#autosec-101" class="tocsection" >
 <span class="sectionnumber">8.1</span><span class="toctitle">&#x2003;Поширення електромагнітних хвиль в середовищі</span></a>
 </p>
-
 <p>
-<a href="waves.html#autosec-287" class="tocsection" >
+<a href="waves.html#autosec-102" class="tocsection" >
 <span class="sectionnumber">8.2</span><span class="toctitle">&#x2003;Відбивання та заломлення електромагнітних хвиль на межі двох середовищ</span></a>
 </p>
-
 <p>
-<a href="waves.html#autosec-293" class="tocsection" >
+<a href="waves.html#autosec-103" class="tocsection" >
 <span class="sectionnumber">8.3</span><span class="toctitle">&#x2003;Електромагнітні хвилі в плазмі</span></a>
 </p>
-
 <p>
-<a href="waves.html#autosec-297" class="tocsection" >
+<a href="waves.html#autosec-104" class="tocsection" >
 <span class="sectionnumber">8.4</span><span class="toctitle">&#x2003;Розсіювання та дифракція</span></a>
 </p>
-
 <p>
-<a href="answers.html#autosec-307" class="tocchapter" >
+<a href="answers.html#autosec-107" class="tocchapter" >
 Відповіді</a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-325" class="tocchapter" >
+<a href="appendices.html#autosec-125" class="tocchapter" >
 Додатки</a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-326" class="tocsection" >
+<a href="appendices.html#autosec-126" class="tocsection" >
 <span class="sectionnumber">А</span><span class="toctitle">&#x2003;Основні формули векторного аналізу</span></a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-335" class="tocsection" >
+<a href="appendices.html#autosec-135" class="tocsection" >
 <span class="sectionnumber">Б</span><span class="toctitle">&#x2003;Поліноми Лежандра</span></a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-336" class="tocsection" >
+<a href="appendices.html#autosec-136" class="tocsection" >
 <span class="sectionnumber">В</span><span class="toctitle">&#x2003;Сферичні гармоніки</span></a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-337" class="tocsection" >
+<a href="appendices.html#autosec-137" class="tocsection" >
 <span class="sectionnumber">Г</span><span class="toctitle">&#x2003;Циліндричні функції</span></a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-344" class="tocsection" >
+<a href="appendices.html#autosec-144" class="tocsection" >
 <span class="sectionnumber">Д</span><span class="toctitle">&#x2003;Дельта-функція Дірака</span></a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-345" class="tocsection" >
+<a href="appendices.html#autosec-145" class="tocsection" >
 <span class="sectionnumber">Е</span><span class="toctitle">&#x2003;Фізичні константи</span></a>
 </p>
-
 <p>
-<a href="bibliography.html#autosec-351" class="tocchapter" >
+<a href="bibliography.html#autosec-151" class="tocchapter" >
 Література</a>
 </p>
-
 </div>
 </nav>
 </div>
-
 <main class="bodycontainer" data-pagefind-body data-pagefind-meta="title[data-title]" data-title="Спеціальна теорія відносності">
-
 <section class="textbody">
 <h1 data-pagefind-ignore>Класична електродинаміка. Збірник задач</h1>
 <!--MathJax customizations:-->
 <div data-nosnippet
-
-      style="display:none"
+style="display:none"
 >
 \(\newcommand{\footnotename}{footnote}\)
 \(\def \LWRfootnote {1}\)
@@ -929,281 +814,273 @@ MathJax.startup.input[0].postFilters.add(({math}) => {
 <!--
 ...... chapter Спеціальна теорія відносності ......
 -->
-<h3 id="autosec-170"><span class="sectionnumber">4&#x2003;</span>Спеціальна теорія відносності</h3>
-<a id="main-html-autopage-170"></a>
+<h3 id="autosec-73"><span class="sectionnumber">4&#x2003;</span>Спеціальна теорія відносності</h3>
+<a id="main-html-autopage-73"></a>
 <a id="main-html-autofile-6"></a>
 <a id="SpecialRelativity-dup5"></a>
-
 <div class="cb-theory">
-
 <p>
 <b>Теоретичні відомості</b>
 </p>
-
 <p>
 Тензор Мінковського
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{4.}{0}\)</span>
-
 <!--
-
-                                                                                                                                                                        ⎛ 1 0 0 0 −1 0 00 ⎞
-                                                                                                                                                                𝜂𝜇𝜈 = ⎜                 ⎟.                                                                        (4.1)
-                                                                                                                                                                        ⎜ 0 0 −1 0 ⎟
-
-                                                                                                                                                                        ⎝ 0 0 0 −1 ⎠
-
+𝜂𝜇𝜈 =
+⎛
+⎜
+⎜
+⎝
+1 0 0 0
+0 −1 0 0
+0 0 −1 0
+0 0 0 −1
+⎞
+⎟
+⎟
+⎠
+. (4.1)
 -->
 <p>
-
 \begin{equation}
 \eta _{\mu \nu } = \left ( \begin{array}{cccc} 1 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; -1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; -1 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; -1 \end {array} \right ).
 \end{equation}
-
 </p>
-
 <p>
 За допомогою тензора Мінковського можна опускати і підіймати індекси у 4-тензорів. Зокрема, у 4-векторів:
 </p>
-
 <p>
 \[ \eta _{\mu \nu }A^{\nu } = A_{\mu }, \quad \eta ^{\mu \nu }A_{\nu } = A^{\mu }. \]
 </p>
-
 <p>
 Контраваріантний 4-вектор густини струму:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{4.}{1}\)</span>
 <!--
-
-                                                                                                                                                                                 𝑗𝜇 = 𝜌 𝑑𝑥𝜇 = (𝑐𝜌, 𝐣), (4.2)
-                                                                                                                                                                                            𝑑𝑡
-
+𝑗𝜇 = 𝜌
+𝑑𝑥𝜇
+𝑑𝑡
+= (𝑐𝜌, 𝐣), (4.2)
 -->
-
 <p>
-
 \begin{equation}
 j^\mu = \rho \frac {dx^\mu }{dt} = (c\rho , \vect {j}),
 \end{equation}
-
 </p>
-
 <p>
 де \(\rho \)&nbsp;– густина електричного заряду, \(\vect {j}\)&nbsp;– 3-вектор густини струму.
 </p>
-
 <p>
 4-Потенціал електромагнітного поля:
 </p>
-
 <span class="hidden"> \(\seteqnumber{1}{4.3}{0}\)</span>
-
 <!--
-
-                                                                                                                                                            𝐴𝜇 = (𝜙, 𝐀) — контраваріантний,                                                                       (4.3а)
-                                                                                                                                                            𝐴𝜇 = (𝜙, −𝐀) — коваріантний.                                                                          (4.3б)
-
+𝐴𝜇 = (𝜙, 𝐀) — контраваріантний, (4.3а)
+𝐴𝜇 = (𝜙, −𝐀) — коваріантний. (4.3б)
 -->
-
 <p>
-
 \begin{align}
 A^\mu &amp; = (\phi , \vect {A}) \quad \text {--- контраваріантний}, \\ A_\mu &amp; = (\phi , -\vect {A}) \quad \text {--- коваріантний}.
 \end{align}
-
 </p>
-
 <p>
 Калібрувальні перетворення:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{4.}{3}\)</span>
 <!--
-
-                                                                                                                                                                         ′         𝜕𝑓
-                                                                                                                                                                        𝐴𝜇 = 𝐴𝜇 − 𝜇                                                                               (4.4)
-                                                                                                                                                                                   𝜕𝑥
-
+𝐴′
+𝜇 = 𝐴𝜇 −
+𝜕𝑓
+𝜕𝑥𝜇
+(4.4)
 -->
-
 <p>
-
 \begin{equation}
 A_\mu &apos; = A_\mu - \frac {\partial f}{\partial x^\mu }
 \end{equation}
-
 </p>
-
 <p>
 Тензор електромагнітного поля:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{4.}{4}\)</span>
 <!--
-
-                                                                                                                 𝐹𝜇𝜈 = 𝜕𝑥𝜇 𝜕𝐴𝜈 − 𝜕𝑥𝜈 𝜕𝐴𝜇 ,                                                                           (4.5)          --><a id="rel_tensor_elmagfield"></a><!--
+𝐹𝜇𝜈 =
+𝜕𝐴𝜈
+𝜕𝑥𝜇
+−
+𝜕𝐴𝜇
+𝜕𝑥𝜈
+, (4.5) --><a id="rel_tensor_elmagfield"></a><!--
 -->
 <p>
-
 \begin{equation}
 \label {rel_tensor_elmagfield} F_{\mu \nu } = \frac {\partial A_\nu }{\partial x^\mu } - \frac {\partial A_\mu }{\partial x^\nu },
 \end{equation}
-
 </p>
-
 <p>
 у формі матриці тензор \(F_{\mu \nu }\) має вигляд:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{4.}{5}\)</span>
 <!--
-
-                                                                                                                                                                     ⎛    0    𝐸𝑥   𝐸𝑦   𝐸𝑧 ⎞                                                                     (4.6)
-                                                                                                                                                            𝐹𝜇𝜈 = ⎜             0  −𝐵𝑧   𝐵𝑦 ⎟ ,
-                                                                                                                                                                        −𝐸𝑥             −𝐵𝑥 ⎟
-                                                                                                                                                                     ⎜  −𝐸𝑦    𝐵𝑧    0    0⎠
-                                                                                                                                                                     ⎝  −𝐸𝑧   −𝐵𝑦
-                                                                                                                                                                                    𝐵𝑥
-
+𝐹𝜇𝜈 =
+⎛
+⎜
+⎜
+⎝
+0 𝐸𝑥 𝐸𝑦 𝐸𝑧
+−𝐸𝑥 0 −𝐵𝑧 𝐵𝑦
+−𝐸𝑦 𝐵𝑧 0 −𝐵𝑥
+−𝐸𝑧 −𝐵𝑦 𝐵𝑥 0
+⎞
+⎟
+⎟
+⎠
+, (4.6)
 -->
 <p>
-
 \begin{equation}
 F_{\mu \nu } = \left ( \begin{array}{cccc} 0 &amp; E_x &amp; E_y &amp; E_z \\ -E_x &amp; 0 &amp; -B_z &amp; B_y \\ -E_y &amp; B_z &amp; 0 &amp; -B_x \\ -E_z &amp; -B_y &amp; B_x &amp; 0 \end {array} \right ),
 \end{equation}
-
 </p>
-
 <p>
 де \(\mu ,\nu = 0,1,2,3\) (\(\mu \)&nbsp;– нумерує рядки, \(\nu \)&nbsp;– стовпці.)
 </p>
-
 <p>
 Нехай відносно інерціальної системи відліку \(K\) з координатами \(\{ t, \vect {r} \}\), \(\vect {r} = (x,y,z)\) рухається із сталою швидкістю \(V\) інша інерціальна система \(K&apos;\) з декартовими координатами \(\{ t&apos;, \vect {r}&apos; \}\), \(\vect
 {r}&apos; = (x&apos;,y&apos;,z&apos;)\), причому у момент \(t = 0\) початки просторових координат збігалися. Перетворення координат \(K \to K&apos;\) мають вигляд:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{4.}{6}\)</span>
 <!--
-
-                                                              𝑡′ = 𝑡 − (𝐯 ⋅ 𝐫)/𝑐2 ,        𝐫′  =          ′ 𝐫∥ − 𝐯𝑡                                                                                                                 --><a id="eq:Lorentz_transform"></a><!--
-                                                                                                  𝐫⟂,  𝐫∥ =                                              ,                                                           (4.7)
-                                                                                      𝑣2    ⟂
-                                                                                                                                                  𝑣2
-                                                                       √1 − 𝑐2                                                              √1 − 𝑐2
-
+𝑡′ =
+𝑡 − (𝐯 ⋅ 𝐫)/𝑐2
+√
+1 − 𝑣2
+𝑐2
+, 𝐫′
+⟂
+= 𝐫⟂, 𝐫′
+∥
+=
+𝐫∥ − 𝐯𝑡
+√
+1 − 𝑣2
+𝑐2
+, (4.7) --><a id="eq:Lorentz_transform"></a><!--
 -->
 <p>
-
 \begin{equation}
 \label {eq:Lorentz_transform} t&apos; = \frac {t - (\vect {v}\cdot \vect {r})/c^2}{\sqrt {1 - \frac {v^2}{c^2}}}, \quad \vect {r}&apos;_{\perp } = \vect {r}_{\perp }, \quad \vect {r}&apos;_{\parallel } = \frac
 {\vect {r}_{\parallel } - \vect {v}t} {\sqrt {1 - \frac {v^2}{c^2}}},
 \end{equation}
-
 </p>
-
 <p>
 де позначки \(\parallel \) та \(\perp \) відповідають поздовжнім (паралельним) та поперечним до \(\vect {v}\) складовим тривимірних векторів.
 </p>
-
 <p>
 Відповідні до&nbsp;<span class="textup">(<a href="relativity.html#eq:Lorentz_transform">4.7</a>)</span> перетворення поперечних та поздовжніх компонент напруженості електричного поля та індукції магнітного поля мають вигляд
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{4.}{7}\)</span>
 <!--
-
-                                                                                  𝐄⟂ + 1 [𝐯 × 𝐁]                                                  𝐁⟂ − 1 [𝐯 × 𝐄]
-        𝐄′   =                                           𝐄∥,  𝐁′    =  𝐁∥,  𝐄′ =           𝑐           ,                                    𝐁′ =         𝑐        .                                                  (4.8)          --><a id="eq:Lorentz_transform_F"></a><!--
-
-          ∥                                                      ∥          ⟂                     𝑣2                                        ⟂               𝑣2
-
-                                                                                           √1 − 𝑐2                                                √1 − 𝑐2
-
+𝐄′
+∥
+= 𝐄∥, 𝐁′
+∥
+= 𝐁∥, 𝐄′
+⟂
+=
+𝐄⟂ + 1
+𝑐
+[𝐯 × 𝐁]
+√
+1 − 𝑣2
+𝑐2
+, 𝐁′
+⟂
+=
+𝐁⟂ − 1
+𝑐
+[𝐯 × 𝐄]
+√
+1 − 𝑣2
+𝑐2
+. (4.8) --><a id="eq:Lorentz_transform_F"></a><!--
 -->
 <p>
-
 \begin{equation}
 \label {eq:Lorentz_transform_F} \Efield &apos;_{\parallel }=\Efield _{\parallel }, \quad \Bfield &apos;_{\parallel }=\Bfield _{\parallel }, \quad \Efield &apos;_{\perp }= \frac {\Efield _{\perp } + \frac
 1c\left [ \vect {v}\times \vect \Bfield \right ] }{\sqrt {1 - \frac {v^2}{c^2}}}, \quad \Bfield &apos;_{\perp }= \frac {\Bfield _{\perp } - \frac 1c\left [ \vect {v}\times \vect \Efield \right ] }{\sqrt {1 -
 \frac {v^2}{c^2}}}.
 \end{equation}
-
 </p>
-
 <p>
 Відповідні до&nbsp;<span class="textup">(<a href="relativity.html#eq:Lorentz_transform">4.7</a>)</span> перетворення густини заряду та густини струму мають вигляд
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{4.}{8}\)</span>
 <!--
-
-                                                              𝜌′ = 𝜌 − (𝐯 ⋅ 𝐣)/𝑐2 ,        𝐣′     𝐣⟂,  ′ 𝐣∥ − 𝜌𝐯                                                                                                                    --><a id="eq:Lorentz_transform_j"></a><!--
-                                                                                               =       𝐣∥ =                                           .                                                              (4.9)
-                                                                                       𝑣2   ⟂
-                                                                                                                                                  𝑣2
-                                                                        √1 − 𝑐2                                                             √1 − 𝑐2
-
+𝜌′ =
+𝜌 − (𝐯 ⋅ 𝐣)/𝑐2
+√
+1 − 𝑣2
+𝑐2
+, 𝐣′
+⟂
+= 𝐣⟂, 𝐣′
+∥
+=
+𝐣∥ − 𝜌𝐯
+√
+1 − 𝑣2
+𝑐2
+. (4.9) --><a id="eq:Lorentz_transform_j"></a><!--
 -->
 <p>
-
 \begin{equation}
 \label {eq:Lorentz_transform_j} \rho &apos; = \frac {\rho - (\vect {v}\cdot \vect {j})/c^2}{\sqrt {1 - \frac {v^2}{c^2}}}, \quad \vect {j}&apos;_{\perp } = \vect {j}_{\perp }, \quad \vect {j}&apos;_{\parallel }
 = \frac {\vect {j}_{\parallel } - \rho \vect {v}} {\sqrt {1 - \frac {v^2}{c^2}}}.
 \end{equation}
-
 </p>
-
 <p>
 Із компонент тензора можна утворити інваріанти:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{4.}{9}\)</span>
 <!--
-
-                                                                                                                                                                      𝐹𝜇𝜈𝐹𝜇𝜈 = inv, 𝑒𝜇𝜈𝛼𝛽𝐹𝜇𝜈𝐹𝛼𝛽 = inv,
-
+𝐹𝜇𝜈𝐹𝜇𝜈 = inv, 𝑒𝜇𝜈𝛼𝛽𝐹𝜇𝜈𝐹𝛼𝛽 = inv,
 -->
-
 <p>
-
 \begin{equation*}
 F_{\mu \nu }F^{\mu \nu } = \inv , \quad e^{\mu \nu \alpha \beta }F_{\mu \nu }F_{\alpha \beta } = \inv ,
 \end{equation*}
-
 </p>
-
 <p>
 де \(e^{\mu \nu \alpha \beta }\)&nbsp;— повністю антисиметричний тензор. У тривимірному представленні інваріанти перетворень Лоренца виглядають таким чином:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{4.}{9}\)</span>
 <!--
-
--->                                                                                                                                                             𝐸2 − 𝐵2 = inv, 𝐄 ⋅ 𝐁 = inv .                                                                      (4.10)
-<p>                                                                                                                                                                   𝑚𝑐 𝑑ᵆ𝜇 = 𝑒 𝐹𝜇𝜈ᵆ𝜈,
-                                                                                                                                                                            𝑑𝑠 𝑐
+𝐸2 − 𝐵2 = inv, 𝐄 ⋅ 𝐁 = inv .
+-->
+<p>
 \begin{equation*}
 E^2 - B^2 = \inv , \quad \Efield \cdot \Bfield = \inv .
 \end{equation*}
-
 </p>
 <p>
 Рівняння руху частинки в електромагнітному полі:
 </p>
 <span class="hidden"> \(\seteqnumber{0}{4.}{9}\)</span>
 <!--
-
+𝑚𝑐
+𝑑ᵆ𝜇
+𝑑𝑠
+=
+𝑒
+𝑐
+𝐹𝜇𝜈ᵆ𝜈, (4.10)
 -->
 <p>
-
 \begin{equation}
 mc\frac {du^\mu }{ds} = \frac {e}{c}F^{\mu \nu }u_{\nu },
 \end{equation}
-
 </p>
 <p>
 де \(u_{\nu }\)&nbsp;– 4-швидкість частинки.
@@ -1212,493 +1089,264 @@ mc\frac {du^\mu }{ds} = \frac {e}{c}F^{\mu \nu }u_{\nu },
 Рівняння Максвелла в тензорній формі у вакуумі
 </p>
 <span class="hidden"> \(\seteqnumber{0}{4.}{10}\)</span>
-
 <!--
-
-                                                                                                                                                                        𝜕𝐹𝜇𝜈 = − 4𝜋 𝑗𝜇                       (4.11)              --><a id="eqn:rel_Maxwell_eqn_with_sources"></a><!--
-                                                                                                                                                                         𝜕𝑥𝜈       𝑐                    (4.12)              --><a id="eqn:rel_Maxwell_eqn_with_sourceless"></a><!--
-
-                                                                                                                                                                𝜕𝐹𝛽𝛾 𝜕𝐹𝛾𝛼 𝜕𝐹𝛼𝛽          = 0.
-                                                                                                                                                                𝜕𝑥𝛼 + 𝜕𝑥𝛽 + 𝜕𝑥𝛾
-
+𝜕𝐹𝜇𝜈
+𝜕𝑥𝜈
+= −
+4𝜋
+𝑐
+𝑗𝜇 (4.11) --><a id="eqn:rel_Maxwell_eqn_with_sources"></a><!--
+𝜕𝐹𝛽𝛾
+𝜕𝑥𝛼
++
+𝜕𝐹𝛾𝛼
+𝜕𝑥𝛽
++
+𝜕𝐹𝛼𝛽
+𝜕𝑥𝛾
+= 0. (4.12) --><a id="eqn:rel_Maxwell_eqn_with_sourceless"></a><!--
 -->
-
 <p>
-
 \begin{gather}
 \frac {\partial F^{\mu \nu }}{\partial x^\nu } = -\frac {4\pi }{c}j^\mu \label {eqn:rel_Maxwell_eqn_with_sources}\\ \frac {\partial F_{\beta \gamma }}{\partial x^\alpha } + \frac {\partial F_{\gamma \alpha
 }}{\partial x^\beta } +\frac {\partial F_{\alpha \beta }}{\partial x^\gamma } = 0. \label {eqn:rel_Maxwell_eqn_with_sourceless}
 \end{gather}
-
 </p>
-
 <p>
 Тензор енергії-імпульсу електромагнітного поля:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{4.}{12}\)</span>
 <!--
-
-                                                                                                                    𝑇𝜇𝜈 = 14𝜋 (−𝐹𝜇𝛼𝐹𝜈𝛼 + 14 𝜂𝜇𝜈𝐹𝛼𝛽𝐹𝛼𝛽) .                                                                    (4.13)  --><a id="rel_TEI"></a><!--
+𝑇𝜇𝜈 =
+1
+4𝜋
+(−𝐹𝜇𝛼𝐹𝜈
+𝛼 +
+1
+4
+𝜂𝜇𝜈𝐹𝛼𝛽𝐹𝛼𝛽) . (4.13) --><a id="rel_TEI"></a><!--
 -->
 <p>
-
 \begin{equation}
 \label {rel_TEI} T^{\mu \nu } = \frac {1}{4\pi }\left ( -F^{\mu \alpha }F^\nu _{\;\;\alpha } + \frac 14\eta ^{\mu \nu }F_{\alpha \beta }F^{\alpha \beta }\right ).
 \end{equation}
-
 </p>
 </div>
 <!--
 ...... section Перетворення Лоренца та закони збереження ......
 -->
-<h4 id="autosec-171"><span class="sectionnumber">&#xA7;&#x202F;4.1&#x2003;</span>Перетворення Лоренца та закони збереження</h4>
-<a id="main-html-autopage-171"></a>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-207"></a>
+<h4 id="autosec-74"><span class="sectionnumber">&#xA7;&#x202F;4.1&#x2003;</span>Перетворення Лоренца та закони збереження</h4>
+<a id="main-html-autopage-74"></a>
+<div class="cb-problem">
+<p>
+<a id="LWR-ht-problem:4.{1}"></a><span class="probnum">4.1.</span> У деякій системі \(K\) задано компоненти <em>простороподібного</em> коваріантного вектора \(A_{\mu }\). Чи існує система відліку \(K&apos;\), де компоненти цього вектора мають вигляд
+</p>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.1.</span></span> <a id="autoid-208" ></a ><a id="LWR-ht-problem:4.{1}"></a> У деякій системі \(K\) задано компоненти <em>простороподібного</em> коваріантного вектора \(A_{\mu
-}\). Чи існує система відліку \(K&apos;\), де компоненти цього вектора мають вигляд
-</p>
-</li><li>
-<p>
-
 </p>
 </li><li>
 <p>
 а)&nbsp;\(A&apos;_{\mu } = \{a,0,0,0\}\)? б)&nbsp;\(A&apos;_{\mu } = \{0,a,0,0\}\)? Якщо це так, виразіть&nbsp;\(A_{\mu }\). <a href="answers.html#LWR-ht-solution:4.{1}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-209"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.2.</span></span> <a id="autoid-210" ></a ><a id="LWR-ht-problem:4.{2}"></a> У деякій системі \(K\) задано компоненти <em>часоподібного</em> коваріантного вектора \(A_{\mu }\).
-Чи існує система відліку \(K&apos;\), де компоненти цього вектора мають вигляд
+<a id="LWR-ht-problem:4.{2}"></a><span class="probnum">4.2.</span> У деякій системі \(K\) задано компоненти <em>часоподібного</em> коваріантного вектора \(A_{\mu }\). Чи існує система відліку \(K&apos;\), де компоненти цього вектора мають вигляд
 </p>
 </li><li>
 <p>
-
 </p>
 </li><li>
 <p>
 а)&nbsp;\(A&apos;_{\mu } = \{a,0,0,0\}\)? б)&nbsp;\(A&apos;_{\mu } = \{0,a,0,0\}\)? Якщо це так, виразіть&nbsp;\(A_{\mu }\). <a href="answers.html#LWR-ht-solution:4.{2}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-211"></a>                                                                                                                 ><a id="LWR-ht-problem:4.{3}"></a> Дві релятивістські частинки з масами спокою \(m_1\) та \(m_2\) рухаються вздовж деякої прямої з
-<li>                                                                                                                                    href="answers.html#LWR-ht-solution:4.{3}">[відповідь]</a>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.3.</span></span> <a id="autoid-212" ></a
-імпульсами \(p_1\) та \(p_2\), відповідно. Знайти швидкість центру мас цієї системи. Використайте систему одиниць в якій \(c = 1\). <a
+<a id="LWR-ht-problem:4.{3}"></a><span class="probnum">4.3.</span> Дві релятивістські частинки з масами спокою \(m_1\) та \(m_2\) рухаються вздовж деякої прямої з імпульсами \(p_1\) та \(p_2\), відповідно. Знайти швидкість центру мас цієї системи. Використайте
+систему одиниць в якій \(c = 1\). <a href="answers.html#LWR-ht-solution:4.{3}">[відповідь]</a>
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-213"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.4.</span></span> <a id="autoid-214" ></a ><a id="LWR-ht-problem:4.{4}"></a> Вільна частинка, що рухається з швидкістю \(v &lt; c\), розпадається на два фотони (які можуть
-вилітати під довільним кутом до напрямку руху частинки). Знайти мінімальний кут між напрямками розльоту фотонів.
+<a id="LWR-ht-problem:4.{4}"></a><span class="probnum">4.4.</span> Вільна частинка, що рухається з швидкістю \(v &lt; c\), розпадається на два фотони (які можуть вилітати під довільним кутом до напрямку руху частинки). Знайти мінімальний кут між напрямками
+розльоту фотонів.
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-215"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.5.</span></span> <a id="autoid-216" ></a ><a id="LWR-ht-problem:4.{5}"></a> При зіткненні частинки з масою спокою \(m\) та імпульсом \(p\) із нерухомою частинкою з масою \(m_1\)
-відбувається реакція, після якої залишаються частинки з сумою мас спокою \(\ge M\). Знайдіть мінімальне значення кінетичної енергії частинки, що налітає. <em>Вказівка</em>: спочатку треба показати, що кінетична енергія системи в с.ц.м. є монотонною функцією \(p\).
+<a id="LWR-ht-problem:4.{5}"></a><span class="probnum">4.5.</span> При зіткненні частинки з масою спокою \(m\) та імпульсом \(p\) із нерухомою частинкою з масою \(m_1\) відбувається реакція, після якої залишаються частинки з сумою мас спокою \(\ge M\). Знайдіть
+мінімальне значення кінетичної енергії частинки, що налітає. <em>Вказівка</em>: спочатку треба показати, що кінетична енергія системи в с.ц.м. є монотонною функцією \(p\).
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-217"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.6.</span></span> <a id="autoid-218" ></a ><a id="LWR-ht-problem:4.{6}"></a> Електрон з імпульсом \(р\) та фотон з частотою \(\omega \) рухаються вздовж прямої (в лабораторній
-системі); відбувається пружне зіткнення. Заданий кут \(\theta = \pi /2\) між напрямками імпульсів фотона та електрона після зіткнення. Знайти відношення частот фотона до і після зіткнення. Дослідити, як зміниться (збільшиться чи зменшиться) частота фотона? Розглянути випадки, коли
+<a id="LWR-ht-problem:4.{6}"></a><span class="probnum">4.6.</span> Електрон з імпульсом \(р\) та фотон з частотою \(\omega \) рухаються вздовж прямої (в лабораторній системі); відбувається пружне зіткнення. Заданий кут \(\theta = \pi /2\) між напрямками
+імпульсів фотона та електрона після зіткнення. Знайти відношення частот фотона до і після зіткнення. Дослідити, як зміниться (збільшиться чи зменшиться) частота фотона? Розглянути випадки, коли
 </p>
 </li><li>
 <p>
-
 </p>
 </li><li>
 <p>
 а)&nbsp;електрон знаходився в спокої до зіткнення б)&nbsp;був ультра-релятивістським. Коли частота фотона не зміниться після зіткнення?
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-219"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.7.</span></span> <a id="autoid-220" ></a ><a id="LWR-ht-problem:4.{7}"></a> У загальній ситуації \(\pi ^0\)–мезон розпадається на два \(\gamma \)-кванта; у власній системі мезона
-розподіл по кутах ізотропний. Пучок \(\pi ^0\)-мезонів рухається зі швидкістю \(\vect {v}\) відносно лабораторії. Знайти (в лабораторній системі) відношення числа \(\gamma \)-квантів розпаду, що випромінюються у передню напівсферу відносно напрямку руху, до числа \(\gamma
-\)-квантів розпаду, що випромінюються у задню напівсферу. <a href="answers.html#LWR-ht-solution:4.{7}">[відповідь]</a>
+<a id="LWR-ht-problem:4.{7}"></a><span class="probnum">4.7.</span> У загальній ситуації \(\pi ^0\)–мезон розпадається на два \(\gamma \)-кванта; у власній системі мезона розподіл по кутах ізотропний. Пучок \(\pi ^0\)-мезонів рухається зі швидкістю \(\vect {v}\)
+відносно лабораторії. Знайти (в лабораторній системі) відношення числа \(\gamma \)-квантів розпаду, що випромінюються у передню напівсферу відносно напрямку руху, до числа \(\gamma \)-квантів розпаду, що випромінюються у задню напівсферу. <a
+href="answers.html#LWR-ht-solution:4.{7}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-221"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.8.</span></span> <a id="autoid-222" ></a ><a id="LWR-ht-problem:4.{8}"></a> 4-хвильовий вектор електромагнітної хвилі має вигляд \(k^{\mu } = \{\omega /c,\vect {k}\}\),
-де \(\vect {k}\)- 3-хвильовий вектор. Використовуючи закон перетворення 4-векторів при переході від однієї системи відліку до іншої, знайдіть закон перетворення частоти \(\omega \) хвилі (ефект Допплера) і хвильового вектора \(\vect {k}\).
+<a id="LWR-ht-problem:4.{8}"></a><span class="probnum">4.8.</span> 4-хвильовий вектор електромагнітної хвилі має вигляд \(k^{\mu } = \{\omega /c,\vect {k}\}\), де \(\vect {k}\)- 3-хвильовий вектор. Використовуючи закон перетворення 4-векторів при
+переході від однієї системи відліку до іншої, знайдіть закон перетворення частоти \(\omega \) хвилі (ефект Допплера) і хвильового вектора \(\vect {k}\).
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-223"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.9.</span></span> <a id="autoid-224" ></a ><a id="LWR-ht-problem:4.{9}"></a> Електричне та магнітне поля відносно системи \(K\) (декартові координати) визначаються векторами
-\(\Efield = a(1,0,0)\) та \(\Bfield = a(1,0,2)\). Відносно системи \(K&apos;\) ці ж поля \(\Efield &apos; = (E_x&apos;,a,0)\) та \(\Bfield &apos; = (a,B_y&apos;,a)\) — невідомі. Система \(K&apos;&apos;\) рухається відносно системи \(K&apos;\) з
-швидкістю \(v\) (\(c=1\)) вздовж осі \(OX\). Знайдіть поля \(\Efield &apos;\) та \(\Bfield &apos;\) відносно \(K&apos;\) та \(\Efield &apos;&apos;\) та \(\Bfield &apos;&apos;\) відносно \(K&apos;&apos;\). <a
-href="answers.html#LWR-ht-solution:4.{9}">[відповідь]</a>
+<a id="LWR-ht-problem:4.{9}"></a><span class="probnum">4.9.</span> Електричне та магнітне поля відносно системи \(K\) (декартові координати) визначаються векторами \(\Efield = a(1,0,0)\) та \(\Bfield = a(1,0,2)\). Відносно системи \(K&apos;\) ці ж поля
+\(\Efield &apos; = (E_x&apos;,a,0)\) та \(\Bfield &apos; = (a,B_y&apos;,a)\) — невідомі. Система \(K&apos;&apos;\) рухається відносно системи \(K&apos;\) з швидкістю \(v\) (\(c=1\)) вздовж осі \(OX\). Знайдіть поля \(\Efield &apos;\) та \(\Bfield &apos;\)
+відносно \(K&apos;\) та \(\Efield &apos;&apos;\) та \(\Bfield &apos;&apos;\) відносно \(K&apos;&apos;\). <a href="answers.html#LWR-ht-solution:4.{9}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-225"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.10.</span></span> <a id="autoid-226" ></a ><a id="LWR-ht-problem:4.{10}"></a> В системі \(K\) \(\Efield \perp \Bfield \). Яка швидкість системи \(K&apos;\), де залишиться
-лише одне з полів?
+<a id="LWR-ht-problem:4.{10}"></a><span class="probnum">4.10.</span> В системі \(K\) \(\Efield \perp \Bfield \). Яка швидкість системи \(K&apos;\), де залишиться лише одне з полів?
 </p>
-
-</li>
-</ul>
 </div>
+</li>
 <!--
 ...... section Електродинаміка в релятивістських позначеннях ......
 -->
-<h4 id="autosec-182"><span class="sectionnumber">&#xA7;&#x202F;4.2&#x2003;</span>Електродинаміка в релятивістських позначеннях</h4>
-<a id="main-html-autopage-182"></a>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-227"></a>
-<li>
+<h4 id="autosec-75"><span class="sectionnumber">&#xA7;&#x202F;4.2&#x2003;</span>Електродинаміка в релятивістських позначеннях</h4>
+<a id="main-html-autopage-75"></a>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.11.</span></span> <a id="autoid-228" ></a ><a id="LWR-ht-problem:4.{11}"></a> Доведіть, що згортка довільного симетричного тензора з антисиметричним дорівнює \(0\).
+<a id="LWR-ht-problem:4.{11}"></a><span class="probnum">4.11.</span> Доведіть, що згортка довільного симетричного тензора з антисиметричним дорівнює \(0\).
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-229"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.12.</span></span> <a id="autoid-230" ></a ><a id="LWR-ht-problem:4.{12}"></a> Доведіть калібрувальну інваріантність тензора електромагнітного поля \(F^{\mu \nu }\) при
-перетвореннях 4-вектора потенціалу \(A_{\mu } \rightarrow A_{mu}+\partial _{\mu } \chi \).
+<a id="LWR-ht-problem:4.{12}"></a><span class="probnum">4.12.</span> Доведіть калібрувальну інваріантність тензора електромагнітного поля \(F^{\mu \nu }\) при перетвореннях 4-вектора потенціалу \(A_{\mu } \rightarrow A_{mu}+\partial _{\mu }
+\chi \).
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-231"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.13.</span></span> <a id="autoid-232" ></a ><a id="LWR-ht-problem:4.{13}"></a> Показати, що з рівнянь Максвелла з джерелами&nbsp;<span class="textup">(<a
-href="relativity.html#eqn:rel_Maxwell_eqn_with_sources">4.11</a>)</span>
+<a id="LWR-ht-problem:4.{13}"></a><span class="probnum">4.13.</span> Показати, що з рівнянь Максвелла з джерелами&nbsp;<span class="textup">(<a href="relativity.html#eqn:rel_Maxwell_eqn_with_sources">4.11</a>)</span>
 </p>
-
 <p>
 \[ \frac {\partial F^{\mu \nu }}{\partial x^\nu } = -\frac {4\pi }{c}j^\mu , \]
 </p>
-
 <p>
 випливає закон збереження для заряду \(\partial _\nu j^{\nu } = 0\).
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-233"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.14.</span></span> <a id="autoid-234" ></a ><a id="LWR-ht-problem:4.{14}"></a> Показати, що з виразу тензора електромагнітного поля через потенціали&nbsp;<span
-class="textup">(<a href="relativity.html#rel_tensor_elmagfield">4.5</a>)</span> \(F_{\mu \nu } = \frac {\partial A_\nu }{\partial x^\mu } - \frac {\partial A_\mu }{\partial x^\nu }\) випливають рівняння&nbsp;<span
-class="textup">(<a href="relativity.html#eqn:rel_Maxwell_eqn_with_sourceless">4.12</a>)</span>:
+<a id="LWR-ht-problem:4.{14}"></a><span class="probnum">4.14.</span> Показати, що з виразу тензора електромагнітного поля через потенціали&nbsp;<span class="textup">(<a href="relativity.html#rel_tensor_elmagfield">4.5</a>)</span> \(F_{\mu
+\nu } = \frac {\partial A_\nu }{\partial x^\mu } - \frac {\partial A_\mu }{\partial x^\nu }\) випливають рівняння&nbsp;<span class="textup">(<a href="relativity.html#eqn:rel_Maxwell_eqn_with_sourceless">4.12</a>)</span>:
 </p>
-
 <p>
 \[ \frac {\partial F_{\beta \gamma }}{\partial x^\alpha } + \frac {\partial F_{\gamma \alpha }}{\partial x^\beta } +\frac {\partial F_{\alpha \beta }}{\partial x^\gamma } = 0. \]
 </p>
-
-<p>
-
-</p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-235"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.15.</span></span> <a id="autoid-236" ></a ><a id="LWR-ht-problem:4.{15}"></a> Отримайте вираз для енергії і імпульсу електромагнітного поля через напруженість \(\Efield \) та
-індукцію \(\Bfield \) виходячи з тензора енергії-імпульсу&nbsp;<span class="textup">(<a href="relativity.html#rel_TEI">4.13</a>)</span>
+<a id="LWR-ht-problem:4.{15}"></a><span class="probnum">4.15.</span> Отримайте вираз для енергії і імпульсу електромагнітного поля через напруженість \(\Efield \) та індукцію \(\Bfield \) виходячи з тензора енергії-імпульсу&nbsp;<span
+class="textup">(<a href="relativity.html#rel_TEI">4.13</a>)</span>
 </p>
 <p>
 \[ T^{\mu \nu } = \frac {1}{4\pi }\left ( -F^{\mu \alpha }F^\nu _{\;\;\alpha } + \frac 14\eta ^{\mu \nu }F_{\alpha \beta }F^{\alpha \beta }\right ). \]
 </p>
-<p>
-
-</p>
-
-</li>
-</ul>
 </div>
 <!--
 ...... section Рух заряджених частинок в електромагнітному полі ......
 -->
-<h4 id="autosec-188"><span class="sectionnumber">&#xA7;&#x202F;4.3&#x2003;</span>Рух заряджених частинок в електромагнітному полі</h4>
-<a id="main-html-autopage-188"></a>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-237"></a>
-<li>
+<h4 id="autosec-76"><span class="sectionnumber">&#xA7;&#x202F;4.3&#x2003;</span>Рух заряджених частинок в електромагнітному полі</h4>
+<a id="main-html-autopage-76"></a>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.16.</span></span> <a id="autoid-238" ></a ><a id="LWR-ht-problem:4.{16}"></a> Релятивістська частинка з масою спокою \(m\) рухається в однорідних сталих магнітному \(\Bfield =
-(0,0,B)\) та електричному полі \(\Efield = (E,0,0)\), \(\Efield \perp \Bfield \) і \(E = B\). В момент \(t=0\) частинка знаходилась у початку декартових координат та мала імпульс \(\vect {p} = (p_{0_x}, p_{0_y}, p_{0_z})\) . Знайти залежність 4-швидкості
-\(u^{\alpha }\), 4-прискорення \(a^{\alpha }\), а також усіх чотирьох координат частинки і згортки \(u_{\alpha }a^{\alpha }\) (знайти явним обчисленням) від власного часу \(\tau \).
+<a id="LWR-ht-problem:4.{16}"></a><span class="probnum">4.16.</span> Релятивістська частинка з масою спокою \(m\) рухається в однорідних сталих магнітному \(\Bfield = (0,0,B)\) та електричному полі \(\Efield = (E,0,0)\), \(\Efield \perp \Bfield \)
+і \(E = B\). В момент \(t=0\) частинка знаходилась у початку декартових координат та мала імпульс \(\vect {p} = (p_{0_x}, p_{0_y}, p_{0_z})\) . Знайти залежність 4-швидкості \(u^{\alpha }\), 4-прискорення \(a^{\alpha }\), а також усіх чотирьох координат частинки і
+згортки \(u_{\alpha }a^{\alpha }\) (знайти явним обчисленням) від власного часу \(\tau \).
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-239"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.17.</span></span> <a id="autoid-240" ></a ><a id="LWR-ht-problem:4.{17}"></a> Електричне та магнітне поля відносно системи \(K\) (декартові координати) визначаються векторами
-\(\Efield = a(0,1,0)\) та \(\Bfield = a(1,1,0)\). Спостерігач (система \(K&apos;\)) рухається з швидкістю \(v=3c/5\) вздовж бісектриси кута \(XOY\). Знайдіть електромагнітне поле в системі спостерігача \(K&apos;\) і, використовуючи результат, знайдіть прямим обчисленням
-величину \(\Efield ^{\prime ^2} - \Bfield ^{\prime ^2}\) в цій системі.
+<a id="LWR-ht-problem:4.{17}"></a><span class="probnum">4.17.</span> Електричне та магнітне поля відносно системи \(K\) (декартові координати) визначаються векторами \(\Efield = a(0,1,0)\) та \(\Bfield = a(1,1,0)\). Спостерігач (система \(K&apos;\))
+рухається з швидкістю \(v=3c/5\) вздовж бісектриси кута \(XOY\). Знайдіть електромагнітне поле в системі спостерігача \(K&apos;\) і, використовуючи результат, знайдіть прямим обчисленням величину \(\Efield ^{\prime ^2} - \Bfield ^{\prime ^2}\) в цій системі.
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-241"></a>                                                                                                                                                 \perp  \Bfield  \) рухається заряджена частинка. З якою швидкістю і
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.18.</span></span> <a id="autoid-242" ></a ><a id="LWR-ht-problem:4.{18}"></a>У схрещених полях \(\Efield
-в якому напрямку вона повинна рухатися, щоб її траєкторія залишалася прямолінійною, а швидкість постійною? <a href="answers.html#LWR-ht-solution:4.{18}">[відповідь]</a>
+<a id="LWR-ht-problem:4.{18}"></a><span class="probnum">4.18.</span> У схрещених полях \(\Efield \perp \Bfield \) рухається заряджена частинка. З якою швидкістю і в якому напрямку вона повинна рухатися, щоб її траєкторія залишалася прямолінійною, а
+швидкість постійною? <a href="answers.html#LWR-ht-solution:4.{18}">[відповідь]</a>
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-243"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.19.</span></span> <a id="autoid-244" ></a ><a id="LWR-ht-problem:4.{19}"></a> Визначте кут \(\theta \) розсіювання нерелятивістської частинки масою \(m\) з електричним зарядом
-\(q\), що рухається в електричному полі нерухомого розсіювального центру, що має заряд \(Q\). Швидкість частинки до розсіювання \(v_0\) і значення прицільного параметра \(b\) вважати відомими. <a href="answers.html#LWR-ht-solution:4.{19}">[відповідь]</a>
+<a id="LWR-ht-problem:4.{19}"></a><span class="probnum">4.19.</span> Визначте кут \(\theta \) розсіювання нерелятивістської частинки масою \(m\) з електричним зарядом \(q\), що рухається в електричному полі нерухомого розсіювального центру, що має заряд \(Q\).
+Швидкість частинки до розсіювання \(v_0\) і значення прицільного параметра \(b\) вважати відомими. <a href="answers.html#LWR-ht-solution:4.{19}">[відповідь]</a>
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-245"></a>
+<div class="cb-problem">
+<p>
+<a id="LWR-ht-problem:4.{20}"></a><span class="probnum">4.20.</span> Знайти переріз розсіяння на малі кути нерелятивістських електронів, швидкість на нескінченності яких \(v_0\), що пролітають з великим прицільним параметром \(\rho \) повз сферу радіуса \(R\),
+якщо:
+</p>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.20.</span></span> <a id="autoid-246" ></a ><a id="LWR-ht-problem:4.{20}"></a> Знайти переріз розсіяння на малі кути нерелятивістських електронів, швидкість на нескінченності яких
-\(v_0\), що пролітають з великим прицільним параметром \(\rho \) повз сферу радіуса \(R\), якщо:
-</p>
-</li><li>
-<p>
-
 </p>
 </li><li>
 <p>
 а)&nbsp;сфера провідна і заземлена; б)&nbsp;сфера провідна і ізольована.
 </p>
-
 <p>
 <a href="answers.html#LWR-ht-solution:4.{20}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-247"></a>                                                                                                   ></a ><a  id="LWR-ht-problem:4.{21}"></a><a id="MotioninEM"></a> Нерелятивістська частинка з питомим зарядом \(q/m\), що рухається в
-<li>                                                                                                                      B_0\vect  {e}_z\). В початковий момент частинка знаходиться в стані спокою у початку координат. Знайти закони руху частинки. Зобразіть траєкторію
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.21.</span></span> <a id="autoid-248"
-присутності постійних і однорідних електромагнітних полів, заданих у вигляді \(\Efield = E_0\vect {e}_y\) та \(\Bfield =
-частинки в площині \(xOy\). <a href="answers.html#LWR-ht-solution:4.{21}">[відповідь]</a>
+<a id="LWR-ht-problem:4.{21}"></a><span class="probnum">4.21.</span> <a id="MotioninEM"></a> Нерелятивістська частинка з питомим зарядом \(q/m\), що рухається в присутності постійних і однорідних електромагнітних полів, заданих у вигляді \(\Efield =
+E_0\vect {e}_y\) та \(\Bfield = B_0\vect {e}_z\). В початковий момент частинка знаходиться в стані спокою у початку координат. Знайти закони руху частинки. Зобразіть траєкторію частинки в площині \(xOy\). <a
+href="answers.html#LWR-ht-solution:4.{21}">[відповідь]</a>
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-249"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.22.</span></span> <a id="autoid-250" ></a ><a id="LWR-ht-problem:4.{22}"></a> Розглянути задачу&nbsp;<a href="relativity.html#MotioninEM">4.21</a> випадку релятивістських
-рухів частинки. Знайти її траєкторію, як функцію власного часу для різних знаків інваріанту \(\Efield _0^2-\Bfield _0^2\).
+<a id="LWR-ht-problem:4.{22}"></a><span class="probnum">4.22.</span> Розглянути задачу&nbsp;<a href="relativity.html#MotioninEM">4.21</a> випадку релятивістських рухів частинки. Знайти її траєкторію, як функцію власного часу для різних знаків інваріанту
+\(\Efield _0^2-\Bfield _0^2\).
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-251"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.23.</span></span> <a id="autoid-252" ></a ><a id="LWR-ht-problem:4.{23}"></a> Розв’язати задачу&nbsp;<a href="relativity.html#MotioninEM">4.21</a> для випадку, якщо
-магнітне поле задане у вигляді \(\Bfield = B_0\vect {e}_z\) електричне поле змінюється за законом \(\Efield = E_0\cos \Omega t\,\vect {e}_y\), де \(\Omega = \frac {qB_0}{mc}\)&nbsp;— циклотронна частота. <a
-href="answers.html#LWR-ht-solution:4.{23}">[відповідь]</a>
+<a id="LWR-ht-problem:4.{23}"></a><span class="probnum">4.23.</span> Розв’язати задачу&nbsp;<a href="relativity.html#MotioninEM">4.21</a> для випадку, якщо магнітне поле задане у вигляді \(\Bfield = B_0\vect {e}_z\) електричне поле змінюється за
+законом \(\Efield = E_0\cos \Omega t\,\vect {e}_y\), де \(\Omega = \frac {qB_0}{mc}\)&nbsp;— циклотронна частота. <a href="answers.html#LWR-ht-solution:4.{23}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-253"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.24.</span></span> <a id="autoid-254" ></a ><a id="LWR-ht-problem:4.{24}"></a> Знайдіть диференціальний переріз розсіювання заряджених частинок на кулонівському потенціалі.
-Перевірте, що повний переріз розсіювання нескінченний (розбігається за малих кутів).
+<a id="LWR-ht-problem:4.{24}"></a><span class="probnum">4.24.</span> Знайдіть диференціальний переріз розсіювання заряджених частинок на кулонівському потенціалі. Перевірте, що повний переріз розсіювання нескінченний (розбігається за малих кутів).
 </p>
-
-</li>
-</ul>
 </div>
+</li>
 <!--
 ...... section Випромінювання релятивістських заряджених частинок ......
 -->
-<h4 id="autosec-198"><span class="sectionnumber">&#xA7;&#x202F;4.4&#x2003;</span>Випромінювання релятивістських заряджених частинок</h4>
-<a id="main-html-autopage-198"></a>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-255"></a>
-<li>
+<h4 id="autosec-77"><span class="sectionnumber">&#xA7;&#x202F;4.4&#x2003;</span>Випромінювання релятивістських заряджених частинок</h4>
+<a id="main-html-autopage-77"></a>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 4.25 (Синхротронне випромінювання).</span></span> <a id="autoid-256" ></a ><a id="LWR-ht-problem:4.{25}"></a>Знайти енергію випромінювання релятивістського електрона в
-однорідному магнітному полі за один оберт. Знайти повну потужність (в мегаватах) синхротронного випромінювання в прискорювачі з енергією \(100\)&nbsp;ГеВ. Довжина кола прискорювача \(30\)&nbsp;км, число прискорюваних частинок в кільці \(5\cdot 10^{12}\). Оцінити
-характерну довжину хвилі випромінювання.
+<a id="LWR-ht-problem:4.{25}"></a><span class="probnum">4.25.</span> (<em>Синхротронне випромінювання</em>) Знайти енергію випромінювання релятивістського електрона в однорідному магнітному полі за один оберт. Знайти повну потужність (в мегаватах)
+синхротронного випромінювання в прискорювачі з енергією \(100\)&nbsp;ГеВ. Довжина кола прискорювача \(30\)&nbsp;км, число прискорюваних частинок в кільці \(5\cdot 10^{12}\). Оцінити характерну довжину хвилі випромінювання.
 </p>
-
-</li>
-
-</ul>
-
 </div>
 </section>
 </main>
-
 <nav class="botnavigation"><a href="main-html.html" class="linkhome" >
 Головна</a></nav>
 </div><!-- grid -->

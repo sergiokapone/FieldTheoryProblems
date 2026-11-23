@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -7,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Класична електродинаміка. Збірник задач — Діелектрики та магнетики в статичних полях</title>
 <link rel="stylesheet" type="text/css" href="assets/conspect.css" />
-
 <script>
 // Lwarp MathJax emulation code
 //
@@ -24,260 +22,196 @@
 // number is auto-incremented by MathJax between equations.
 //
 MathJax = {
-
-   subequations: "0",
-   section: "",
-   loader: {
-
-       load: ['[tex]/tagformat', '[tex]/textmacros'],
-   },
-   startup: {
-
-       ready() {
-          // These would be replaced by import commands if you wanted to make
-          // a proper extension.
-          const Configuration = MathJax._.input.tex.Configuration.Configuration;
-          const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
-          const Macro = MathJax._.input.tex.Symbol.Macro;
-          const TexError = MathJax._.input.tex.TexError.default;
-          const ParseUtil = MathJax._.input.tex.ParseUtil.default;
-          const expandable = MathJax._.util.Options.expandable;
-
+subequations: "0",
+section: "",
+loader: {
+load: ['[tex]/tagformat', '[tex]/textmacros'],
+},
+startup: {
+ready() {
+// These would be replaced by import commands if you wanted to make
+// a proper extension.
+const Configuration = MathJax._.input.tex.Configuration.Configuration;
+const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+const Macro = MathJax._.input.tex.Symbol.Macro;
+const TexError = MathJax._.input.tex.TexError.default;
+const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+const expandable = MathJax._.util.Options.expandable;
 // Insert the replacement string into the TeX string, and check
 // that there haven't been too many maxro substitutions (prevents
 // infinite loops).
 const useArgument = (parser, text) => {
-
-   parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-   parser.i = 0;
-   if (++parser.macroCount > parser.configuration.options.maxMacros) {
-
-       throw new TexError('MaxMacroSub1',
-       'MathJax maximum macro substitution count exceeded; ' +
-       'is there a recursive macro call?');
-   }
+parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+parser.i = 0;
+if (++parser.macroCount > parser.configuration.options.maxMacros) {
+throw new TexError('MaxMacroSub1',
+'MathJax maximum macro substitution count exceeded; ' +
+'is there a recursive macro call?');
 }
-
+}
 // Create the command map for:
-
 // \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-
 new CommandMap('Lwarp-macros', {
-
 ifstar: 'IfstarFunction',
-
 ifnextchar: 'IfnextcharFunction',
-
 ifblank: 'IfblankFunction',
-
 ifstrequal: 'IfstrequalFunction',
-
 gsubstitute: 'GsubstituteFunction',
-
 seteqnumber: 'SeteqnumberFunction'
-
 }, {
-
 // This function implements an ifstar macro.
-
 IfstarFunction(parser, name) {
-
-     const resultstar = parser.GetArgument(name);
-
-     const resultnostar = parser.GetArgument(name);
-
-     const star = parser.GetStar();                                  // true if there is a *
-
-     useArgument(parser, star ? resultstar : resultnostar);
-
+const resultstar = parser.GetArgument(name);
+const resultnostar = parser.GetArgument(name);
+const star = parser.GetStar(); // true if there is a *
+useArgument(parser, star ? resultstar : resultnostar);
 },
-
 // This function implements an ifnextchar macro.
 IfnextcharFunction(parser, name) {
-
-   let whichchar = parser.GetArgument(name);
-   if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-
-       // $ syntax highlighting
-       whichchar = String.fromCodePoint(parseInt(whichchar));
-   }
-   const resultnextchar = parser.GetArgument(name);
-   const resultnotnextchar = parser.GetArgument(name);
-   const gotchar = (parser.GetNext() === whichchar);
-   useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+let whichchar = parser.GetArgument(name);
+if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+// $ syntax highlighting
+whichchar = String.fromCodePoint(parseInt(whichchar));
+}
+const resultnextchar = parser.GetArgument(name);
+const resultnotnextchar = parser.GetArgument(name);
+const gotchar = (parser.GetNext() === whichchar);
+useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
 },
-
 // This function implements an ifblank macro.
 IfblankFunction(parser, name) {
-
-   const blankarg = parser.GetArgument(name);
-   const resultblank = parser.GetArgument(name);
-   const resultnotblank = parser.GetArgument(name);
-   const isblank = (blankarg.trim() == "");
-   useArgument(parser, isblank ? resultblank : resultnotblank);
+const blankarg = parser.GetArgument(name);
+const resultblank = parser.GetArgument(name);
+const resultnotblank = parser.GetArgument(name);
+const isblank = (blankarg.trim() == "");
+useArgument(parser, isblank ? resultblank : resultnotblank);
 },
-
 // This function implements an ifstrequal macro.
 IfstrequalFunction(parser, name) {
-
-   const strequalfirst = parser.GetArgument(name);
-   const strequalsecond = parser.GetArgument(name);
-   const resultequal = parser.GetArgument(name);
-   const resultnotequal = parser.GetArgument(name);
-   const isequal = (strequalfirst == strequalsecond);
-   useArgument(parser, isequal ? resultequal : resultnotequal);
+const strequalfirst = parser.GetArgument(name);
+const strequalsecond = parser.GetArgument(name);
+const resultequal = parser.GetArgument(name);
+const resultnotequal = parser.GetArgument(name);
+const isequal = (strequalfirst == strequalsecond);
+useArgument(parser, isequal ? resultequal : resultnotequal);
 },
-
-// This function implements a gsub macro.                            gsubthird);
+// This function implements a gsub macro.
 GsubstituteFunction(parser, name) {
-
-   const gsubfirst = parser.GetArgument(name);
-   const gsubsecond = parser.GetArgument(name);
-   const gsubthird = parser.GetArgument(name);
-   let gsubresult=gsubfirst.replace(gsubsecond,
-   useArgument(parser, gsubresult);
+const gsubfirst = parser.GetArgument(name);
+const gsubsecond = parser.GetArgument(name);
+const gsubthird = parser.GetArgument(name);
+let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+useArgument(parser, gsubresult);
 },
-
 // This function modifies the equation numbers.
-
 SeteqnumberFunction(parser, name) {
-
-      // Get the macro parameters
-
-      const star = parser.GetStar();                                 // true if there is a *
-
-      const optBrackets = parser.GetBrackets(name); // contents of optional brackets
-
-      const newsubequations = parser.GetArgument(name); // the subequations argument
-
-      const neweqsection = parser.GetArgument(name); // the eq section argument
-
-      const neweqnumber = parser.GetArgument(name); // the eq number argument
-
-      MathJax.config.subequations=newsubequations ; // a string with boolean meaning
-
-      MathJax.config.section=neweqsection ;                          // a string with numeric meaning
-
-      parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-
+// Get the macro parameters
+const star = parser.GetStar(); // true if there is a *
+const optBrackets = parser.GetBrackets(name); // contents of optional brackets
+const newsubequations = parser.GetArgument(name); // the subequations argument
+const neweqsection = parser.GetArgument(name); // the eq section argument
+const neweqnumber = parser.GetArgument(name); // the eq number argument
+MathJax.config.subequations=newsubequations ; // a string with boolean meaning
+MathJax.config.section=neweqsection ; // a string with numeric meaning
+parser.tags.counter = parser.tags.allCounter = neweqnumber ;
 }
-
 });
-
 // Create the Lwarp-macros package
 Configuration.create('Lwarp-macros', {
-
-   handler: {macro: ['Lwarp-macros']}
+handler: {macro: ['Lwarp-macros']}
 });
-
 MathJax.startup.defaultReady();
-
 // For forward references:
 MathJax.startup.input[0].preFilters.add(({math}) => {
-
-   if (math.inputData.recompile){
-          MathJax.config.subequations = math.inputData.recompile.subequations;
-          MathJax.config.section = math.inputData.recompile.section;
-
-   }
+if (math.inputData.recompile){
+MathJax.config.subequations = math.inputData.recompile.subequations;
+MathJax.config.section = math.inputData.recompile.section;
+}
 });
 MathJax.startup.input[0].postFilters.add(({math}) => {
-
-   if (math.inputData.recompile){
-          math.inputData.recompile.subequations = MathJax.config.subequations;
-          math.inputData.recompile.section = MathJax.config.section;
-
-   }
+if (math.inputData.recompile){
+math.inputData.recompile.subequations = MathJax.config.subequations;
+math.inputData.recompile.section = MathJax.config.section;
+}
 });
-
-          // For \left, \right with unicode-math:
-          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-          const {Symbol} = MathJax._.input.tex.Symbol;
-          const {MapHandler} = MathJax._.input.tex.MapHandler;
-          const delimiter = MapHandler.getMap('delimiter');
-          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-   } // ready
+// For \left, \right with unicode-math:
+const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+const {Symbol} = MathJax._.input.tex.Symbol;
+const {MapHandler} = MathJax._.input.tex.MapHandler;
+const delimiter = MapHandler.getMap('delimiter');
+delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+} // ready
 }, // startup
-
-   tex: {                                                            'textmacros']},
-       packages: {'[+]': ['tagformat', 'Lwarp-macros',
-       tags: "ams",                                                  n);
-              tagformat: {                                           String.fromCharCode(96+n));
-                     number: function (n) {
-                             if(MathJax.config.subequations==0)
-                                    return(MathJax.config.section +
-                             else
-                                    return(MathJax.config.section +
-                     },
-              },
-
-   }
+tex: {
+packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+tags: "ams",
+tagformat: {
+number: function (n) {
+if(MathJax.config.subequations==0)
+return(MathJax.config.section + n);
+else
+return(MathJax.config.section + String.fromCharCode(96+n));
+},
+},
+}
 }
 </script>
-
 <script
-       id="MathJax-script"
-       src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
-
+id="MathJax-script"
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
 ></script>
-
 </head>
 <body>
-
-<a id="main-html-autopage-207"></a>
+<a id="main-html-autopage-85"></a>
 <div class="pagegrid">
-
 <nav class="topnavigation"><a href="main-html.html" class="linkhome" >
 Головна</a></nav>
 <div class="sidetoccontainer">
-
 <nav class="sidetoc">
-
 <div class="sidetoctitle">
 <p>
 <span class="sidetocthetitle">Класична електродинаміка. Збірник задач</span>
 </p>
 <p class="sidetoc-meta"><a href="../index.html">Про посібник</a><span aria-hidden="true">·</span><a href="../FTProblems.pdf">PDF</a></p>
 </div>
-
 <div class="sidetoccontents">
 <p>
 <a href="main-html.html" class="linkhome" >
@@ -287,244 +221,195 @@ MathJax.startup.input[0].postFilters.add(({math}) => {
 <a href="preface.html#autosec-6" class="tocchapter" >
 Передмова</a>
 </p>
-
 <p>
 <a href="vanaliz.html#autosec-9" class="tocchapter" >
 <span class="sectionnumber">0</span><span class="toctitle">&#x2003;Співвідношення векторного аналізу в декартових координатах </span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-18" class="tocpart" >
+<a href="maxwellmicro.html#autosec-12" class="tocpart" >
 <span class="sectionnumber">I</span><span class="toctitle">&#x2003;Мікроскопічна теорія</span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-19" class="tocchapter" >
+<a href="maxwellmicro.html#autosec-13" class="tocchapter" >
 <span class="sectionnumber">1</span><span class="toctitle">&#x2003;Система мікроскопічних рівнянь Максвелла</span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-20" class="tocsection" >
+<a href="maxwellmicro.html#autosec-14" class="tocsection" >
 <span class="sectionnumber">1.1</span><span class="toctitle">&#x2003;Рівняння Максвелла</span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-21" class="tocsection" >
+<a href="maxwellmicro.html#autosec-15" class="tocsection" >
 <span class="sectionnumber">1.2</span><span class="toctitle">&#x2003;Закони збереження (диференціальна форма)</span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-22" class="tocsection" >
+<a href="maxwellmicro.html#autosec-16" class="tocsection" >
 <span class="sectionnumber">1.3</span><span class="toctitle">&#x2003;Граничні умови для границі розділу двох середовищ</span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-23" class="tocsection" >
+<a href="maxwellmicro.html#autosec-17" class="tocsection" >
 <span class="sectionnumber">1.4</span><span class="toctitle">&#x2003;Потенціали електромагнітного поля</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-26" class="tocchapter" >
+<a href="emstatics.html#autosec-20" class="tocchapter" >
 <span class="sectionnumber">2</span><span class="toctitle">&#x2003;Електро- та магнітостатика у вакуумі</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-27" class="tocsection" >
+<a href="emstatics.html#autosec-21" class="tocsection" >
 <span class="sectionnumber">2.1</span><span class="toctitle">&#x2003;Прості задачі на рівняння Максвелла</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-68" class="tocsection" >
+<a href="emstatics.html#autosec-44" class="tocsection" >
 <span class="sectionnumber">2.2</span><span class="toctitle">&#x2003;Рівняння Пуассона та Лапласа. Граничні задачі електростатики</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-69" class="tocsection" >
+<a href="emstatics.html#autosec-45" class="tocsection" >
 <span class="sectionnumber">2.3</span><span class="toctitle">&#x2003;Метод електричних зображень</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-74" class="tocsection" >
+<a href="emstatics.html#autosec-46" class="tocsection" >
 <span class="sectionnumber">2.4</span><span class="toctitle">&#x2003;Пошук розв’язків методом розкладання за системою ортогональних функцій</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-98" class="tocsection" >
+<a href="emstatics.html#autosec-47" class="tocsection" >
 <span class="sectionnumber">2.5</span><span class="toctitle">&#x2003;Розкладання потенціалів за мультиполями</span></a>
 </p>
-
 <p>
-<a href="radiation.html#autosec-129" class="tocchapter" >
+<a href="radiation.html#autosec-64" class="tocchapter" >
 <span class="sectionnumber">3</span><span class="toctitle">&#x2003;Випромінювання та поширення електромагнітних хвиль</span></a>
 </p>
-
 <p>
-<a href="radiation.html#autosec-133" class="tocsection" >
+<a href="radiation.html#autosec-68" class="tocsection" >
 <span class="sectionnumber">3.1</span><span class="toctitle">&#x2003;Співвідношення невизначеностей</span></a>
 </p>
-
 <p>
-<a href="radiation.html#autosec-136" class="tocsection" >
+<a href="radiation.html#autosec-69" class="tocsection" >
 <span class="sectionnumber">3.2</span><span class="toctitle">&#x2003;Монохроматичні хвилі. Інтерференція та поляризація хвиль</span></a>
 </p>
-
 <p>
-<a href="radiation.html#autosec-147" class="tocsection" >
+<a href="radiation.html#autosec-70" class="tocsection" >
 <span class="sectionnumber">3.3</span><span class="toctitle">&#x2003;Випромінювання та розсіювання електромагнітних хвиль</span></a>
 </p>
-
 <p>
-<a href="relativity.html#autosec-170" class="tocchapter" >
+<a href="relativity.html#autosec-73" class="tocchapter" >
 <span class="sectionnumber">4</span><span class="toctitle">&#x2003;Спеціальна теорія відносності</span></a>
 </p>
-
 <p>
-<a href="relativity.html#autosec-171" class="tocsection" >
+<a href="relativity.html#autosec-74" class="tocsection" >
 <span class="sectionnumber">4.1</span><span class="toctitle">&#x2003;Перетворення Лоренца та закони збереження</span></a>
 </p>
-
 <p>
-<a href="relativity.html#autosec-182" class="tocsection" >
+<a href="relativity.html#autosec-75" class="tocsection" >
 <span class="sectionnumber">4.2</span><span class="toctitle">&#x2003;Електродинаміка в релятивістських позначеннях</span></a>
 </p>
-
 <p>
-<a href="relativity.html#autosec-188" class="tocsection" >
+<a href="relativity.html#autosec-76" class="tocsection" >
 <span class="sectionnumber">4.3</span><span class="toctitle">&#x2003;Рух заряджених частинок в електромагнітному полі</span></a>
 </p>
-
 <p>
-<a href="relativity.html#autosec-198" class="tocsection" >
+<a href="relativity.html#autosec-77" class="tocsection" >
 <span class="sectionnumber">4.4</span><span class="toctitle">&#x2003;Випромінювання релятивістських заряджених частинок</span></a>
 </p>
-
 <p>
-<a href="maxwellmacro.html#autosec-202" class="tocpart" >
+<a href="maxwellmacro.html#autosec-80" class="tocpart" >
 <span class="sectionnumber">II</span><span class="toctitle">&#x2003;Електродинаміка суцільних середовищ</span></a>
 </p>
-
 <p>
-<a href="maxwellmacro.html#autosec-203" class="tocchapter" >
+<a href="maxwellmacro.html#autosec-81" class="tocchapter" >
 <span class="sectionnumber">5</span><span class="toctitle">&#x2003;Система макроскопічних рівнянь Максвелла</span></a>
 </p>
-
 <p>
-<a href="maxwellmacro.html#autosec-204" class="tocsection" >
+<a href="maxwellmacro.html#autosec-82" class="tocsection" >
 <span class="sectionnumber">5.1</span><span class="toctitle">&#x2003;Макроскопічні рівняння Максвелла</span></a>
 </p>
-
 <p>
-<a href="maxwellmacro.html#autosec-205" class="tocsection" >
+<a href="maxwellmacro.html#autosec-83" class="tocsection" >
 <span class="sectionnumber">5.2</span><span class="toctitle">&#x2003;Співвідношення для лінійних ізотропних середовищ</span></a>
 </p>
-
 <p>
-<a href="maxwellmacro.html#autosec-206" class="tocsection" >
+<a href="maxwellmacro.html#autosec-84" class="tocsection" >
 <span class="sectionnumber">5.3</span><span class="toctitle">&#x2003;Умови на границі розділу двох середовищ</span></a>
 </p>
-
 <p>
-<a href="emmedia.html#autosec-209" class="tocchapter" >
+<a href="emmedia.html#autosec-87" class="tocchapter" >
 <span class="sectionnumber">6</span><span class="toctitle">&#x2003;Діелектрики та магнетики в статичних полях</span></a>
 </p>
-
 <p>
-<a href="quasistationary.html#autosec-247" class="tocchapter" >
+<a href="quasistationary.html#autosec-95" class="tocchapter" >
 <span class="sectionnumber">7</span><span class="toctitle">&#x2003;Квазістаціонарні поля і струми</span></a>
 </p>
-
 <p>
-<a href="quasistationary.html#autosec-248" class="tocsection" >
+<a href="quasistationary.html#autosec-96" class="tocsection" >
 <span class="sectionnumber">7.1</span><span class="toctitle">&#x2003;Розтікання зарядів в провідниках. Струми Фуко</span></a>
 </p>
-
 <p>
-<a href="quasistationary.html#autosec-263" class="tocsection" >
+<a href="quasistationary.html#autosec-97" class="tocsection" >
 <span class="sectionnumber">7.2</span><span class="toctitle">&#x2003;Магнітні поля в надпровідниках</span></a>
 </p>
-
 <p>
-<a href="waves.html#autosec-275" class="tocchapter" >
+<a href="waves.html#autosec-100" class="tocchapter" >
 <span class="sectionnumber">8</span><span class="toctitle">&#x2003;Електромагнітні хвилі в середовищі</span></a>
 </p>
-
 <p>
-<a href="waves.html#autosec-276" class="tocsection" >
+<a href="waves.html#autosec-101" class="tocsection" >
 <span class="sectionnumber">8.1</span><span class="toctitle">&#x2003;Поширення електромагнітних хвиль в середовищі</span></a>
 </p>
-
 <p>
-<a href="waves.html#autosec-287" class="tocsection" >
+<a href="waves.html#autosec-102" class="tocsection" >
 <span class="sectionnumber">8.2</span><span class="toctitle">&#x2003;Відбивання та заломлення електромагнітних хвиль на межі двох середовищ</span></a>
 </p>
-
 <p>
-<a href="waves.html#autosec-293" class="tocsection" >
+<a href="waves.html#autosec-103" class="tocsection" >
 <span class="sectionnumber">8.3</span><span class="toctitle">&#x2003;Електромагнітні хвилі в плазмі</span></a>
 </p>
-
 <p>
-<a href="waves.html#autosec-297" class="tocsection" >
+<a href="waves.html#autosec-104" class="tocsection" >
 <span class="sectionnumber">8.4</span><span class="toctitle">&#x2003;Розсіювання та дифракція</span></a>
 </p>
-
 <p>
-<a href="answers.html#autosec-307" class="tocchapter" >
+<a href="answers.html#autosec-107" class="tocchapter" >
 Відповіді</a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-325" class="tocchapter" >
+<a href="appendices.html#autosec-125" class="tocchapter" >
 Додатки</a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-326" class="tocsection" >
+<a href="appendices.html#autosec-126" class="tocsection" >
 <span class="sectionnumber">А</span><span class="toctitle">&#x2003;Основні формули векторного аналізу</span></a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-335" class="tocsection" >
+<a href="appendices.html#autosec-135" class="tocsection" >
 <span class="sectionnumber">Б</span><span class="toctitle">&#x2003;Поліноми Лежандра</span></a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-336" class="tocsection" >
+<a href="appendices.html#autosec-136" class="tocsection" >
 <span class="sectionnumber">В</span><span class="toctitle">&#x2003;Сферичні гармоніки</span></a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-337" class="tocsection" >
+<a href="appendices.html#autosec-137" class="tocsection" >
 <span class="sectionnumber">Г</span><span class="toctitle">&#x2003;Циліндричні функції</span></a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-344" class="tocsection" >
+<a href="appendices.html#autosec-144" class="tocsection" >
 <span class="sectionnumber">Д</span><span class="toctitle">&#x2003;Дельта-функція Дірака</span></a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-345" class="tocsection" >
+<a href="appendices.html#autosec-145" class="tocsection" >
 <span class="sectionnumber">Е</span><span class="toctitle">&#x2003;Фізичні константи</span></a>
 </p>
-
 <p>
-<a href="bibliography.html#autosec-351" class="tocchapter" >
+<a href="bibliography.html#autosec-151" class="tocchapter" >
 Література</a>
 </p>
-
 </div>
 </nav>
 </div>
-
 <main class="bodycontainer" data-pagefind-body data-pagefind-meta="title[data-title]" data-title="Діелектрики та магнетики в статичних полях">
-
 <section class="textbody">
 <h1 data-pagefind-ignore>Класична електродинаміка. Збірник задач</h1>
 <!--MathJax customizations:-->
 <div data-nosnippet
-
-      style="display:none"
+style="display:none"
 >
 \(\newcommand{\footnotename}{footnote}\)
 \(\def \LWRfootnote {1}\)
@@ -905,54 +790,34 @@ MathJax.startup.input[0].postFilters.add(({math}) => {
 \(\def\theta{\unicode{x1D703}}\)
 \(\def\vartheta{\unicode{x1D717}}\)
 \(\def\iota{\unicode{x1D704}}\)
-\(\def\kappa{\unicode{x1D705}}\)                                                                                                                 (6.1)  --><a id="eq:Gen_Poisson"></a><!--
-
+\(\def\kappa{\unicode{x1D705}}\)
 \(\def\varkappa{\unicode{x1D718}}\)
-
 \(\def\lambda{\unicode{x1D706}}\)
-
 \(\def\mu{\unicode{x1D707}}\)
-
 \(\def\nu{\unicode{x1D708}}\)
-
 \(\def\xi{\unicode{x1D709}}\)
-
 \(\def\omicron{\unicode{x1D70A}}\)
-
 \(\def\pi{\unicode{x1D70B}}\)
-
 \(\def\varpi{\unicode{x1D71B}}\)
-
 \(\def\rho{\unicode{x1D70C}}\)
-
 \(\def\varrho{\unicode{x1D71A}}\)
-
 \(\def\sigma{\unicode{x1D70E}}\)
-
 \(\def\varsigma{\unicode{x1D70D}}\)
-
 \(\def\tau{\unicode{x1D70F}}\)
-
 \(\def\upsilon{\unicode{x1D710}}\)
-
 \(\def\phi{\unicode{x1D719}}\)
-
 \(\def\varphi{\unicode{x1D711}}\)
-
 \(\def\chi{\unicode{x1D712}}\)
-
 \(\def\psi{\unicode{x1D713}}\)
-
 \(\def\omega{\unicode{x1D714}}\)
 </div>
 <!--
 ...... chapter Діелектрики та магнетики в статичних полях ......
 -->
-<h3 id="autosec-209"><span class="sectionnumber">6&#x2003;</span>Діелектрики та магнетики в статичних полях</h3>
-<a id="main-html-autopage-209"></a>
+<h3 id="autosec-87"><span class="sectionnumber">6&#x2003;</span>Діелектрики та магнетики в статичних полях</h3>
+<a id="main-html-autopage-87"></a>
 <a id="main-html-autofile-8"></a>
 <a id="EMstaticsInMedia"></a>
-
 <div class="cb-theory">
 <p>
 <b>Теоретичні відомості</b> Основна задача електростатики
@@ -962,16 +827,12 @@ MathJax.startup.input[0].postFilters.add(({math}) => {
 </p>
 <span class="hidden"> \(\seteqnumber{0}{6.}{0}\)</span>
 <!--
-
-                                                                                                                        𝛁 ⋅ [𝜖(𝐫)∇ϕ] = −4𝜋𝜌(𝐫).
-
+𝛁 ⋅ [𝜖(𝐫)∇ϕ] = −4𝜋𝜌(𝐫). (6.1) --><a id="eq:Gen_Poisson"></a><!--
 -->
 <p>
-
 \begin{equation}
 \label {eq:Gen_Poisson} \vect {\nabla } \cdot \left [ {\epsilon (\vect {r})\nabla {\pot }} \right ] = - 4\pi \rho (\vect {r}).
 \end{equation}
-
 </p>
 <p>
 з певними граничними умовами.
@@ -979,73 +840,67 @@ MathJax.startup.input[0].postFilters.add(({math}) => {
 <p>
 <b>Формулювання задачі за наявності двох середовищ</b>.
 </p>
-<figure id="autoid-257" class="figure ">
+<figure id="autoid-9" class="figure ">
 <p>
 <span
-
-      id="lateximage-main-html-12"
-      class="lateximagesource"
+id="lateximage-main-html-12"
+class="lateximagesource"
 ><!--
-Ωout  𝜕Ω
-
-                     𝐧
-
-      Ωin
-             𝜖2, 𝜌2
-
-      𝐧 𝜖1, 𝜌1
+Ωout
+𝜖1
+, 𝜌1
+Ωin
+𝜖2
+, 𝜌2
+𝐧
+𝐧
+𝜕Ω
 --><img
-      src="main-html-images/image-12.svg"
-      alt="Рис. 6.1. До пояснення основної задачі електростатики"
-      style=""
-      class="lateximage"
-
+src="main-html-images/image-12.svg"
+alt="Рис. 6.1. До пояснення основної задачі електростатики"
+style=""
+class="lateximage"
 ></span>
 </p>
-
 <div class="figurecaption">
 Рис.&nbsp;6.1. До пояснення основної задачі електростатики
 </div>
-
 <a id="pic:main_elstat_problem"></a>
-
 </figure>
-
 <p>
 Нехай задана нескінченна область простору \(\Omega _\text {out}\) з діелектричною проникністю \(\epsilon _1(\vect {r})\), яка містить розподілений заряд густиною \(\rho _1(\vect {r})\), що оточує внутрішню область \(\Omega _\text {in}\) з діелектричною
 проникністю \(\epsilon _2(\vect {r})\) і розподілом заряду \(\rho _2(\vect {r})\) гладкою поверхнею \(\partial \Omega \) (функції \(\epsilon _i(\vect {r})\) та \(\rho _i(\vect {r})\) (де \(i= 1,2\)) — гладкі) (див. рис&nbsp;<a
 href="emmedia.html#pic:main_elstat_problem">6.1</a>). Крім того, на межі розділу є заряд, розподілений з густиною \(\sigma (\vect {r})\), де \(\vect {r} \in \partial \Omega \). Нехай двічі диференційовні функції \(\pot _1(\vect {r})\) та \(\pot _2(\vect
 {r})\) є розв’язками рівнянь&nbsp;<span class="textup">(<a href="emmedia.html#eq:Gen_Poisson">6.1</a>)</span>:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{6.}{1}\)</span>
 <!--
-
-                                           𝛁 ⋅ [𝜖𝑖(𝐫)∇ϕ𝑖] = −4𝜋𝜌𝑖(𝐫), 𝑖 = 1, 2.                                                                                                                    (6.2)   --><a id="eq:Gen_Poisson1"></a><!--
-
+𝛁 ⋅ [𝜖𝑖(𝐫)∇ϕ𝑖] = −4𝜋𝜌𝑖(𝐫), 𝑖 = 1, 2. (6.2) --><a id="eq:Gen_Poisson1"></a><!--
 -->
 <p>
-
 \begin{equation}
 \label {eq:Gen_Poisson1} \vect {\nabla } \cdot \left [ {\epsilon _i(\vect {r})\nabla {\pot _i}} \right ] = - 4\pi \rho _i(\vect {r}), \quad i =1,2.
 \end{equation}
-
 </p>
-
 <p>
 На межі областей \(\partial \Omega \) накладемо умови на потенціали \(\pot _1(\vect {r})\), \(\pot _2(\vect {r})\):
 </p>
 <span class="hidden"> \(\seteqnumber{0}{6.}{2}\)</span>
-
 <!--
-
-                                                                              ϕ1(𝐫)|𝐫∈𝜕Ω = ϕ2(𝐫)|𝐫∈𝜕Ω ,                                                                                                                                                                            (6.3)
-                                           (𝜖2𝐧 ⋅ 𝛁ϕ2)|𝐫∈𝜕Ω − (𝜖1𝐧 ⋅ 𝛁ϕ1)|𝐫∈𝜕Ω = 4𝜋𝜍|𝐫∈𝜕Ω,                                                                                                                                                                                         (6.4)
-
+ϕ1(𝐫)|
+𝐫∈𝜕Ω
+= ϕ2(𝐫)|
+𝐫∈𝜕Ω
+, (6.3)
+(𝜖2𝐧 ⋅ 𝛁ϕ2)|
+𝐫∈𝜕Ω
+− (𝜖1𝐧 ⋅ 𝛁ϕ1)|
+𝐫∈𝜕Ω
+= 4𝜋𝜍|
+𝐫∈𝜕Ω
+, (6.4)
 -->
-
 <p>
-
 \begin{align}
 \left . \pot _1(\vect {r})\right |_{\vect {r}\in \partial \Omega } &amp; = \left .\pot _2(\vect {r})\right |_{\vect {r}\in \partial \Omega }, \\ {\left . {\left ( {{\epsilon _2}{\vect {n}} \cdot \vect {\nabla }
 {\pot _2}} \right )} \right |_{{\vect {r}} \in \partial \Omega }} - {\left . {\left ( {{\epsilon _1}{\vect {n}} \cdot \vect {\nabla } {\pot _1}} \right )} \right |_{{\vect {r}} \in \partial \Omega }} &amp; =
@@ -1053,560 +908,263 @@ href="emmedia.html#pic:main_elstat_problem">6.1</a>). Крім того, на м
 \end{align}
 де \(\vect {n}\)&nbsp;— нормаль до поверхні \(\partial \Omega \) з середовища \(\Omega _\text {in}\) в середовище \(\Omega _\text {out}\). В області \(\Omega _\text {out}\) накладемо умову:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{6.}{4}\)</span>
-
 <!--
-
-                                                                                 lim {|∇ϕ2(𝐫)| 𝑟2} < ∞, 𝑟 = |𝐫| ,                                                                                                                                                                  (6.5)
-                                                                                 𝑟→∞
-
+lim
+𝑟→∞
+{|∇ϕ2(𝐫)| 𝑟2} < ∞, 𝑟 = |𝐫| , (6.5)
 -->
-
 <p>
-
 \begin{equation}
 \lim \limits _{r \to \infty } \left \{ {\left | {\nabla {\pot _2}({\vect {r}})} \right |{r^2}} \right \} &lt; \infty ,\quad r = \left | {\vect {r}} \right |,
 \end{equation}
-
 </p>
-
 <p>
 звідки випливає також, що \(\lim \limits _{r \to \infty } \left \{ | \pot _2(\vect {r}) |r \right \} &lt; \infty \).
 </p>
-
-<p>                                                                                                                                                                                                _\text  {out}\) є обмеженою, то на її границі можна задати значення потенціалу
-
-За умови виконання наведених умов, розв’язок основної задачі електростатики визначається однозначно. Узагальнення на більшу кількість областей не призводить до складнощів. Якщо область \(\Omega
+<p>
+За умови виконання наведених умов, розв’язок основної задачі електростатики визначається однозначно. Узагальнення на більшу кількість областей не призводить до складнощів. Якщо область \(\Omega _\text {out}\) є обмеженою, то на її границі можна задати значення потенціалу
 (задача Діріхле). Якщо у системі є провідники, на їх поверхні додатково накладають умови аналогічні мікроскопічному випадку. За цих умов потенціали визначаються однозначно.
 </p>
-
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-258"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.1.</span></span> <a id="autoid-259" ></a ><a id="LWR-ht-problem:6.{1}"></a>Діелектрична куля радіуса \(R\) з проникністю \(\epsilon =\const &gt; 1\) заряджена вільним
-зарядом \(q\) , який розподілений однорідно по об’єму. Зовні — вакуум. Знайти розподіл потенціалу, електричної індукції та напруженості за допомогою інтегральної форми рівнянь Максвелла та нарисувати (схематично) графіки залежності цих величин від радіальної змінної.
+<a id="LWR-ht-problem:6.{1}"></a><span class="probnum">6.1.</span> Діелектрична куля радіуса \(R\) з проникністю \(\epsilon =\const &gt; 1\) заряджена вільним зарядом \(q\) , який розподілений однорідно по об’єму. Зовні — вакуум. Знайти розподіл потенціалу,
+електричної індукції та напруженості за допомогою інтегральної форми рівнянь Максвелла та нарисувати (схематично) графіки залежності цих величин від радіальної змінної.
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-260"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.2.</span></span> <a id="autoid-261" ></a ><a id="LWR-ht-problem:6.{2}"></a>Усередині нескінченного шару \(-a &lt; x &lt; a\) (\(a&gt; 0 \)) об’ємна густина (вільного) заряду
-\(\rho = \const \) , діелектрична проникність \(\epsilon =\const &gt; 1\) (декартові координати). Зовні — вакуум. Знайти (макроскопічну) напруженість та індукцію електричного поля, які створені зарядами шару.
+<a id="LWR-ht-problem:6.{2}"></a><span class="probnum">6.2.</span> Усередині нескінченного шару \(-a &lt; x &lt; a\) (\(a&gt; 0 \)) об’ємна густина (вільного) заряду \(\rho = \const \) , діелектрична проникність \(\epsilon =\const &gt; 1\) (декартові
+координати). Зовні — вакуум. Знайти (макроскопічну) напруженість та індукцію електричного поля, які створені зарядами шару.
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-262"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.3.</span></span> <a id="autoid-263" ></a ><a id="LWR-ht-problem:6.{3}"></a>В однорідному середовищі діелектрична проникність \(\epsilon \). Знайти зв’язок між густиною вільних
-та зв’язаних зарядів.
+<a id="LWR-ht-problem:6.{3}"></a><span class="probnum">6.3.</span> В однорідному середовищі діелектрична проникність \(\epsilon \). Знайти зв’язок між густиною вільних та зв’язаних зарядів.
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-264"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.4.</span></span> <a id="autoid-265" ></a ><a id="LWR-ht-problem:6.{4}"></a>В однорідному статичному середовищі магнітна проникність \(\mu \). Знайти зв’язок між густиною
-вільних струмів та струмів намагнічення.
+<a id="LWR-ht-problem:6.{4}"></a><span class="probnum">6.4.</span> В однорідному статичному середовищі магнітна проникність \(\mu \). Знайти зв’язок між густиною вільних струмів та струмів намагнічення.
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-266"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.5.</span></span> <a id="autoid-267" ></a ><a id="LWR-ht-problem:6.{5}"></a> На плоскій поверхні, що розділяє середовища \(1\) та \(2\), задана поверхнева густина вільного заряду
-\(\sigma \). У середовищах діелектричні проникності, відповідно, \(\epsilon _1 &gt; 1\) та \(\epsilon _2 &gt; 1\) . Нормаль \(\vect {n}\) до поверхні спрямована з середовища \(2\) в \(1\). У середовищі \(1\) задана напруженість електричного поля \(\Efield _1\). Знайти
-напруженість електричного поля в середовищі \(2\) у векторному вигляді. <a href="answers.html#LWR-ht-solution:6.{5}">[відповідь]</a>
+<a id="LWR-ht-problem:6.{5}"></a><span class="probnum">6.5.</span> На плоскій поверхні, що розділяє середовища \(1\) та \(2\), задана поверхнева густина вільного заряду \(\sigma \). У середовищах діелектричні проникності, відповідно, \(\epsilon _1 &gt; 1\) та
+\(\epsilon _2 &gt; 1\) . Нормаль \(\vect {n}\) до поверхні спрямована з середовища \(2\) в \(1\). У середовищі \(1\) задана напруженість електричного поля \(\Efield _1\). Знайти напруженість електричного поля в середовищі \(2\) у векторному вигляді. <a
+href="answers.html#LWR-ht-solution:6.{5}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-268"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.6.</span></span> <a id="autoid-269" ></a ><a id="LWR-ht-problem:6.{6}"></a> Точковий заряд \(q\) розміщений на плоскій границі розділу двох однорідних діелектриків (границю
-розділу вважати нескінченною) з проникностями \(\epsilon _{1}\) і \(\epsilon _{2}\). Знайти напруженість і індукцію електричного поля, а також його потенціал в усьому просторі. <a href="answers.html#LWR-ht-solution:6.{6}">[відповідь]</a>
+<a id="LWR-ht-problem:6.{6}"></a><span class="probnum">6.6.</span> Точковий заряд \(q\) розміщений на плоскій границі розділу двох однорідних діелектриків (границю розділу вважати нескінченною) з проникностями \(\epsilon _{1}\) і \(\epsilon _{2}\). Знайти
+напруженість і індукцію електричного поля, а також його потенціал в усьому просторі. <a href="answers.html#LWR-ht-solution:6.{6}">[відповідь]</a>
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-270"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.7.</span></span> <a id="autoid-271" ></a ><a id="LWR-ht-problem:6.{7}"></a> Центр провідної кулі радіуса \(R\) з зарядом \(q\) розташований на плоскій межі розділу двох нескінченних
-однорідних діелектриків з проникностями \(\epsilon _1\) та \(\epsilon _2\) . Знайти потенціал та густину поверхневого заряду на кулі. <a href="answers.html#LWR-ht-solution:6.{7}">[відповідь]</a>
+<a id="LWR-ht-problem:6.{7}"></a><span class="probnum">6.7.</span> Центр провідної кулі радіуса \(R\) з зарядом \(q\) розташований на плоскій межі розділу двох нескінченних однорідних діелектриків з проникностями \(\epsilon _1\) та \(\epsilon _2\) . Знайти
+потенціал та густину поверхневого заряду на кулі. <a href="answers.html#LWR-ht-solution:6.{7}">[відповідь]</a>
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-272"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.8.</span></span> <a id="autoid-273" ></a ><a id="LWR-ht-problem:6.{8}"></a> Усередині нескінченної провідної труби прямокутного перерізу \(-a&lt;x&lt;a\); \(-b&lt;y&lt;b\);
-\(–\infty &lt;z&lt;\infty \), усі бічні сторони якої заземлені, у площині \(z=0\), вставлена тонка перетинка з поверхневою густиною вільного заряду \(\sigma = \sigma _0\sin (\pi x/a)\sin (\pi y/b)\). Координати декартові. Діелектрична проникність \(\epsilon (z
-&lt; 0) = \epsilon _1\), \(\epsilon (z &gt; 0) = \epsilon _2\). Знайти розподіл потенціалу \(\pot (x,y,z)\) всередині труби.
+<a id="LWR-ht-problem:6.{8}"></a><span class="probnum">6.8.</span> Усередині нескінченної провідної труби прямокутного перерізу \(-a&lt;x&lt;a\); \(-b&lt;y&lt;b\); \(–\infty &lt;z&lt;\infty \), усі бічні сторони якої заземлені, у площині \(z=0\),
+вставлена тонка перетинка з поверхневою густиною вільного заряду \(\sigma = \sigma _0\sin (\pi x/a)\sin (\pi y/b)\). Координати декартові. Діелектрична проникність \(\epsilon (z &lt; 0) = \epsilon _1\), \(\epsilon (z &gt; 0) = \epsilon _2\). Знайти
+розподіл потенціалу \(\pot (x,y,z)\) всередині труби.
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-274"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.9.</span></span> <a id="autoid-275" ></a ><a id="LWR-ht-problem:6.{9}"></a> На площині \(z=0\) (декартові координати \(x\),\(y\),\(z\)) поверхнева густина вільного заряду
+<a id="LWR-ht-problem:6.{9}"></a><span class="probnum">6.9.</span> На площині \(z=0\) (декартові координати \(x\),\(y\),\(z\)) поверхнева густина вільного заряду
 </p>
 <ul class="enumerate" style="list-style-type:none">
-
 <li>
 <p>
 <span class="listmarker">а)</span> \(\sigma (x,y) = \sigma _0\sin (\alpha x)\cos (\beta y)\);
 </p>
-
 </li>
 <li>
-
 <p>
 <span class="listmarker">б)</span> \(\sigma (x,y) = {\sigma _0}{\sin ^2}(x/L)\cos (y/L)\).
 </p>
 </li>
 </ul>
-
 <p>
 Діелектрична проникність \(\epsilon (z &lt; 0) = \epsilon _1\), \(\epsilon (z &gt; 0) = \epsilon _2\). Знайти потенціал в усьому просторі.
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-276"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.10.</span></span> <a id="autoid-277" ></a ><a id="LWR-ht-problem:6.{10}"></a> Знайти силу, що діє на точковий сферично симетричний заряд \(q\) з боку незарядженої діелектричної
-сфери радіусу \(R\) з проникністю \(\epsilon = \const \) . Відстань від заряду до центру сфери \(D &gt; R\).
+<a id="LWR-ht-problem:6.{10}"></a><span class="probnum">6.10.</span> Знайти силу, що діє на точковий сферично симетричний заряд \(q\) з боку незарядженої діелектричної сфери радіусу \(R\) з проникністю \(\epsilon = \const \) . Відстань від заряду до центру
+сфери \(D &gt; R\).
 </p>
-
 <p>
 <em>Вказівка</em>: використати розклад потенціалу за поліномами Лежандра.
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-278"></a>                                                                                                          id="LWR-ht-problem:6.{11}"></a> Усередині однорідної діелектричної кулі радіусу \(R\) з проникністю \(\epsilon  =\const  \) об’ємна
-<li>                                                                                                                             R\)), яка заземлена. Знайти потенціал всередині кулі та густину зарядів, індукованих на сфері.
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.11.</span></span> <a id="autoid-279" ></a ><a
-густина заряду в сферичних координатах \(\rho = \rho _0(r/R)^n\cos \theta \) (\(r&lt;R\)). Куля оточена провідною сферою (\(r =
+<a id="LWR-ht-problem:6.{11}"></a><span class="probnum">6.11.</span> Усередині однорідної діелектричної кулі радіусу \(R\) з проникністю \(\epsilon =\const \) об’ємна густина заряду в сферичних координатах \(\rho = \rho _0(r/R)^n\cos \theta \)
+(\(r&lt;R\)). Куля оточена провідною сферою (\(r = R\)), яка заземлена. Знайти потенціал всередині кулі та густину зарядів, індукованих на сфері.
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-280"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.12.</span></span> <a id="autoid-281" ></a ><a id="LWR-ht-problem:6.{12}"></a> Провідну незаряджену заземлену кулю радіуса \(R\) вносять у зовнішнє однорідне електричне поле
-\(\Efield _0\). Знайти індукований дипольний момент кулі та розподіл індукованих зарядів на її поверхні.
+<a id="LWR-ht-problem:6.{12}"></a><span class="probnum">6.12.</span> Провідну незаряджену заземлену кулю радіуса \(R\) вносять у зовнішнє однорідне електричне поле \(\Efield _0\). Знайти індукований дипольний момент кулі та розподіл індукованих зарядів на її
+поверхні.
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-282"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.13.</span></span> <a id="autoid-283" ></a ><a id="LWR-ht-problem:6.{13}"></a> Провідну заряджену ізольовану кулю (заряд \(q\)) радіуса \(R\) вносять у зовнішнє однорідне електричне
-поле \(\Efield _0\). Знайти індукований дипольний момент кулі та розподіл індукованих зарядів на її поверхні.
+<a id="LWR-ht-problem:6.{13}"></a><span class="probnum">6.13.</span> Провідну заряджену ізольовану кулю (заряд \(q\)) радіуса \(R\) вносять у зовнішнє однорідне електричне поле \(\Efield _0\). Знайти індукований дипольний момент кулі та розподіл індукованих
+зарядів на її поверхні.
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-284"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.14.</span></span> <a id="autoid-285" ></a ><a id="LWR-ht-problem:6.{14}"></a> Діелектричну кулю радіуса \(R\) (діелектрична проникність кулі \(\epsilon ^{(i)}\)) вносять у
-зовнішнє однорідне електричне поле з напруженістю \(\Efield _0\) . Діелектрична проникність середовища навколо кулі дорівнює \(\epsilon ^{(e)}\). Знайти напруженість і потенціал поля в середині і зовні кулі. Знайти вектор поляризації кулі і густину зв’язаних зарядів на його
-поверхні. <a href="answers.html#LWR-ht-solution:6.{14}">[відповідь]</a>
+<a id="LWR-ht-problem:6.{14}"></a><span class="probnum">6.14.</span> Діелектричну кулю радіуса \(R\) (діелектрична проникність кулі \(\epsilon ^{(i)}\)) вносять у зовнішнє однорідне електричне поле з напруженістю \(\Efield _0\) . Діелектрична проникність
+середовища навколо кулі дорівнює \(\epsilon ^{(e)}\). Знайти напруженість і потенціал поля в середині і зовні кулі. Знайти вектор поляризації кулі і густину зв’язаних зарядів на його поверхні. <a href="answers.html#LWR-ht-solution:6.{14}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-286"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.15.</span></span> <a id="autoid-287" ></a ><a id="LWR-ht-problem:6.{15}"></a> Електричне поле утворене розподілом вільних зарядів зовні кулі з діелектричною проникністю
-\(\epsilon \) радіуса \(R\), всередині зарядів немає. Знайти потенціал \(\pot (r,\theta ,\phi )\) (в сферичних координатах) при \(r&lt;R\), якщо на поверхні \(\pot (R,\theta ,\phi ) = \pot _0\cos \theta \), а також густину зв’язаних зарядів на поверхні. <a
-href="answers.html#LWR-ht-solution:6.{15}">[відповідь]</a>
+<a id="LWR-ht-problem:6.{15}"></a><span class="probnum">6.15.</span> Електричне поле утворене розподілом вільних зарядів зовні кулі з діелектричною проникністю \(\epsilon \) радіуса \(R\), всередині зарядів немає. Знайти потенціал \(\pot (r,\theta ,\phi )\)
+(в сферичних координатах) при \(r&lt;R\), якщо на поверхні \(\pot (R,\theta ,\phi ) = \pot _0\cos \theta \), а також густину зв’язаних зарядів на поверхні. <a href="answers.html#LWR-ht-solution:6.{15}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-288"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.16.</span></span> <a id="autoid-289" ></a ><a id="LWR-ht-problem:6.{16}"></a> Електричне поле утворене розподілом зарядів усередині кулі з діелектричною проникністю \(\epsilon
-\) радіуса \(R\). Зовні кулі&nbsp;— вакуум, зарядів немає. Знайти потенціал \(\pot (r,\theta ,\phi )\) (в сферичних координатах \(r\),\(\theta \),\(\phi \)) при \(r&gt;R\), якщо на поверхні \(\pot (R,\theta ,\phi ) = \pot _0\cos \theta \). <a
-href="answers.html#LWR-ht-solution:6.{16}">[відповідь]</a>
+<a id="LWR-ht-problem:6.{16}"></a><span class="probnum">6.16.</span> Електричне поле утворене розподілом зарядів усередині кулі з діелектричною проникністю \(\epsilon \) радіуса \(R\). Зовні кулі&nbsp;— вакуум, зарядів немає. Знайти потенціал \(\pot
+(r,\theta ,\phi )\) (в сферичних координатах \(r\),\(\theta \),\(\phi \)) при \(r&gt;R\), якщо на поверхні \(\pot (R,\theta ,\phi ) = \pot _0\cos \theta \). <a href="answers.html#LWR-ht-solution:6.{16}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-290"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.17.</span></span> <a id="autoid-291" ></a ><a id="LWR-ht-problem:6.{17}"></a><a id="prb:OrtFunc"></a> Електричне поле утворене розподілом зарядів на поверхні кулі радіуса
-\(R\), всередині і зовні зарядів немає. Усередині кулі діелектрична проникність \(\epsilon \), зовні&nbsp;— вакуум. На поверхні електричний потенціал \(\pot (R,\theta ,\phi ) = \pot _0\cos \theta \). Знайти потенціал \(\pot (r,\theta ,\phi )\) зовні та усередині
-кулі (в сферичних координатах) та густину вільних зарядів на поверхні кулі. <a href="answers.html#LWR-ht-solution:6.{17}">[відповідь]</a>
+<a id="LWR-ht-problem:6.{17}"></a><span class="probnum">6.17.</span> <a id="prb:OrtFunc"></a> Електричне поле утворене розподілом зарядів на поверхні кулі радіуса \(R\), всередині і зовні зарядів немає. Усередині кулі діелектрична проникність \(\epsilon \),
+зовні&nbsp;— вакуум. На поверхні електричний потенціал \(\pot (R,\theta ,\phi ) = \pot _0\cos \theta \). Знайти потенціал \(\pot (r,\theta ,\phi )\) зовні та усередині кулі (в сферичних координатах) та густину вільних зарядів на поверхні кулі. <a
+href="answers.html#LWR-ht-solution:6.{17}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-292"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.18.</span></span> <a id="autoid-293" ></a ><a id="LWR-ht-problem:6.{18}"></a> Електричне поле утворене розподілом зарядів на поверхні циліндру радіуса \(R\), інших зарядів немає.
-Усередині діелектрична проникність \(\epsilon \), зовні&nbsp;— вакуум. На поверхні \(\pot (R,z,\phi ) = \pot _0\cos (m\phi )\). Знайти потенціал \(\pot (r,\theta ,\phi ) \) (зовні та усередині циліндру, в циліндричних координатах) та густину вільних зарядів на
-поверхні циліндру (координати \(r\), \(z\), \(\phi \) — циліндричні). <a href="answers.html#LWR-ht-solution:6.{18}">[відповідь]</a>
+<a id="LWR-ht-problem:6.{18}"></a><span class="probnum">6.18.</span> Електричне поле утворене розподілом зарядів на поверхні циліндру радіуса \(R\), інших зарядів немає. Усередині діелектрична проникність \(\epsilon \), зовні&nbsp;— вакуум. На поверхні \(\pot
+(R,z,\phi ) = \pot _0\cos (m\phi )\). Знайти потенціал \(\pot (r,\theta ,\phi ) \) (зовні та усередині циліндру, в циліндричних координатах) та густину вільних зарядів на поверхні циліндру (координати \(r\), \(z\), \(\phi \) — циліндричні). <a
+href="answers.html#LWR-ht-solution:6.{18}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-294"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.19.</span></span> <a id="autoid-295" ></a ><a id="LWR-ht-problem:6.{19}"></a><a id="prb:L"></a> Електричне поле утворене розподілом зарядів
+<a id="LWR-ht-problem:6.{19}"></a><span class="probnum">6.19.</span> <a id="prb:L"></a> Електричне поле утворене розподілом зарядів
 </p>
-
 <p>
 \[ \sigma (\theta , \phi ) = \sum \limits _{n=0}^{\infty }\sum \limits _{m = -n}^ns_{mn}Y_{nm}(\theta , \phi ) \]
 </p>
-
-<p>                                                                                                                                                 \), зовні&nbsp;— вакуум. Знайти потенціал \(\pot  (r,\theta  ,\phi  )\) (зовні та усередині кулі, в сферичних координатах \(r\),
-
-(де припускаємо, що ряд швидко збігається) на поверхні кулі радіуса \(R\), інших зарядів немає. Усередині кулі діелектрична проникність \(\epsilon
+<p>
+(де припускаємо, що ряд швидко збігається) на поверхні кулі радіуса \(R\), інших зарядів немає. Усередині кулі діелектрична проникність \(\epsilon \), зовні&nbsp;— вакуум. Знайти потенціал \(\pot (r,\theta ,\phi )\) (зовні та усередині кулі, в сферичних координатах \(r\),
 \(\theta \), \(\phi \)). <a href="answers.html#LWR-ht-solution:6.{19}">[відповідь]</a>
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-296"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.20.</span></span> <a id="autoid-297" ></a ><a id="LWR-ht-problem:6.{20}"></a> Електричне поле утворене розподілом вільних зарядів на поверхні циліндру радіуса \(R\) з густиною
-\(\sigma (z,\varphi ) = \sigma _0\sin (m\varphi )\), інших зарядів немає. Усередині циліндру діелектрична проникність \(\epsilon \), зовні&nbsp;— вакуум. Знайти потенціал \(\pot (r,z,\phi )\) (зовні та усередині циліндру), в циліндричних координатах та густину
-вільних зарядів на поверхні циліндру.
+<a id="LWR-ht-problem:6.{20}"></a><span class="probnum">6.20.</span> Електричне поле утворене розподілом вільних зарядів на поверхні циліндру радіуса \(R\) з густиною \(\sigma (z,\varphi ) = \sigma _0\sin (m\varphi )\), інших зарядів немає.
+Усередині циліндру діелектрична проникність \(\epsilon \), зовні&nbsp;— вакуум. Знайти потенціал \(\pot (r,z,\phi )\) (зовні та усередині циліндру), в циліндричних координатах та густину вільних зарядів на поверхні циліндру.
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-298"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.21.</span></span> <a id="autoid-299" ></a ><a id="LWR-ht-problem:6.{21}"></a> Електричне поле утворене розподілом зарядів \(\sigma (\theta ,\varphi ) = {\sigma
-_0}\cos (\theta ) + \sigma _1\) на поверхні кулі радіуса \(R\), інших зарядів немає. Усередині діелектрична проникність \(\epsilon \), зовні&nbsp;— вакуум. Знайти потенціал \(\pot (r,\theta ,\phi )\) в усьому просторі (в сферичних координатах ).
+<a id="LWR-ht-problem:6.{21}"></a><span class="probnum">6.21.</span> Електричне поле утворене розподілом зарядів \(\sigma (\theta ,\varphi ) = {\sigma _0}\cos (\theta ) + \sigma _1\) на поверхні кулі радіуса \(R\), інших зарядів немає.
+Усередині діелектрична проникність \(\epsilon \), зовні&nbsp;— вакуум. Знайти потенціал \(\pot (r,\theta ,\phi )\) в усьому просторі (в сферичних координатах ).
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-300"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.22.</span></span> <a id="autoid-301" ></a ><a id="LWR-ht-problem:6.{22}"></a> На пласкій поверхні, що розділяє середовища \(1\) та \(2\), задана поверхнева густина вільного струму
-\(\vect {i}\). У середовищах магнітні проникності, відповідно, \(\mu _1 &gt; 1\) та \(\mu _2 &gt; 1\) . Нормаль \(\vect {n}\) до поверхні спрямована з середовища \(2\) в \(1\). У середовищі \(1\) задана напруженість магнітного поля \(\Hfield _1\). Знайти напруженість
-магнітного поля в середовищі \(2\) у векторному вигляді. <a href="answers.html#LWR-ht-solution:6.{22}">[відповідь]</a>
+<a id="LWR-ht-problem:6.{22}"></a><span class="probnum">6.22.</span> На пласкій поверхні, що розділяє середовища \(1\) та \(2\), задана поверхнева густина вільного струму \(\vect {i}\). У середовищах магнітні проникності, відповідно, \(\mu _1 &gt; 1\) та \(\mu
+_2 &gt; 1\) . Нормаль \(\vect {n}\) до поверхні спрямована з середовища \(2\) в \(1\). У середовищі \(1\) задана напруженість магнітного поля \(\Hfield _1\). Знайти напруженість магнітного поля в середовищі \(2\) у векторному вигляді. <a
+href="answers.html#LWR-ht-solution:6.{22}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-302"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.23.</span></span> <a id="autoid-303" ></a ><a id="LWR-ht-problem:6.{23}"></a> Нескінченний прямолінійний циліндричний провідник радіуса \(R\) з магнітною проникністю \(\mu _1\)
-знаходиться в зовнішньому неоднорідному магнітному полі. Віссю провідника є вісь аплікат \(ОZ\). Напруженість зовнішнього поля \(H_x = H_0\frac {x}{R}\), \(H_y = - H_0\frac {y}{R}\), \(H_z = 0\) (координати декартові). Магнітна проникність середовища зовні провідника
-\(\mu _2\). Знайти напруженість поля усередині та зовні провідника, та густину поверхневого струму намагнічення на поверхні провідника.
+<a id="LWR-ht-problem:6.{23}"></a><span class="probnum">6.23.</span> Нескінченний прямолінійний циліндричний провідник радіуса \(R\) з магнітною проникністю \(\mu _1\) знаходиться в зовнішньому неоднорідному магнітному полі. Віссю провідника є вісь аплікат
+\(ОZ\). Напруженість зовнішнього поля \(H_x = H_0\frac {x}{R}\), \(H_y = - H_0\frac {y}{R}\), \(H_z = 0\) (координати декартові). Магнітна проникність середовища зовні провідника \(\mu _2\). Знайти напруженість поля усередині та зовні провідника, та густину поверхневого
+струму намагнічення на поверхні провідника.
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-304"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.24.</span></span> <a id="autoid-305" ></a ><a id="LWR-ht-problem:6.{24}"></a> В нескінченому прямому циліндричному провідникові радіуса \(R\) тече вільний струм з густиною
-\(a/r\), де \(r\)&nbsp;— відстань від осі провідника, \(a = \const \), напрямок&nbsp;— по осі провідника. Усередині магнітна проникність \(\mu = \const \), зовні&nbsp;— вакуум. Знайти векторний потенціал струму \(\vect {A}(r)\) з точністю до константи всередині та зовні
-провідника. Калібрувальна умова \(\vect {\nabla }\cdot \vect {A} = 0\). <a href="answers.html#LWR-ht-solution:6.{24}">[відповідь]</a>
+<a id="LWR-ht-problem:6.{24}"></a><span class="probnum">6.24.</span> В нескінченому прямому циліндричному провідникові радіуса \(R\) тече вільний струм з густиною \(a/r\), де \(r\)&nbsp;— відстань від осі провідника, \(a = \const \), напрямок&nbsp;— по осі
+провідника. Усередині магнітна проникність \(\mu = \const \), зовні&nbsp;— вакуум. Знайти векторний потенціал струму \(\vect {A}(r)\) з точністю до константи всередині та зовні провідника. Калібрувальна умова \(\vect {\nabla }\cdot \vect {A} = 0\). <a
+href="answers.html#LWR-ht-solution:6.{24}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-306"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.25.</span></span> <a id="autoid-307" ></a ><a id="LWR-ht-problem:6.{25}"></a> Струм \(\vect {j} = j_0 \vect {e}_z\) протікає вздовж нескінченного циліндру радіуса \(R\).
-Зовні струмів немає. Напрямок осі циліндра заданий одиничним вектором \(\vect {e}_z\). Знайти (з точністю до адитивної константи) вектор-потенціал магнітного поля \(\vect {A})\) в усьому просторі, калібрувальна умова \(\vect {\nabla }\cdot \vect {A} = 0\). Результат
-подати у векторному вигляді через вектори \(\vect {r}\) та \(\vect {e}_z\) (\(\vect {r} \perp \vect {e}_z\)) . Усередині магнітна проникність \(\mu = \const \) , зовні&nbsp;— вакуум.
+<a id="LWR-ht-problem:6.{25}"></a><span class="probnum">6.25.</span> Струм \(\vect {j} = j_0 \vect {e}_z\) протікає вздовж нескінченного циліндру радіуса \(R\). Зовні струмів немає. Напрямок осі циліндра заданий одиничним вектором \(\vect {e}_z\).
+Знайти (з точністю до адитивної константи) вектор-потенціал магнітного поля \(\vect {A})\) в усьому просторі, калібрувальна умова \(\vect {\nabla }\cdot \vect {A} = 0\). Результат подати у векторному вигляді через вектори \(\vect {r}\) та \(\vect {e}_z\) (\(\vect {r}
+\perp \vect {e}_z\)) . Усередині магнітна проникність \(\mu = \const \) , зовні&nbsp;— вакуум.
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-308"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.26.</span></span> <a id="autoid-309" ></a ><a id="LWR-ht-problem:6.{26}"></a> Точковий заряд \(q\) знаходиться в середовищі з діелектричною проникністю \(\epsilon _1\) на
-відстані \(d\) від границі розділу рідких діелектриків. Діелектрична проникність другого діелектрика дорівнює \(\epsilon _2\). Чому дорівнює сила, що діє на заряд? Від чого залежить напрямок цієї сили? <a href="answers.html#LWR-ht-solution:6.{26}">[відповідь]</a>
+<a id="LWR-ht-problem:6.{26}"></a><span class="probnum">6.26.</span> Точковий заряд \(q\) знаходиться в середовищі з діелектричною проникністю \(\epsilon _1\) на відстані \(d\) від границі розділу рідких діелектриків. Діелектрична проникність другого діелектрика
+дорівнює \(\epsilon _2\). Чому дорівнює сила, що діє на заряд? Від чого залежить напрямок цієї сили? <a href="answers.html#LWR-ht-solution:6.{26}">[відповідь]</a>
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-310"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.27.</span></span> <a id="autoid-311" ></a ><a id="LWR-ht-problem:6.{27}"></a><a id="prb:dipole_in_field"></a> У вакуумі, на відстані \(d\) від напівпростору, заповненого
-однорідним діелектриком з проникністю \(\epsilon \), закріплений центр точкового жорсткого диполя з моментом \(\vect {p}\). Паралельно межі півпростору прикладене однорідне зовнішнє електричне поле \(\Efield \) (рис.&nbsp;<a
-href="emmedia.html#dipole_in_field">6.2</a>). Диполь може вільно обертатися в площині, паралельній до напрямку \(\Efield \) і ортогонально до межі діелектрика. Знайти значення кута 𝛼 між напрямком векторів \(\Efield \) і \(\vect {p}\), яке відповідає стійкому положенню
-рівноваги. <a href="answers.html#LWR-ht-solution:6.{27}">[відповідь]</a>
+<a id="LWR-ht-problem:6.{27}"></a><span class="probnum">6.27.</span> <a id="prb:dipole_in_field"></a> У вакуумі, на відстані \(d\) від напівпростору, заповненого однорідним діелектриком з проникністю \(\epsilon \), закріплений центр точкового
+жорсткого диполя з моментом \(\vect {p}\). Паралельно межі півпростору прикладене однорідне зовнішнє електричне поле \(\Efield \) (рис.&nbsp;<a href="emmedia.html#dipole_in_field">6.2</a>). Диполь може вільно обертатися в площині, паралельній до напрямку \(\Efield
+\) і ортогонально до межі діелектрика. Знайти значення кута 𝛼 між напрямком векторів \(\Efield \) і \(\vect {p}\), яке відповідає стійкому положенню рівноваги. <a href="answers.html#LWR-ht-solution:6.{27}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<figure id="autoid-312" class="figure ">
+<figure id="autoid-10" class="figure ">
 <div class="center">
-
 <p>
 <span
-
-      id="lateximage-main-html-13"
-      class="lateximagesource"
+id="lateximage-main-html-13"
+class="lateximagesource"
 ><!--
-       𝐩
-                𝛼
-
-   𝐄
-                𝑑
-
 𝜖
+𝐩
+𝛼
+𝑑
+𝐄
 --><img
-      src="main-html-images/image-13.svg"
-      alt="Рис. 6.2. До задачі 6.27"
-      style=""
-      class="lateximage"
-
+src="main-html-images/image-13.svg"
+alt="Рис. 6.2. До задачі 6.27"
+style=""
+class="lateximage"
 ></span>
 </p>
-
 <div class="figurecaption">
 Рис.&nbsp;6.2. До задачі&nbsp;<a href="emmedia.html#prb:dipole_in_field">6.27</a>
-
 </div>
-
 <a id="dipole_in_field"></a>
-
 </div>
-
 </figure>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-313"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.28.</span></span> <a id="autoid-314" ></a ><a id="LWR-ht-problem:6.{28}"></a> Незаряджена металева сфера маси \(m\) плаває в діелектричній рідини з проникністю \(\epsilon \),
-занурившись в неї на одну чверть свого об’єму. До якого потенціалу слід зарядити сферу, щоб вона плавала зануреною в неї наполовину? <a href="answers.html#LWR-ht-solution:6.{28}">[відповідь]</a>
+<a id="LWR-ht-problem:6.{28}"></a><span class="probnum">6.28.</span> Незаряджена металева сфера маси \(m\) плаває в діелектричній рідини з проникністю \(\epsilon \), занурившись в неї на одну чверть свого об’єму. До якого потенціалу слід зарядити сферу, щоб вона
+плавала зануреною в неї наполовину? <a href="answers.html#LWR-ht-solution:6.{28}">[відповідь]</a>
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-315"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.29.</span></span> <a id="autoid-316" ></a ><a id="LWR-ht-problem:6.{29}"></a> Однорідний ізотропний діелектрик з проникністю \(\epsilon \) заповнює весь нижній півпростір. У
-вакуумі на відстані \(d\) від його поверхні знаходиться точковий заряд \(q\). Визначити поверхневу густину поляризаційних (зв’язаних) зарядів в довільній точці на межі розділу, а також повний зв’язаний заряд на поверхні діелектрика. Який результат вийде, при \(\epsilon \to \infty \),
-який це має фізичний зміст? <a href="answers.html#LWR-ht-solution:6.{29}">[відповідь]</a>
+<a id="LWR-ht-problem:6.{29}"></a><span class="probnum">6.29.</span> Однорідний ізотропний діелектрик з проникністю \(\epsilon \) заповнює весь нижній півпростір. У вакуумі на відстані \(d\) від його поверхні знаходиться точковий заряд \(q\). Визначити поверхневу
+густину поляризаційних (зв’язаних) зарядів в довільній точці на межі розділу, а також повний зв’язаний заряд на поверхні діелектрика. Який результат вийде, при \(\epsilon \to \infty \), який це має фізичний зміст? <a
+href="answers.html#LWR-ht-solution:6.{29}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-317"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 6.30.</span></span> <a id="autoid-318" ></a ><a id="LWR-ht-problem:6.{30}"></a>Два точкових заряди \(q_1\) та \(q_2\) знаходиться на однакових відстанях \(d\) від границі розділу двох
-рідких діелектриків з проникностями \(\epsilon _1\) та \(\epsilon _2\), відповідно. Знайдіть сили, що діють на кожен з зарядів. Проаналізуйте знак сил, що діють на заряди. <a href="answers.html#LWR-ht-solution:6.{30}">[відповідь]</a>
+<a id="LWR-ht-problem:6.{30}"></a><span class="probnum">6.30.</span> Два точкових заряди \(q_1\) та \(q_2\) знаходиться на однакових відстанях \(d\) від границі розділу двох рідких діелектриків з проникностями \(\epsilon _1\) та \(\epsilon _2\), відповідно.
+Знайдіть сили, що діють на кожен з зарядів. Проаналізуйте знак сил, що діють на заряди. <a href="answers.html#LWR-ht-solution:6.{30}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
 </section>
 </main>
-
 <nav class="botnavigation"><a href="main-html.html" class="linkhome" >
 Головна</a></nav>
 </div><!-- grid -->

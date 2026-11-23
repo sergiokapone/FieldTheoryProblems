@@ -137,8 +137,11 @@
 % of their own "Відповіді" (\answers); a problem links to its answer and the answer back to the problem
 \RequirePackage{answers}
 \Newassociation{solution}{Solution}{answer}
-\NewDocumentEnvironment{problem}{o}{\IfNoValueTF{#1}{\begin{problemX}}{\begin{problemX}[#1]}\hypertarget{problem:\theproblem}{}}%
-  {\ifcsname r@solution\theproblem\endcsname\ \hyperlink{solution:\theproblem}{[відповідь]}\fi\end{problemX}}
+% a problem is a plain block (no ntheorem list: lwarp's <ul><li> of a theorem sometimes came out of pdftotext with the text lines
+% in front of the <li>): the number hangs in the left margin, an optional title follows it in brackets
+\NewDocumentEnvironment{problem}{o}{\par\refstepcounter{problemX}\begin{BlockClass}{cb-problem}%
+  \hypertarget{problem:\theproblem}{}\InlineClass{probnum}{\theproblem.}\ \IfValueT{#1}{(\emph{#1})\ }}%
+  {\ifcsname r@solution\theproblem\endcsname\ \hyperlink{solution:\theproblem}{[відповідь]}\fi\end{BlockClass}}
 \renewenvironment{Solution}[1]{\begin{BlockClass}{cb-answer}%
   \hypertarget{solution:#1}{}\label{solution#1}\textbf{\hyperlink{problem:#1}{#1.}}\ }{\end{BlockClass}}
 \newenvironment{answerbox}{\begin{BlockClass}{cb-answer}}{\end{BlockClass}}

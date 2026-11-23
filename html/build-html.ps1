@@ -168,6 +168,9 @@ function Get-EmptySvg([string]$dir) {
 }
 
 # --- checks ------------------------------------------------------------------
+# lwarpmk runs "pdftotext -layout", which reorders pieces of a paragraph (see html/tools/pdftotext-raw): use -raw through a wrapper
+$realP2T = Get-Command pdftotext -ErrorAction SilentlyContinue
+if ($realP2T) { $env:PDFTOTEXT_REAL = $realP2T.Source; $env:PATH = (Join-Path $HTMLDIR 'tools\pdftotext-raw') + [IO.Path]::PathSeparator + $env:PATH }
 $py = $null
 foreach ($c in 'py', 'python') { if (Get-Command $c -ErrorAction SilentlyContinue) { $py = $c; break } }
 $missing = @()

@@ -764,3 +764,8 @@ li:has(> p > a[id^="LWR-ht-cite"]) > p + p{
    форма близька до STIX Two Math. У SVG-виводі MathJax такі символи йдуть через <text>. */
 @font-face{font-family:"STIX Two Math";src:url("fonts/STIXTwoMath-Regular.otf") format("opentype");font-display:swap}
 mjx-container svg text{font-family:"STIX Two Math",serif !important}
+
+/* problems (cb-problem): number hangs in the left margin */
+.cb-problem{position:relative;padding-left:3.4rem;margin:0 0 1rem}
+.cb-problem .probnum{position:absolute;left:0;width:3.1rem;font-weight:650;font-size:.92em;color:var(--indigo)}
+.cb-problem em:first-of-type{font-family:var(--sans);font-style:normal;font-weight:600;font-size:.95em}

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -7,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Класична електродинаміка. Збірник задач — Відповіді</title>
 <link rel="stylesheet" type="text/css" href="assets/conspect.css" />
-
 <script>
 // Lwarp MathJax emulation code
 //
@@ -24,260 +22,196 @@
 // number is auto-incremented by MathJax between equations.
 //
 MathJax = {
-
-   subequations: "0",
-   section: "",
-   loader: {
-
-       load: ['[tex]/tagformat', '[tex]/textmacros'],
-   },
-   startup: {
-
-       ready() {
-          // These would be replaced by import commands if you wanted to make
-          // a proper extension.
-          const Configuration = MathJax._.input.tex.Configuration.Configuration;
-          const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
-          const Macro = MathJax._.input.tex.Symbol.Macro;
-          const TexError = MathJax._.input.tex.TexError.default;
-          const ParseUtil = MathJax._.input.tex.ParseUtil.default;
-          const expandable = MathJax._.util.Options.expandable;
-
+subequations: "0",
+section: "",
+loader: {
+load: ['[tex]/tagformat', '[tex]/textmacros'],
+},
+startup: {
+ready() {
+// These would be replaced by import commands if you wanted to make
+// a proper extension.
+const Configuration = MathJax._.input.tex.Configuration.Configuration;
+const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+const Macro = MathJax._.input.tex.Symbol.Macro;
+const TexError = MathJax._.input.tex.TexError.default;
+const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+const expandable = MathJax._.util.Options.expandable;
 // Insert the replacement string into the TeX string, and check
 // that there haven't been too many maxro substitutions (prevents
 // infinite loops).
 const useArgument = (parser, text) => {
-
-   parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-   parser.i = 0;
-   if (++parser.macroCount > parser.configuration.options.maxMacros) {
-
-       throw new TexError('MaxMacroSub1',
-       'MathJax maximum macro substitution count exceeded; ' +
-       'is there a recursive macro call?');
-   }
+parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+parser.i = 0;
+if (++parser.macroCount > parser.configuration.options.maxMacros) {
+throw new TexError('MaxMacroSub1',
+'MathJax maximum macro substitution count exceeded; ' +
+'is there a recursive macro call?');
 }
-
+}
 // Create the command map for:
-
 // \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-
 new CommandMap('Lwarp-macros', {
-
 ifstar: 'IfstarFunction',
-
 ifnextchar: 'IfnextcharFunction',
-
 ifblank: 'IfblankFunction',
-
 ifstrequal: 'IfstrequalFunction',
-
 gsubstitute: 'GsubstituteFunction',
-
 seteqnumber: 'SeteqnumberFunction'
-
 }, {
-
 // This function implements an ifstar macro.
-
 IfstarFunction(parser, name) {
-
-     const resultstar = parser.GetArgument(name);
-
-     const resultnostar = parser.GetArgument(name);
-
-     const star = parser.GetStar();                                  // true if there is a *
-
-     useArgument(parser, star ? resultstar : resultnostar);
-
+const resultstar = parser.GetArgument(name);
+const resultnostar = parser.GetArgument(name);
+const star = parser.GetStar(); // true if there is a *
+useArgument(parser, star ? resultstar : resultnostar);
 },
-
 // This function implements an ifnextchar macro.
 IfnextcharFunction(parser, name) {
-
-   let whichchar = parser.GetArgument(name);
-   if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-
-       // $ syntax highlighting
-       whichchar = String.fromCodePoint(parseInt(whichchar));
-   }
-   const resultnextchar = parser.GetArgument(name);
-   const resultnotnextchar = parser.GetArgument(name);
-   const gotchar = (parser.GetNext() === whichchar);
-   useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+let whichchar = parser.GetArgument(name);
+if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+// $ syntax highlighting
+whichchar = String.fromCodePoint(parseInt(whichchar));
+}
+const resultnextchar = parser.GetArgument(name);
+const resultnotnextchar = parser.GetArgument(name);
+const gotchar = (parser.GetNext() === whichchar);
+useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
 },
-
 // This function implements an ifblank macro.
 IfblankFunction(parser, name) {
-
-   const blankarg = parser.GetArgument(name);
-   const resultblank = parser.GetArgument(name);
-   const resultnotblank = parser.GetArgument(name);
-   const isblank = (blankarg.trim() == "");
-   useArgument(parser, isblank ? resultblank : resultnotblank);
+const blankarg = parser.GetArgument(name);
+const resultblank = parser.GetArgument(name);
+const resultnotblank = parser.GetArgument(name);
+const isblank = (blankarg.trim() == "");
+useArgument(parser, isblank ? resultblank : resultnotblank);
 },
-
 // This function implements an ifstrequal macro.
 IfstrequalFunction(parser, name) {
-
-   const strequalfirst = parser.GetArgument(name);
-   const strequalsecond = parser.GetArgument(name);
-   const resultequal = parser.GetArgument(name);
-   const resultnotequal = parser.GetArgument(name);
-   const isequal = (strequalfirst == strequalsecond);
-   useArgument(parser, isequal ? resultequal : resultnotequal);
+const strequalfirst = parser.GetArgument(name);
+const strequalsecond = parser.GetArgument(name);
+const resultequal = parser.GetArgument(name);
+const resultnotequal = parser.GetArgument(name);
+const isequal = (strequalfirst == strequalsecond);
+useArgument(parser, isequal ? resultequal : resultnotequal);
 },
-
-// This function implements a gsub macro.                            gsubthird);
+// This function implements a gsub macro.
 GsubstituteFunction(parser, name) {
-
-   const gsubfirst = parser.GetArgument(name);
-   const gsubsecond = parser.GetArgument(name);
-   const gsubthird = parser.GetArgument(name);
-   let gsubresult=gsubfirst.replace(gsubsecond,
-   useArgument(parser, gsubresult);
+const gsubfirst = parser.GetArgument(name);
+const gsubsecond = parser.GetArgument(name);
+const gsubthird = parser.GetArgument(name);
+let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+useArgument(parser, gsubresult);
 },
-
 // This function modifies the equation numbers.
-
 SeteqnumberFunction(parser, name) {
-
-      // Get the macro parameters
-
-      const star = parser.GetStar();                                 // true if there is a *
-
-      const optBrackets = parser.GetBrackets(name); // contents of optional brackets
-
-      const newsubequations = parser.GetArgument(name); // the subequations argument
-
-      const neweqsection = parser.GetArgument(name); // the eq section argument
-
-      const neweqnumber = parser.GetArgument(name); // the eq number argument
-
-      MathJax.config.subequations=newsubequations ; // a string with boolean meaning
-
-      MathJax.config.section=neweqsection ;                          // a string with numeric meaning
-
-      parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-
+// Get the macro parameters
+const star = parser.GetStar(); // true if there is a *
+const optBrackets = parser.GetBrackets(name); // contents of optional brackets
+const newsubequations = parser.GetArgument(name); // the subequations argument
+const neweqsection = parser.GetArgument(name); // the eq section argument
+const neweqnumber = parser.GetArgument(name); // the eq number argument
+MathJax.config.subequations=newsubequations ; // a string with boolean meaning
+MathJax.config.section=neweqsection ; // a string with numeric meaning
+parser.tags.counter = parser.tags.allCounter = neweqnumber ;
 }
-
 });
-
 // Create the Lwarp-macros package
 Configuration.create('Lwarp-macros', {
-
-   handler: {macro: ['Lwarp-macros']}
+handler: {macro: ['Lwarp-macros']}
 });
-
 MathJax.startup.defaultReady();
-
 // For forward references:
 MathJax.startup.input[0].preFilters.add(({math}) => {
-
-   if (math.inputData.recompile){
-          MathJax.config.subequations = math.inputData.recompile.subequations;
-          MathJax.config.section = math.inputData.recompile.section;
-
-   }
+if (math.inputData.recompile){
+MathJax.config.subequations = math.inputData.recompile.subequations;
+MathJax.config.section = math.inputData.recompile.section;
+}
 });
 MathJax.startup.input[0].postFilters.add(({math}) => {
-
-   if (math.inputData.recompile){
-          math.inputData.recompile.subequations = MathJax.config.subequations;
-          math.inputData.recompile.section = MathJax.config.section;
-
-   }
+if (math.inputData.recompile){
+math.inputData.recompile.subequations = MathJax.config.subequations;
+math.inputData.recompile.section = MathJax.config.section;
+}
 });
-
-          // For \left, \right with unicode-math:
-          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-          const {Symbol} = MathJax._.input.tex.Symbol;
-          const {MapHandler} = MathJax._.input.tex.MapHandler;
-          const delimiter = MapHandler.getMap('delimiter');
-          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-   } // ready
+// For \left, \right with unicode-math:
+const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+const {Symbol} = MathJax._.input.tex.Symbol;
+const {MapHandler} = MathJax._.input.tex.MapHandler;
+const delimiter = MapHandler.getMap('delimiter');
+delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+} // ready
 }, // startup
-
-   tex: {                                                            'textmacros']},
-       packages: {'[+]': ['tagformat', 'Lwarp-macros',
-       tags: "ams",                                                  n);
-              tagformat: {                                           String.fromCharCode(96+n));
-                     number: function (n) {
-                             if(MathJax.config.subequations==0)
-                                    return(MathJax.config.section +
-                             else
-                                    return(MathJax.config.section +
-                     },
-              },
-
-   }
+tex: {
+packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+tags: "ams",
+tagformat: {
+number: function (n) {
+if(MathJax.config.subequations==0)
+return(MathJax.config.section + n);
+else
+return(MathJax.config.section + String.fromCharCode(96+n));
+},
+},
+}
 }
 </script>
-
 <script
-       id="MathJax-script"
-       src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
-
+id="MathJax-script"
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
 ></script>
-
 </head>
 <body>
-
-<a id="main-html-autopage-305"></a>
+<a id="main-html-autopage-105"></a>
 <div class="pagegrid">
-
 <nav class="topnavigation"><a href="main-html.html" class="linkhome" >
 Головна</a></nav>
 <div class="sidetoccontainer">
-
 <nav class="sidetoc">
-
 <div class="sidetoctitle">
 <p>
 <span class="sidetocthetitle">Класична електродинаміка. Збірник задач</span>
 </p>
 <p class="sidetoc-meta"><a href="../index.html">Про посібник</a><span aria-hidden="true">·</span><a href="../FTProblems.pdf">PDF</a></p>
 </div>
-
 <div class="sidetoccontents">
 <p>
 <a href="main-html.html" class="linkhome" >
@@ -287,244 +221,195 @@ MathJax.startup.input[0].postFilters.add(({math}) => {
 <a href="preface.html#autosec-6" class="tocchapter" >
 Передмова</a>
 </p>
-
 <p>
 <a href="vanaliz.html#autosec-9" class="tocchapter" >
 <span class="sectionnumber">0</span><span class="toctitle">&#x2003;Співвідношення векторного аналізу в декартових координатах </span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-18" class="tocpart" >
+<a href="maxwellmicro.html#autosec-12" class="tocpart" >
 <span class="sectionnumber">I</span><span class="toctitle">&#x2003;Мікроскопічна теорія</span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-19" class="tocchapter" >
+<a href="maxwellmicro.html#autosec-13" class="tocchapter" >
 <span class="sectionnumber">1</span><span class="toctitle">&#x2003;Система мікроскопічних рівнянь Максвелла</span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-20" class="tocsection" >
+<a href="maxwellmicro.html#autosec-14" class="tocsection" >
 <span class="sectionnumber">1.1</span><span class="toctitle">&#x2003;Рівняння Максвелла</span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-21" class="tocsection" >
+<a href="maxwellmicro.html#autosec-15" class="tocsection" >
 <span class="sectionnumber">1.2</span><span class="toctitle">&#x2003;Закони збереження (диференціальна форма)</span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-22" class="tocsection" >
+<a href="maxwellmicro.html#autosec-16" class="tocsection" >
 <span class="sectionnumber">1.3</span><span class="toctitle">&#x2003;Граничні умови для границі розділу двох середовищ</span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-23" class="tocsection" >
+<a href="maxwellmicro.html#autosec-17" class="tocsection" >
 <span class="sectionnumber">1.4</span><span class="toctitle">&#x2003;Потенціали електромагнітного поля</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-26" class="tocchapter" >
+<a href="emstatics.html#autosec-20" class="tocchapter" >
 <span class="sectionnumber">2</span><span class="toctitle">&#x2003;Електро- та магнітостатика у вакуумі</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-27" class="tocsection" >
+<a href="emstatics.html#autosec-21" class="tocsection" >
 <span class="sectionnumber">2.1</span><span class="toctitle">&#x2003;Прості задачі на рівняння Максвелла</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-68" class="tocsection" >
+<a href="emstatics.html#autosec-44" class="tocsection" >
 <span class="sectionnumber">2.2</span><span class="toctitle">&#x2003;Рівняння Пуассона та Лапласа. Граничні задачі електростатики</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-69" class="tocsection" >
+<a href="emstatics.html#autosec-45" class="tocsection" >
 <span class="sectionnumber">2.3</span><span class="toctitle">&#x2003;Метод електричних зображень</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-74" class="tocsection" >
+<a href="emstatics.html#autosec-46" class="tocsection" >
 <span class="sectionnumber">2.4</span><span class="toctitle">&#x2003;Пошук розв’язків методом розкладання за системою ортогональних функцій</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-98" class="tocsection" >
+<a href="emstatics.html#autosec-47" class="tocsection" >
 <span class="sectionnumber">2.5</span><span class="toctitle">&#x2003;Розкладання потенціалів за мультиполями</span></a>
 </p>
-
 <p>
-<a href="radiation.html#autosec-129" class="tocchapter" >
+<a href="radiation.html#autosec-64" class="tocchapter" >
 <span class="sectionnumber">3</span><span class="toctitle">&#x2003;Випромінювання та поширення електромагнітних хвиль</span></a>
 </p>
-
 <p>
-<a href="radiation.html#autosec-133" class="tocsection" >
+<a href="radiation.html#autosec-68" class="tocsection" >
 <span class="sectionnumber">3.1</span><span class="toctitle">&#x2003;Співвідношення невизначеностей</span></a>
 </p>
-
 <p>
-<a href="radiation.html#autosec-136" class="tocsection" >
+<a href="radiation.html#autosec-69" class="tocsection" >
 <span class="sectionnumber">3.2</span><span class="toctitle">&#x2003;Монохроматичні хвилі. Інтерференція та поляризація хвиль</span></a>
 </p>
-
 <p>
-<a href="radiation.html#autosec-147" class="tocsection" >
+<a href="radiation.html#autosec-70" class="tocsection" >
 <span class="sectionnumber">3.3</span><span class="toctitle">&#x2003;Випромінювання та розсіювання електромагнітних хвиль</span></a>
 </p>
-
 <p>
-<a href="relativity.html#autosec-170" class="tocchapter" >
+<a href="relativity.html#autosec-73" class="tocchapter" >
 <span class="sectionnumber">4</span><span class="toctitle">&#x2003;Спеціальна теорія відносності</span></a>
 </p>
-
 <p>
-<a href="relativity.html#autosec-171" class="tocsection" >
+<a href="relativity.html#autosec-74" class="tocsection" >
 <span class="sectionnumber">4.1</span><span class="toctitle">&#x2003;Перетворення Лоренца та закони збереження</span></a>
 </p>
-
 <p>
-<a href="relativity.html#autosec-182" class="tocsection" >
+<a href="relativity.html#autosec-75" class="tocsection" >
 <span class="sectionnumber">4.2</span><span class="toctitle">&#x2003;Електродинаміка в релятивістських позначеннях</span></a>
 </p>
-
 <p>
-<a href="relativity.html#autosec-188" class="tocsection" >
+<a href="relativity.html#autosec-76" class="tocsection" >
 <span class="sectionnumber">4.3</span><span class="toctitle">&#x2003;Рух заряджених частинок в електромагнітному полі</span></a>
 </p>
-
 <p>
-<a href="relativity.html#autosec-198" class="tocsection" >
+<a href="relativity.html#autosec-77" class="tocsection" >
 <span class="sectionnumber">4.4</span><span class="toctitle">&#x2003;Випромінювання релятивістських заряджених частинок</span></a>
 </p>
-
 <p>
-<a href="maxwellmacro.html#autosec-202" class="tocpart" >
+<a href="maxwellmacro.html#autosec-80" class="tocpart" >
 <span class="sectionnumber">II</span><span class="toctitle">&#x2003;Електродинаміка суцільних середовищ</span></a>
 </p>
-
 <p>
-<a href="maxwellmacro.html#autosec-203" class="tocchapter" >
+<a href="maxwellmacro.html#autosec-81" class="tocchapter" >
 <span class="sectionnumber">5</span><span class="toctitle">&#x2003;Система макроскопічних рівнянь Максвелла</span></a>
 </p>
-
 <p>
-<a href="maxwellmacro.html#autosec-204" class="tocsection" >
+<a href="maxwellmacro.html#autosec-82" class="tocsection" >
 <span class="sectionnumber">5.1</span><span class="toctitle">&#x2003;Макроскопічні рівняння Максвелла</span></a>
 </p>
-
 <p>
-<a href="maxwellmacro.html#autosec-205" class="tocsection" >
+<a href="maxwellmacro.html#autosec-83" class="tocsection" >
 <span class="sectionnumber">5.2</span><span class="toctitle">&#x2003;Співвідношення для лінійних ізотропних середовищ</span></a>
 </p>
-
 <p>
-<a href="maxwellmacro.html#autosec-206" class="tocsection" >
+<a href="maxwellmacro.html#autosec-84" class="tocsection" >
 <span class="sectionnumber">5.3</span><span class="toctitle">&#x2003;Умови на границі розділу двох середовищ</span></a>
 </p>
-
 <p>
-<a href="emmedia.html#autosec-209" class="tocchapter" >
+<a href="emmedia.html#autosec-87" class="tocchapter" >
 <span class="sectionnumber">6</span><span class="toctitle">&#x2003;Діелектрики та магнетики в статичних полях</span></a>
 </p>
-
 <p>
-<a href="quasistationary.html#autosec-247" class="tocchapter" >
+<a href="quasistationary.html#autosec-95" class="tocchapter" >
 <span class="sectionnumber">7</span><span class="toctitle">&#x2003;Квазістаціонарні поля і струми</span></a>
 </p>
-
 <p>
-<a href="quasistationary.html#autosec-248" class="tocsection" >
+<a href="quasistationary.html#autosec-96" class="tocsection" >
 <span class="sectionnumber">7.1</span><span class="toctitle">&#x2003;Розтікання зарядів в провідниках. Струми Фуко</span></a>
 </p>
-
 <p>
-<a href="quasistationary.html#autosec-263" class="tocsection" >
+<a href="quasistationary.html#autosec-97" class="tocsection" >
 <span class="sectionnumber">7.2</span><span class="toctitle">&#x2003;Магнітні поля в надпровідниках</span></a>
 </p>
-
 <p>
-<a href="waves.html#autosec-275" class="tocchapter" >
+<a href="waves.html#autosec-100" class="tocchapter" >
 <span class="sectionnumber">8</span><span class="toctitle">&#x2003;Електромагнітні хвилі в середовищі</span></a>
 </p>
-
 <p>
-<a href="waves.html#autosec-276" class="tocsection" >
+<a href="waves.html#autosec-101" class="tocsection" >
 <span class="sectionnumber">8.1</span><span class="toctitle">&#x2003;Поширення електромагнітних хвиль в середовищі</span></a>
 </p>
-
 <p>
-<a href="waves.html#autosec-287" class="tocsection" >
+<a href="waves.html#autosec-102" class="tocsection" >
 <span class="sectionnumber">8.2</span><span class="toctitle">&#x2003;Відбивання та заломлення електромагнітних хвиль на межі двох середовищ</span></a>
 </p>
-
 <p>
-<a href="waves.html#autosec-293" class="tocsection" >
+<a href="waves.html#autosec-103" class="tocsection" >
 <span class="sectionnumber">8.3</span><span class="toctitle">&#x2003;Електромагнітні хвилі в плазмі</span></a>
 </p>
-
 <p>
-<a href="waves.html#autosec-297" class="tocsection" >
+<a href="waves.html#autosec-104" class="tocsection" >
 <span class="sectionnumber">8.4</span><span class="toctitle">&#x2003;Розсіювання та дифракція</span></a>
 </p>
-
 <p>
-<a href="answers.html#autosec-307" class="tocchapter" >
+<a href="answers.html#autosec-107" class="tocchapter" >
 Відповіді</a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-325" class="tocchapter" >
+<a href="appendices.html#autosec-125" class="tocchapter" >
 Додатки</a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-326" class="tocsection" >
+<a href="appendices.html#autosec-126" class="tocsection" >
 <span class="sectionnumber">А</span><span class="toctitle">&#x2003;Основні формули векторного аналізу</span></a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-335" class="tocsection" >
+<a href="appendices.html#autosec-135" class="tocsection" >
 <span class="sectionnumber">Б</span><span class="toctitle">&#x2003;Поліноми Лежандра</span></a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-336" class="tocsection" >
+<a href="appendices.html#autosec-136" class="tocsection" >
 <span class="sectionnumber">В</span><span class="toctitle">&#x2003;Сферичні гармоніки</span></a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-337" class="tocsection" >
+<a href="appendices.html#autosec-137" class="tocsection" >
 <span class="sectionnumber">Г</span><span class="toctitle">&#x2003;Циліндричні функції</span></a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-344" class="tocsection" >
+<a href="appendices.html#autosec-144" class="tocsection" >
 <span class="sectionnumber">Д</span><span class="toctitle">&#x2003;Дельта-функція Дірака</span></a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-345" class="tocsection" >
+<a href="appendices.html#autosec-145" class="tocsection" >
 <span class="sectionnumber">Е</span><span class="toctitle">&#x2003;Фізичні константи</span></a>
 </p>
-
 <p>
-<a href="bibliography.html#autosec-351" class="tocchapter" >
+<a href="bibliography.html#autosec-151" class="tocchapter" >
 Література</a>
 </p>
-
 </div>
 </nav>
 </div>
-
 <main class="bodycontainer" data-pagefind-body data-pagefind-meta="title[data-title]" data-title="Відповіді">
-
 <section class="textbody">
 <h1 data-pagefind-ignore>Класична електродинаміка. Збірник задач</h1>
 <!--MathJax customizations:-->
 <div data-nosnippet
-
-      style="display:none"
+style="display:none"
 >
 \(\newcommand{\footnotename}{footnote}\)
 \(\def \LWRfootnote {1}\)
@@ -929,23 +814,20 @@ MathJax.startup.input[0].postFilters.add(({math}) => {
 <!--
 ...... chapter Відповіді ......
 -->
-<h3 id="autosec-307">Відповіді</h3>
-<a id="main-html-autopage-307"></a>
+<h3 id="autosec-107">Відповіді</h3>
+<a id="main-html-autopage-107"></a>
 <a id="main-html-autofile-11"></a>
 <!--
 ...... section Електро- та магнітостатика у вакуумі ......
 -->
-<h4 id="autosec-308">Електро- та магнітостатика у вакуумі</h4>
-<a id="main-html-autopage-308"></a>
-
+<h4 id="autosec-108">Електро- та магнітостатика у вакуумі</h4>
+<a id="main-html-autopage-108"></a>
 <div class="cb-answer">
-
-<p>                                                id="solution2.{7}"></a><b><a  href="emstatics.html#LWR-ht-problem:2.{7}">2.7.</a></b>
-<a id="LWR-ht-solution:2.{7}"></a><a
+<p>
+<a id="LWR-ht-solution:2.{7}"></a><a id="solution2.{7}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{7}">2.7.</a></b>
 </p>
 <li>
 <p>
-
 </p>
 </li><li>
 <p>
@@ -964,437 +846,420 @@ MathJax.startup.input[0].postFilters.add(({math}) => {
 г)&nbsp;\(\rho = \frac {q}{4\pi R^2}\delta (r - R)\); д)&nbsp;\(\rho = \sigma (\theta )\delta (r - R)\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:2.{10}"></a><a id="solution2.{10}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{10}">2.10.</a></b> Тілесний кут, під яким видно поверхню \(S\) з точки \(r\):
 </p>
-
 <p>
 \[ \Omega (\vect {r}) = \int \limits _S d\vect {S}&apos;\frac {\vect {r}&apos; - \vect {r}}{|\vect {r}&apos; - \vect {r}|^3}. \]
 </p>
-
 <p>
 Обчислимо зміну тілесного кута при зсуві точки спостереження на малий вектор \(\delta \vect {r}\) (\(\vect {r} \to \vect {r} + \delta \vect {r}\), контур залишається нерухомим). Це можна зробити, залишаючи, навпаки, точку \(\vect {r}\) нерухомою, але зсуваючи
 поверхню \(S\) на \(-\delta \vect {r}\), тобто у протилежному напрямку. При цьому зміна \(\Omega \) відбувається за рахунок тонкої смужки, яка відповідає переміщенню контура \(L\) , який є границею \(S\) (\(\delta d{\vect {S}} = - \delta \vect {r} \times d{\vect
 {l}&apos;}\)):
 </p>
-
 <p>
 \[ \delta \Omega (\vect {r}) = \delta \vect {r}\times \vect {\nabla }\Omega = -\oint \delta \vect {r}\times d\vect {l}&apos; \cdot \frac {\vect {r}&apos; - \vect {r}}{|\vect {r}&apos; - \vect {r}|^3} = - \oint
 d\vect {l}&apos; \times \cdot \frac {\vect {r}&apos; - \vect {r}}{|\vect {r}&apos; - \vect {r}|^3} \delta \vect {r}. \]
 </p>
-
 <p>
 Звідси виходячи з властивості тілесного кута, під яким видно замкнений контур \(L\):
 </p>
-
 <p>
 \[ \vect {\nabla }\Omega = - \oint d\vect {l}&apos; \times \cdot \frac {\vect {r}&apos; - \vect {r}}{|\vect {r}&apos; - \vect {r}|^3} = \oint d\vect {l}&apos; \times \frac {\vect {r} - \vect {r}&apos;}{|\vect
 {r} - \vect {r}&apos;|^3}. \]
 </p>
-
 <p>
 З іншого боку, індукція в точці \(\vect {r}\), створювана струмом в контурі \(L\), є
 </p>
-
 <p>
 \[ \Bfield = \frac {I}{c} \oint d\vect {l}&apos; \times \frac {\vect {r} - \vect {r}&apos;}{|\vect {r} - \vect {r}&apos;|^3} = \frac {I}{c} \vect {\nabla }\Omega . \]
 </p>
-
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:2.{14}"></a><a id="solution2.{14}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{14}">2.14.</a></b> \(\vect {B}(r) = \frac {4\pi }{cr^2}\left [ \vect {e}_0 \times \vect {r} \right ]\int \limits
 _0^r j(r)r dr\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:2.{24}"></a><a id="solution2.{24}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{24}">2.24.</a></b> Розв’яжемо задачу за допомогою рівняння Лапласа в декартовій системі координат та граничних умов на площині \(z = 0\).
 Умова&nbsp;<span class="textup">(<a href="maxwellmicro.html#EtauBc">1.15</a>)</span> виконується за неперервності потенціалу
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{11}\)</span>
 <!--
-
-                                                                                                                            ϕ(𝑥, 𝑦, 𝑧)|𝑧→0+ = ϕ(𝑥, 𝑦, 𝑧)|𝑧→0− ,                    --><a id="continuity"></a><!--
-
+ϕ(𝑥, 𝑦, 𝑧)|
+𝑧→0+
+= ϕ(𝑥, 𝑦, 𝑧)|
+𝑧→0−
+, --><a id="continuity"></a><!--
 -->
-
 <p>
-
 \begin{equation*}
 \label {continuity} \left .\pot (x,y,z)\right |_{z \to 0^+} = \left .\pot (x,y,z)\right |_{z \to 0^-},
 \end{equation*}
-
 </p>
-
 <p>
 а умова&nbsp;<span class="textup">(<a href="maxwellmicro.html#EnBc">1.14</a>)</span> дає
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{11}\)</span>
 <!--
-
-                                                                 −  𝜕ϕ(𝑥, 𝑦, 𝑧) ||         +  𝜕ϕ(𝑥, 𝑦, 𝑧) ||  = 4𝜋𝜍(𝑥, 𝑦).                                                                                            --><a id="boundary"></a><!--
-
-                                                                                 𝑑𝑧 |𝑧→0+     𝑑𝑧 |𝑧→0−
-
+−
+𝜕ϕ(𝑥, 𝑦, 𝑧)
+𝑑𝑧
+|
+|
+|
+𝑧→0+
++
+𝜕ϕ(𝑥, 𝑦, 𝑧)
+𝑑𝑧
+|
+|
+|
+𝑧→0−
+= 4𝜋𝜍(𝑥, 𝑦). --><a id="boundary"></a><!--
 -->
-
 <p>
-
 \begin{equation*}
 \label {boundary} -\left . \frac {\partial \pot (x,y,z)}{dz}\right |_{z \to 0^+} + \left . \frac {\partial \pot (x,y,z)}{dz}\right |_{z \to 0^-} =4\pi \sigma (x,y).
 \end{equation*}
-
 </p>
-
 <p>
 Обмежимось випадком а).
 </p>
-
 <p>
 Оскільки поверхнева густина заряду в граничних умовах має вигляд добутку \(\sigma (x, y) = \sigma _0 \sin \left ( \frac {x}{L}\right ) \cos \left ( \frac {2y}{L}\right ) \) функцій від \(x\) та \(y\), можна застосувати метод розділення змінних,
 покладаючи:
 </p>
-
 <p>
 \[ \pot (x,y,z) = X(x)Y(y)Z(z). \]
 </p>
-
 <p>
 Більше того, тут має сенс «вгадати» \(X(x) = \sin \left (\frac {x}{L}\right ) \), \(Y(y) = \cos \left (\frac {2y}{L}\right ) \), щоб відповідні функції можна було скомпенсувати в граничних умовах. Розв’язок має бути вибрано так, щоб виконувалося рівняння
 Лапласа та граничні умови&nbsp;<span class="textup">(<a href="maxwellmicro.html#EtauBc">1.15</a>)</span>, <span class="textup">(<a href="maxwellmicro.html#EnBc">1.14</a>)</span>.Підстановка в рівняння Лапласа дає рівняння на \(Z(z)\):
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{11}\)</span>
-
 <!--
-
-                                                                                                                                                                                  𝑑2𝑍 5
-                                                                                                                                                                                         − ( 2 ) 𝑍 = 0.
-
-                                                                                                                                                                                   𝑑𝑧2 𝐿
-
+𝑑2𝑍
+𝑑𝑧2
+− (
+5
+𝐿2
+) 𝑍 = 0.
 -->
-
 <p>
-
 \begin{equation*}
 \frac {d^2Z}{dz^2} - \left ( \frac {5}{L^2}\right ) Z = 0.
 \end{equation*}
-
 </p>
-
 <p>
 Площина \(z = 0\) у середньому є електронейтральною, відповідно, далеко від неї потенціал має прямувати до нуля. Відповідно до цього, при \(z &gt;0\) відкидаємо експоненційно зростаючий розв’язок останнього рівняння, залишаючи \(Z(z) = C_1 e^{-\frac {\sqrt 5}{L}z} \).
 Аналогічно при \(z &lt; 0\) маємо \(Z(z) = C_2 e^{\frac {\sqrt 5}{L}z} \). З умови неперервності потенціалу при \(Z = 0\), дістаємо \(C_1 = C_2\) . Тепер потенціал визначено з точністю до сталого множника
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{11}\)</span>
 <!--
-
-                                                                                                                                                                     ϕ(𝑥, 𝑦, 𝑧) = 𝐶 sin ( 𝑥𝐿 ) cos ( 2𝑦𝐿 ) ⋅ 𝑒−𝛾|𝑧|.
-
+ϕ(𝑥, 𝑦, 𝑧) = 𝐶 sin (
+𝑥
+𝐿
+) cos (
+2𝑦
+𝐿
+) ⋅ 𝑒−𝛾|𝑧|.
 -->
-
 <p>
-
 \begin{equation*}
 \pot (x,y,z) = C \sin \left ( \frac {x}{L} \right ) \cos \left ( \frac {2y}{L} \right ) \cdot e^{-\gamma |z|}.
 \end{equation*}
-
 </p>
-
 <p>
 З граничної умови <span class="textup">(<a href="maxwellmicro.html#EnBc">1.14</a>)</span> визначаємо \(C\).
 </p>
-
 <p>
 Відповідь а):
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{11}\)</span>
 <!--
-
-                                                                                                              ϕ = 2𝜋𝜍0𝐿 𝑒− √5 𝐿 |𝑧| sin ( 𝑥 ) cos ( 2𝑦 ) .
-                                                                                                                  √5                                                         𝐿        𝐿
-
+ϕ =
+2𝜋𝜍0𝐿
+√5
+𝑒−
+√5
+𝐿
+|𝑧|
+sin (
+𝑥
+𝐿
+) cos (
+2𝑦
+𝐿
+) .
 -->
 <p>
-
 \begin{equation*}
 \pot = \frac {2\pi \sigma _0 L}{\sqrt {5}}e^{-\frac {\sqrt {5}}{L}|z|}\sin \left ( \frac {x}{L}\right ) \cos \left ( \frac {2y}{L}\right ) .
 \end{equation*}
-
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:2.{25}"></a><a id="solution2.{25}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{25}">2.25.</a></b> \(\pot = \frac {{2{\sigma _0}ab}}{{\sqrt {{a^2} + {b^2}} }}{e^{ - \alpha |z|}}\sin \left (
 {\frac {{\pi x}}{a}} \right )\sin \left ( {\frac {{\pi y}}{b}} \right )\), де \(\alpha = \frac {\pi }{{ab}}\sqrt {{a^2} + {b^2}}\).
 </p>
-
 <p>
 Зауважимо, що, енергію системи зручно за обчислювати за допомогою формули&nbsp;<span class="textup">(<a href="emstatics.html#eq:We">2.8</a>)</span> \(W_e = \frac {{\sigma _0^2{a^2}{b^2}}}{{\sqrt {{a^2} + {b^2}} }}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:2.{27}"></a><a id="solution2.{27}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{27}">2.27.</a></b> \(\pot (r) = \begin {cases} 4\pi a\ln \frac {R_2}{R_1}, &amp; r \le R_1 \\ 4\pi a \left [
 \left ( 1- \frac {R_1}{r}\right ) + \ln \frac {R_2}{r} \right ] , &amp; R_1 \le r \le R_2 \\ 4\pi a \frac {R_2 - R_1}{r}, &amp; r \ge R_2 \end {cases} \)
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:2.{28}"></a><a id="solution2.{28}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{28}">2.28.</a></b> Розпишемо потенціал як:
 </p>
-
 <p>
 \[ \pot = \frac {q}{r}e^{-\frac {r}{a}} = \frac {q}{r} + \frac {q}{r}\left (e^{-\frac {r}{a}} - 1\right ) . \]
 </p>
-
 <p>
 Подіємо оператором Лапласа на цей потенціал. Перший доданок відповідає полю точкового заряду з \(\delta \)-видним розподілом густини. Другий доданок обчислюємо в сферичних координатах:
 </p>
-
 <p>
 \[ \Delta \left [\frac {q}{r}\left (e^{-\frac {r}{a}} - 1\right ) \right ] = \frac {q}{r^2}\frac {\partial }{\partial r}\left [ r^2\left ( \frac {\partial }{\partial r}\frac {e^{-r/a} - 1}{r} \right ) \right ] =
 \frac {qe^{-r/a}}{a^2r}. \]
 </p>
-
 <p>
 Співставляючи з рівнянням Пуассона, знайдемо розподіл заряду:
 </p>
-
 <p>
 \[ \rho = q\delta (\vect {r}) - \frac {q}{4\pi a^2} \frac {e^{-\frac {r}{a}}}{r}, \]
 </p>
-
 <p>
 звідки видно, що екранований кулонівський потенціал створюється точковим зарядом, навколо якого розподілена «хмара» електричного заряду. Такий характер розподілу зустрічається, наприклад, в електролітах, або плазмі.
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:2.{29}"></a><a id="solution2.{29}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{29}">2.29.</a></b> Оскільки ми маємо азимутальну симетрію в розподілі заряду, будемо шукати потенціал у вигляді:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{11}\)</span>
 <!--
-
-                                                                                                                  ∞ 𝑟𝑙
-                                                                                                                  ⎧ ∑ 𝐴𝑙 ( ) 𝑃𝑙(cos 𝜃), 𝑟 < 𝑅
-                                                                                                                  ⎪𝑙=0                                           𝑅
-
-                                                                                                           ϕ(𝑟, 𝜃) = ⎨ ∞ 𝑅 𝑙+1                                                                                                                                                                               (8.12)
-
-                                                                                                                  ⎪ ∑ 𝐵𝑙 ( )                                        𝑃𝑙(cos 𝜃), 𝑟 ≥ 𝑅.
-                                                                                                                  ⎩𝑙=0                                           𝑙
-
+ϕ(𝑟, 𝜃) =
+⎧
+⎪
+⎨
+⎪
+⎩
+∞
+∑
+𝑙=0
+𝐴𝑙 ( 𝑟
+𝑅
+)
+𝑙
+𝑃𝑙(cos 𝜃), 𝑟 < 𝑅
+∞
+∑
+𝑙=0
+𝐵𝑙 (𝑅
+𝑙
+)
+𝑙+1
+𝑃𝑙(cos 𝜃), 𝑟 ≥ 𝑅.
+(8.12)
 -->
-
 <p>
-
 \begin{equation}
 \pot (r, \theta ) = \begin{cases} \sum \limits _{l=0}^{\infty }A_l \left ( \frac {r}{R}\right )^l P_l(\cos \theta ), \quad r&lt;R \\[1.5em] \sum \limits _{l=0}^{\infty }B_l \left ( \frac {R}{l}\right )^{l+1}
 P_l(\cos \theta ), \quad r \ge R. \end {cases}
 \end{equation}
-
 </p>
-
 <p>
 Випадок (а)
 </p>
-
 <p>
 З урахуванням граничних умов на сфері:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{12}\)</span>
 <!--
-
-                                                                                                                                                                                                                                                   𝑟                                                         (8.13)
-
-                                                                                                                                                                                  ϕ0 cos 𝜃, 𝑟 < 𝑅
-                                                                                                                                                                          ϕ = { 𝑅 𝑅 2
-
-                                                                                                                                                                                  ϕ0 ( 𝑟 ) cos 𝜃, 𝑟 ≥ 𝑅.
-
+ϕ = {
+ϕ0
+𝑟
+𝑅
+cos 𝜃, 𝑟 < 𝑅
+ϕ0 ( 𝑅
+𝑟
+)
+2
+cos 𝜃, 𝑟 ≥ 𝑅.
+(8.13)
 -->
-
 <p>
-
 \begin{equation}
 \pot = \begin{cases} \pot _0\frac {r}{R} \cos \theta , \quad r&lt;R \\ \pot _0\left ( \frac {R}{r}\right )^2 \cos \theta , \quad r \ge R. \end {cases}
 \end{equation}
-
 </p>
-
 <p>
 Поверхневу густину заряду на поверхні знайдемо з граничної умови:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{13}\)</span>
 <!--
-
-                                                                                                              1 𝜕ϕin |                                              𝜕ϕout |           3ϕ0
-                                                                                              𝜍= ( | −                                                                     | )=            cos 𝜃.                                                                                                            (8.14)
-                                                                                                              4𝜋 𝜕𝑟 |𝑟→𝑅 𝜕𝑟 |𝑟→𝑅 4𝜋𝑅
-
+𝜍 =
+1
+4𝜋
+(
+𝜕ϕin
+𝜕𝑟
+|
+|
+|
+𝑟→𝑅
+−
+𝜕ϕout
+𝜕𝑟
+|
+|
+|
+𝑟→𝑅
+) =
+3ϕ0
+4𝜋𝑅
+cos 𝜃. (8.14)
 -->
-
 <p>
-
 \begin{equation}
 \sigma = \frac {1}{4\pi } \left ( \left . \frac {\partial \pot _{\mathrm {in}}}{\partial r}\right |_{r \to R} - \left . \frac {\partial \pot _{\mathrm {out}}}{\partial r}\right |_{r \to R} \right ) = \frac
 {3\pot _0}{4\pi R} \cos \theta .
 \end{equation}
-
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:2.{30}"></a><a id="solution2.{30}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{30}">2.30.</a></b>
 </p>
 <ul class="enumerate" style="list-style-type:none">
-
-<li>   class="listmarker">а)</span>
-<p>    class="hidden"> \(\seteqnumber{0}{8.}{14}\)</span>
-<span
+<li>
+<p>
+<span class="listmarker">а)</span>
 </p>
-<span
+<span class="hidden"> \(\seteqnumber{0}{8.}{14}\)</span>
 <!--
-
-                                                                                                                        4                                                    𝑟<𝑅                                                                                                                             (8.15)
-                                                                                                                                                                              𝑟 ≥ 𝑅.
-                                                                                                                   ⎧ 𝜋𝜍0𝑟 cos 𝜃,
-                                                                                                                   ⎪3
-                                                                                                              ϕ = ⎨ 4 𝜋𝜍0𝑅3
-                                                                                                                   ⎪3
-                                                                                                                   ⎩ 2 cos 𝜃,
-
-                                                                                                                             𝑟
-
+ϕ =
+⎧
+⎪
+⎨
+⎪
+⎩
+4
+3
+𝜋𝜍0𝑟 cos 𝜃, 𝑟 < 𝑅
+4
+3
+𝜋𝜍0𝑅3
+𝑟2
+cos 𝜃, 𝑟 ≥ 𝑅.
+(8.15)
 -->
 <p>
-
 \begin{equation}
 \pot = \begin{cases} \frac 43\pi \sigma _0r \cos \theta , \quad r&lt;R \\[1em] \frac {\frac 43\pi \sigma _0R^3}{r^2} \cos \theta , \quad r \ge R. \end {cases}
 \end{equation}
-
 </p>
 </li>
 <li>
-
-<p>    class="listmarker">б)</span>
-<span  class="hidden"> \(\seteqnumber{0}{8.}{15}\)</span>
+<p>
+<span class="listmarker">б)</span>
 </p>
-<span
+<span class="hidden"> \(\seteqnumber{0}{8.}{15}\)</span>
 <!--
-
-                                                                                                              4
-                                                                                                              ⎧ 𝜋𝜍0𝑟 cos 𝜃 + 4𝜋𝜍1𝑅,                                                𝑟<𝑅
-                                                                                                              ⎪3                                                                   𝑟 ≥ 𝑅.
-                                                                                                              ϕ = ⎨ 4 𝜋𝜍0𝑅3                                                                                                                                                                                  (8.16)
-                                                                                                                   ⎪3                                               4𝜋𝜍1𝑅2
-                                                                                                              ⎩ 2 cos 𝜃 +                                                       ,
-                                                                                                                  𝑟                                                 𝑟
-
+ϕ =
+⎧
+⎪
+⎨
+⎪
+⎩
+4
+3
+𝜋𝜍0𝑟 cos 𝜃 + 4𝜋𝜍1𝑅, 𝑟 < 𝑅
+4
+3
+𝜋𝜍0𝑅3
+𝑟2
+cos 𝜃 + 4𝜋𝜍1𝑅2
+𝑟
+, 𝑟 ≥ 𝑅.
+(8.16)
 -->
 <p>
-
 \begin{equation}
 \pot = \begin{cases} \frac 43\pi \sigma _0r \cos \theta + 4\pi \sigma _1 R, \quad r&lt;R \\[1em] \frac {\frac 43\pi \sigma _0R^3}{r^2} \cos \theta + \frac {4\pi \sigma _1 R^2}{r}, \quad r \ge R. \end {cases}
 \end{equation}
-
 </p>
 <p>
-
 </p>
 </li>
 </ul>
-
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:2.{32}"></a><a id="solution2.{32}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{32}">2.32.</a></b> \(\pot _\text {ind}(\vect {r}) = - \frac {Q}{r}\sum \limits _{n = 1}^N \sum \limits _{m = -
 n}^n {C_{nm}{\left ( \frac {R}{r} \right )^n}} Y_{nm}(\theta ,\varphi )\)
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:2.{36}"></a><a id="solution2.{36}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{36}">2.36.</a></b> \(\pot (r) = \begin {cases} \frac {{2\pi }}{{2n + 3}}{\rho _0}{R^2}\left [ {\frac {{2n +
 3}}{{2n + 1}}{{\left ( {\frac {r}{R}} \right )}^n} - {{\left ( {\frac {r}{R}} \right )}^{n + 2}}} \right ]{P_n}(\cos (\theta )) , \quad r&lt;R \\ \frac {{4\pi {\rho _0}{R^2}}}{{(2n + 3)(2n + 1)}}{\left ( {\frac
 {R}{r}} \right )^{n + 1}}{P_n}(\cos (\theta )) , \quad r&gt;R \end {cases}\)
 </p>
 </div>
-
 <div class="cb-answer">
-
-<p>                                                                                                                                                                                                                   (r, \phi , z) = \begin {cases}  \frac {\pi }{2}{\sigma  _0}R\left ( {3\sin  (\varphi
-<a id="LWR-ht-solution:2.{40}"></a><a id="solution2.{40}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{40}">2.40.</a></b> \(\pot                                                                                        }{2}{\sigma _0}R\left ( {3\sin  (\varphi )\frac {R}{r}  - \frac {1}{3}\sin  (3\varphi
-)\frac {r}{R} - \frac {1}{3}\sin (3\varphi ){{\left ( {\frac {r}{R}} \right )}^3}} \right ), \quad r &lt; R , \\ \frac {\pi
+<p>
+<a id="LWR-ht-solution:2.{40}"></a><a id="solution2.{40}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{40}">2.40.</a></b> \(\pot (r, \phi , z) = \begin {cases} \frac {\pi }{2}{\sigma _0}R\left ( {3\sin (\varphi
+)\frac {r}{R} - \frac {1}{3}\sin (3\varphi ){{\left ( {\frac {r}{R}} \right )}^3}} \right ), \quad r &lt; R , \\ \frac {\pi }{2}{\sigma _0}R\left ( {3\sin (\varphi )\frac {R}{r} - \frac {1}{3}\sin (3\varphi
 ){{\left ( {\frac {R}{r}} \right )}^3}} \right ) , \quad r &gt; R . \end {cases} \)
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:2.{46}"></a><a id="solution2.{46}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{46}">2.46.</a></b> Спосіб 1 (використання закону Біо-Савара-Лапласа).
 </p>
-
 <p>
 \[ \Bfield (\vect {r}) = \frac 1c \int dV&apos; \vect {j} \times \frac {(\vect {r} - \vect {r}&apos;)}{|\vect {r} - \vect {r}&apos;|^3} \]
 </p>
-
 <p>
 Підставимо вираз густини струму з умови задачі, і будемо шукати поле в точці \(\vect {r} = 0\):
 </p>
 <span class="hidden"> \(\seteqnumber{0}{8.}{16}\)</span>
-
 <!--
-
-             1 ′ ˆ 𝐫′𝑐
-𝐁(0) = − 𝑑𝑉 (𝑐𝛁 × (𝜌(𝑟)𝐚)) × ′ 3 =
-                         |𝐫 |
-                                                                                                                    ˆ 𝐫′ ′
-                                                                                                              = − [𝛁𝜌(𝑟) × 𝐚] × ′ 3 𝑑𝑉 =
-
-                                                                                                                                           |𝐫 |
-
-                                                                                                                                                                                                                      ˆ∞                                   ˆ
-                                                                                                                                                                                                                      = − 𝑑𝑟′ 𝑑𝜌 𝑑Ω′[𝐧′ × [𝐚 × 𝐧′]],
-                                                                                                                                                                                                                                                      𝑑𝑟′     (8.17)--><a id="B(0)_prb:BSL"></a><!--
-
-                                                                                                                                                                                                                      0
-
+𝐁(0) = −
+1
+𝑐
+ˆ
+𝑑𝑉′ (𝑐𝛁 × (𝜌(𝑟)𝐚)) ×
+𝐫′
+|𝐫′|3
+=
+= −
+ˆ
+[𝛁𝜌(𝑟) × 𝐚] ×
+𝐫′
+|𝐫′|3
+𝑑𝑉′ =
+= −
+∞
+ˆ
+0
+𝑑𝑟′
+𝑑𝜌
+𝑑𝑟′
+ˆ
+𝑑Ω′[𝐧′ × [𝐚 × 𝐧′]], (8.17)--><a id="B(0)_prb:BSL"></a><!--
 -->
-
 <p>
-
 \begin{multline}
 \label {B(0)_prb:BSL} \Bfield (0) = -\frac 1c \int dV&apos; \left ( c\vect {\nabla }\times \left ( \rho (r) \vect {a}\right ) \right ) \times \frac {\vect {r}&apos;}{|\vect {r}&apos;|^3} = \\ = -\int \left [
 \vect {\nabla }\rho (r)\times \vect {a} \right ] \times \frac {\vect {r}&apos;}{|\vect {r}&apos;|^3} dV&apos; = \\ = -\int \limits _0^{\infty } dr&apos;\frac {d\rho }{dr&apos;} \int d\Omega &apos; [{\vect
@@ -1402,156 +1267,124 @@ n}^n {C_{nm}{\left ( \frac {R}{r} \right )^n}} Y_{nm}(\theta ,\varphi )\)
 \end{multline}
 де \(\vect {n}&apos; = \frac {\vect {r}&apos;}{r&apos;}\). Спрямуємо вісь \(z\) вздовж вектора \(\vect {a} = a\vect {e}_z\). Використовуючи «BAC - CAB»
 </p>
-
 <p>
 \[ \int {d\Omega &apos;} [{\vect {n}}&apos; \times [{\vect {a}} \times {\vect {n}}&apos;]] = \int {d\Omega &apos;} [\vect {a} - \vect {n}&apos;(\vect {a} \cdot {\vect {n}}&apos;)], \]
 </p>
-
 <p>
 можна бачити (з міркувань симетрії), що інтеграл \(\int {d\Omega &apos;} [{\vect {n}}&apos; \times [{\vect {a}} \times {\vect {n}}&apos;]] \) має напрямок вздовж \(z\), тому, його легко обчислити:
 </p>
 <span class="hidden"> \(\seteqnumber{0}{8.}{17}\)</span>
-
 <!--
-
-ˆ          ˆ
-
-      𝑑Ω′[𝐧′ × [𝐚 × 𝐧′]] = 𝐚 𝑑Ω′ ([𝐧′ × [𝐞𝑧 × 𝐧′]] ⋅ 𝐞𝑧) =
-
-                                                                                                                                                                                                                                                                              ˆ𝜋  ˆ2𝜋
-                                                                                                                                                                                                                                                              = 𝐚 𝑑𝜃 sin 𝜃 𝑑𝜑 [1 − cos2𝜃] = 𝐚 8𝜋3 .
-                                                                                                                                                                                                                                                                                                             (8.18)
-
-                                                                                                                                                                                                                                                                              0   0
-
+ˆ
+𝑑Ω′[𝐧′ × [𝐚 × 𝐧′]] = 𝐚
+ˆ
+𝑑Ω′ ([𝐧′ × [𝐞𝑧 × 𝐧′]] ⋅ 𝐞𝑧) =
+= 𝐚
+𝜋
+ˆ
+0
+𝑑𝜃 sin 𝜃
+2𝜋
+ˆ
+0
+𝑑𝜑 [1 − cos2𝜃] = 𝐚
+8𝜋
+3
+. (8.18)
 -->
-
 <p>
-
-\begin{multline}                                                                                                                                                                                                                                                                                  \cdot
-\int d\Omega &apos; [{\vect {n}}&apos; \times [{\vect {a}} \times {\vect {n}}&apos;]] = {\vect {a}}\int {d\Omega &apos;} \left ( {[{\vect {n}}&apos; \times [{{\vect {e}}_z} \times {\vect {n}}&apos;]]
+\begin{multline}
+\int d\Omega &apos; [{\vect {n}}&apos; \times [{\vect {a}} \times {\vect {n}}&apos;]] = {\vect {a}}\int {d\Omega &apos;} \left ( {[{\vect {n}}&apos; \times [{{\vect {e}}_z} \times {\vect {n}}&apos;]] \cdot
 {{\vect {e}}_z}} \right ) = \\ = \vect {a}\int \limits _0^\pi {d\theta } \sin \theta \int \limits _0^{2\pi } {d\varphi } \left [ {1 - {\cos ^2}\theta } \right ] = \vect {a}\frac {8\pi }{3}.
 \end{multline}
 Інтеграл \(\int \limits _0^{\infty } dr&apos;\frac {d\rho }{dr&apos;} = -\rho (0)\). Підставляючи все в&nbsp;<span class="textup">(<a href="answers.html#B(0)_prb:BSL">8.17</a>)</span>, маємо:
 </p>
-
 <p>
 \[ \Bfield (0) = \vect {a}\frac {8\pi }{3}\rho (0). \]
 </p>
-
 <p>
 Спосіб 2 (використання рівняння Максвелла).
 </p>
-
 <p>
 Використаємо безпосередньо рівняння Максвелла:
 </p>
-
 <p>
 \[ \vect {\nabla }\times \Bfield = \frac {4\pi }{c}\vect {j} \]
 </p>
-
 <p>
 і підставимо вираз густини струму з умови задачі:
 </p>
-
 <p>
 \[ \vect {\nabla }\times \Bfield = 4\pi \vect {\nabla }\times \left ( \rho (r) \vect {a}\right ). \]
 </p>
-
 <p>
 Якщо ротори лівої і правої частин рівняння однакові, то вони можуть відрізнятись на градієнт довільної скалярної функції \(\psi \), отже
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{18}\)</span>
-
 <!--
-
-                                                                 𝐁(𝑟) = 4𝜋 (𝜌(𝑟)𝐚) + 𝛁𝜓.                                                                                                                              (8.19)                                                      --><a id="B(0)_prb:ME"></a><!--
-
+𝐁(𝑟) = 4𝜋 (𝜌(𝑟)𝐚) + 𝛁𝜓. (8.19) --><a id="B(0)_prb:ME"></a><!--
 -->
 <p>
-
 \begin{equation}
 \label {B(0)_prb:ME} \Bfield (r) = 4\pi \left ( \rho (r) \vect {a}\right ) + \vect {\nabla }\psi .
 \end{equation}
-
 </p>
-
 <p>
 Причому, оскільки \(\rho (r)\) і \(\Bfield (r)\) спадають до нуля на нескінченності, то \(\psi \) також спадає до нуля на нескінченності.
 </p>
-
 <p>
 З іншого рівняння Максвела \(\vect {\nabla } \cdot \Bfield = 0\) маємо,
 </p>
-
 <p>
 \[ 4\pi \vect {\nabla } \cdot \left ( {\rho (r){\vect {a}}} \right ) + \Delta \psi = 0, \]
 </p>
-
 <p>
 звідки отримуємо рівняння Пуассона для \(\psi \):
 </p>
-
 <p>
 \[ \Delta \psi = - 4\pi \vect {\nabla } \cdot \left ( {\rho (r){\vect {a}}} \right ) = - 4\pi \frac {d\rho }{dr} \left ( \vect {n} \cdot \vect {a} \right ). \]
 </p>
-
 <p>
 Оскільки \(\psi \) спадає на нескінченності, то рівняння має єдиний розв’язок:
 </p>
-
 <p>
 \[ \psi (\vect {r}) = \int dV&apos; \frac {d\rho }{dr&apos;}\frac {(\vect {n}&apos;\cdot \vect {a})}{|\vect {r} - \vect {r}&apos;|}. \]
 </p>
-
 <p>
 Тепер знайдемо градієнт \(\psi \):
 </p>
-
 <p>
 \[ \vect {\nabla }\psi = - \int {dV&apos;} \frac {d\rho }{dr&apos;}\frac {(\vect {n}&apos; \cdot \vect {a})}{|\vect {r} - \vect {r}&apos;|^3}\left ( {\vect {r} - \vect {r}&apos;} \right ), \]
 </p>
-
 <p>
 і в нулі
 </p>
-
 <p>
 \[ \nabla \psi (0) = \int dV&apos; \frac {d\rho }{dr&apos;}\frac {(\vect {n}&apos; \cdot \vect {a})}{|\vect {r}&apos;|^3} \vect {r}&apos;= \int {d\Omega } \int \limits _0^\infty dr \frac {d\rho }{dr}\frac
 {(\vect {n} \cdot \vect {a})}{r^2}{\vect {n}}. \]
 </p>
-
 <p>
 Далі аналогічно до попереднього способу проводимо обчислення інтегралів, а тому матимемо:
 </p>
-
 <p>
 \[ \nabla \psi (0) = -\frac {4\pi }{3}\vect {a}\rho (o). \]
 </p>
-
 <p>
 Підставимо тепер цей вираз в формулу&nbsp;<span class="textup">(<a href="answers.html#B(0)_prb:ME">8.19</a>)</span>, остаточно отримуємо
 </p>
-
 <p>
 \[ \Bfield (0) = \vect {a}\frac {8\pi }{3}\rho (0), \]
 </p>
-
 <p>
 що збігається з відповіддю, отриманою в попередньому способі.
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:2.{51}"></a><a id="solution2.{51}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{51}">2.51.</a></b> Проведемо вісь \(OZ\) вздовж поля \(\Bfield = (0, 0, B)\).
 </p>
 </li><li>
 <p>
-
 </p>
 </li><li>
 <p>
@@ -1563,350 +1396,267 @@ n}^n {C_{nm}{\left ( \frac {R}{r} \right )^n}} Y_{nm}(\theta ,\varphi )\)
 калібрувальної інваріантності вектор-потенціал не визначений однозначно. Тут наведені найбільш зручні представлення вектор-потенціалу однорідного поля в різних системах координат.
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:2.{52}"></a><a id="solution2.{52}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{52}">2.52.</a></b> Потенціал кулі є квадрупольним, \(\pot (z) = \frac {\pi ^2\rho _0 R^5}{48z^3}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:2.{55}"></a><a id="solution2.{55}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{55}">2.55.</a></b> \(\Bfield = \begin {cases} \frac {2q}{3c}\frac 1R\vect {\omega }, \quad r &lt; R \\ \frac
 {3(\vect {p}_m \cdot \vect {r})\vect {r}}{r^5} - \frac {\vect {p}_m}{r^3}, \quad r &gt; R \end {cases} \) де \(\vect {p}_m = \frac {qR^2}{3c}\vect {\omega }\)&nbsp;— магнітний момент сфери.
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:2.{56}"></a><a id="solution2.{56}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{56}">2.56.</a></b> \(B_z = \frac {324\pi a}{5c}j_0\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:2.{58}"></a><a id="solution2.{58}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{58}">2.58.</a></b> \(W = \sum \limits _{l=0}^{\infty }\sum \limits _{m=-l}^{l}a_{lm}Q_{lm}^*\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:2.{59}"></a><a id="solution2.{59}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{59}">2.59.</a></b>
 </p>
 <span class="hidden"> \(\seteqnumber{0}{8.}{19}\)</span>
-
 <!--
-
-𝑊 = −(𝐩1 ⋅ 𝐄2) = − 𝑟5 3(𝐩1 ⋅ 𝐫)(𝐩2 ⋅ 𝐫) + 𝑟3 (𝐩1 ⋅ 𝐩2) =
-
-                                                                                                                                                                                                                                                                              = − 𝑑3 𝑝1𝑝2 [3 cos 𝜃1 cos 𝜃2 − cos(𝜃1 − 𝜃2)] ,
-
+𝑊 = −(𝐩1 ⋅ 𝐄2) = −
+3(𝐩1 ⋅ 𝐫)(𝐩2 ⋅ 𝐫)
+𝑟5
++
+(𝐩1 ⋅ 𝐩2)
+𝑟3
+=
+= −
+𝑝1𝑝2
+𝑑3
+[3 cos 𝜃1 cos 𝜃2 − cos(𝜃1 − 𝜃2)] ,
 -->
-
 <p>
-
 \begin{multline*}
 W = -(\vect {p}_1\cdot \Efield _2) = -\frac {3(\vect {p}_1\cdot \vect {r})(\vect {p}_2\cdot \vect {r})}{r^5} + \frac {(\vect {p}_1\cdot \vect {p}_2)}{r^3} =\\ = -\frac {p_1p_2}{d^3}\left [ 3\cos \theta _1\cos
 \theta _2 - \cos (\theta _1 - \theta _2)\right ] ,
 \end{multline*}
-
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:2.{60}"></a><a id="solution2.{60}"></a><b><a href="emstatics.html#LWR-ht-problem:2.{60}">2.60.</a></b> \(F = \frac {6R^6}{l^4} E_0^2\).
 </p>
 </div>
-
 </li>
 <!--
 ...... section Випромінювання та поширення електромагнітних хвиль ......
 -->
-<h4 id="autosec-309">Випромінювання та поширення електромагнітних хвиль</h4>
-<a id="main-html-autopage-309"></a>
-
+<h4 id="autosec-109">Випромінювання та поширення електромагнітних хвиль</h4>
+<a id="main-html-autopage-109"></a>
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:3.{1}"></a><a id="solution3.{1}"></a><b><a href="radiation.html#LWR-ht-problem:3.{1}">3.1.</a></b> \(1/4\) ( реалізується знак рівності у співвідношенні невизначеностей)
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:3.{7}"></a><a id="solution3.{7}"></a><b><a href="radiation.html#LWR-ht-problem:3.{7}">3.7.</a></b> \(P = 1\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:3.{8}"></a><a id="solution3.{8}"></a><b><a href="radiation.html#LWR-ht-problem:3.{8}">3.8.</a></b> \(P = \frac {\sqrt {5}}3\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:3.{9}"></a><a id="solution3.{9}"></a><b><a href="radiation.html#LWR-ht-problem:3.{9}">3.9.</a></b> \(P = 0\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:3.{14}"></a><a id="solution3.{14}"></a><b><a href="radiation.html#LWR-ht-problem:3.{14}">3.14.</a></b> При \(\vect {v} = \const \) вираз
 </p>
-
 <p>
 \[ \vect {R}_q - \frac {\vect {v}}{c} R_q = \vect {R}_q -\vect {v}(t - t_q) = \vect {R}_t, \]
 </p>
-
 <p>
 тобто є вектором проведеним від заряду до точки спостереження в момент самого спостереження. Знаменник потенціалів Ліенара-Віхерта можна записати як:
 </p>
-
 <p>
 \[ R_q - \frac {\vect {v}}{c} R_q = R_t\sqrt {1-\frac {v^2}{c^2}\sin ^2\theta }. \]
 </p>
-
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:3.{17}"></a><a id="solution3.{17}"></a><b><a href="radiation.html#LWR-ht-problem:3.{17}">3.17.</a></b> Дипольний момент системи
 </p>
-
 <p>
 \[ \vect {p} = \frac {q_i}{m_i} \sum \limits _{i = 1}^n m_i \vect {r}_i = \frac {q_i}{m_i} M\vect {R}_\mathrm {CM}, \]
 </p>
-
 <p>
 де \(\vect {R}_\mathrm {CM}\)&nbsp;— радіус-вектор центра мас системи. Нехтуючи втратами імпульсу на випромінювання, у першому наближенні за відсутності зовнішніх полів \(\ddot {\vect {R}}_\mathrm {CM} = 0\), отже інтенсивність випромінювання дорівнює нулю.
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:3.{19}"></a><a id="solution3.{19}"></a><b><a href="radiation.html#LWR-ht-problem:3.{19}">3.19.</a></b> Поля \(\Efield (t) = \frac {q\vect {n}\times [ \vect {n} \times \dot {\vect {v}}] }{c^2r}\),
 \(\Bfield (t) = \frac {q\dot {\vect {v}}\times \vect {n}}{c^2r}\), розподіл випромінювання \(\frac {dN}{do} = \frac {q^2}{4\pi c^3}[\dot {\vect {v}}\times \vect {n}]^2\), повна потужність \(N = \frac {2q^2}{3c^3}\dot {\vect
 {v}}^2\). Прискорення \(\dot {\vect {v}} \) є функцією \(t - \frac {r}{c}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:3.{20}"></a><a id="solution3.{20}"></a><b><a href="radiation.html#LWR-ht-problem:3.{20}">3.20.</a></b> \(I = \frac {2p^2\omega ^4}{3c^3}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:3.{21}"></a><a id="solution3.{21}"></a><b><a href="radiation.html#LWR-ht-problem:3.{21}">3.21.</a></b> \(\vect {S} = \frac {p_0^2ck^4}{2\pi r^2}\sin ^2\theta \sin ^2\left (\frac \pi 2\cos \phi
 \sin \theta \right )\ \vect {n}\), де \(k=\nfrac {2\pi }{\lambda }\), \(r,\theta ,\phi \)&nbsp;— сферичні координати, \(\vect {n} = \nfrac {\vect {r}}{r}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:3.{22}"></a><a id="solution3.{22}"></a><b><a href="radiation.html#LWR-ht-problem:3.{22}">3.22.</a></b> Згідно&nbsp;<span class="textup">(<a href="radiation.html#eq:power">3.6</a>)</span> і з урахуванням \(\vect
 {p} = q_1\vect {r}_1 + q_2\vect {r}_2 = \mu \left ( \frac {q_1}{m_1} - \frac {q_2}{m_2}\right )\vect {r} \), де \(\mu \)&nbsp;— приведена маса, а \(\vect {r} = \vect {r}_2 - \vect {r}_1\), маємо:
 </p>
-
 <p>
 \[ N(t) = \frac {2\mu ^2}{3c^3}\left ( \frac {q_1}{m_1} - \frac {q_2}{m_2}\right )^2\ddot {\vect {r}}^2(t). \]
 </p>
-
 <p>
 Згідно рівнянню руху зарядів \(\mu \ddot {\vect {r}} = {q_1q_2}\frac {\vect {r}}{r^3}\), отримуємо
 </p>
-
 <p>
 \[ N(t) = \frac {2q_1^2q_2^2}{3c^3} \left ( \frac {q_1}{m_1} - \frac {q_2}{m_2}\right )^2 \frac {1}{r^4}. \]
 </p>
-
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:3.{25}"></a><a id="solution3.{25}"></a><b><a href="radiation.html#LWR-ht-problem:3.{25}">3.25.</a></b> \(\mathcal {E} = \frac {I_0^2a^4b}{c^5}\sqrt {2\pi b}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:3.{26}"></a><a id="solution3.{26}"></a><b><a href="radiation.html#LWR-ht-problem:3.{26}">3.26.</a></b> \(\left \langle {dN/do} \right \rangle = \frac {I_0^2}{2\pi c}\frac {\left [\sin (m\pi \sin
 ^2\theta /2) \right ]^2}{(\sin \theta )^2}\)
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:3.{27}"></a><a id="solution3.{27}"></a><b><a href="radiation.html#LWR-ht-problem:3.{27}">3.27.</a></b> \(I = \frac {q^2R^4\omega ^6}{10c^5} \).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:3.{28}"></a><a id="solution3.{28}"></a><b><a href="radiation.html#LWR-ht-problem:3.{28}">3.28.</a></b> \(W = \frac {2qEv_0d}{3mc^3}\left ( \sqrt {\frac {2qEd}{mv_0^2}+\cos ^2\alpha } - \cos \alpha
 \right ) \).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:3.{29}"></a><a id="solution3.{29}"></a><b><a href="radiation.html#LWR-ht-problem:3.{29}">3.29.</a></b> \(I = \frac {2e^2}{3c^3} \left ( \frac {Ze^2}{mR^2}\right )^2 \), \(t = \frac
 {m^2c^3R^3}{4Ze^4}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:3.{30}"></a><a id="solution3.{30}"></a><b><a href="radiation.html#LWR-ht-problem:3.{30}">3.30.</a></b> При дії хвилі \(\vect {E} = \vect {E}_0e^{-i\omega t}\), де \(\vect {E}_0 = \const \), що падає, частинка
 рухається згідно рівняння
 </p>
-
 <p>
 \[ m \left ( \ddot {\vect {r}} + 2\gamma \dot {\vect {r}} + \omega _0^2\vect {r}\right ) = e\Efield e^{-i\omega t}. \]
 </p>
-
 <p>
 Шукаємо розв’язок у вигляді \(\vect {r} = \vect {r}_0e^{-i\omega t}\). Дипольний момент \(\vect {p} = e\vect {r}_0e^{-i\omega t}\) .
 </p>
-
 <p>
 Отже,
 </p>
-
 <p>
 \[ \vect {p} = \frac {e^2\vect {E}_0\exp {- i\omega t}}{m\left [ {\omega _0^2 - \omega ^2 - 2i\gamma \omega } \right ]}. \]
 </p>
-
 <p>
 У хвильовій зоні \(\vect {B} = \frac {\ddot {\vect {p}} \times \vect {n}}{rc^2} = - \omega ^2 \frac {\vect {p} \times \vect {n}}{rc^2}\). Густина потоку енергії розсіяного випромінювання (середнє за часом) \(\Pi = \frac {c}{8\pi }{\omega
 ^4}\frac {{\left | {\left [ {{\vect {p}} \times {\vect {n}}} \right ]} \right |}^2}{{{r^2}{c^4}}}\).
 </p>
-
 <p>
 Отже, диференціальний переріз розсіювання:
 </p>
-
 <p>
 \[\frac {{d\sigma }}{{do}} = r_e^2\frac {{{\omega ^4}{{(\sin \theta )}^2}}}{{{{({\omega ^2} - \omega _0^2)}^2} + 4{\gamma ^2}{\omega ^2}}}, \]
 </p>
-
 <p>
 де \(r_e = \frac {e^2}{mc^2}\)&nbsp;— класичний заряд електрона, \(\theta = (\widehat {\vect {n},\Efield _0})\).
 </p>
-
 <p>
 Повний переріз розсіювання:
 </p>
-
 <p>
 \[ \sigma = \frac {{8\pi }}{3}r_e^2\frac {{{\omega ^4}}}{{{{({\omega ^2} - \omega _0^2)}^2} + 4{\gamma ^2}{\omega ^2}}} \]
 </p>
-
 </div>
 <!--
 ...... section Спеціальна теорія відносності ......
 -->
-<h4 id="autosec-310">Спеціальна теорія відносності</h4>
-<a id="main-html-autopage-310"></a>
-
+<h4 id="autosec-110">Спеціальна теорія відносності</h4>
+<a id="main-html-autopage-110"></a>
 <div class="cb-answer">
-
-<p>                                   id="solution4.{1}"></a><b><a  href="relativity.html#LWR-ht-problem:4.{1}">4.1.</a></b>
-<a id="LWR-ht-solution:4.{1}"></a><a
+<p>
+<a id="LWR-ht-solution:4.{1}"></a><a id="solution4.{1}"></a><b><a href="relativity.html#LWR-ht-problem:4.{1}">4.1.</a></b>
 </p>
 <li>
 <p>
-
 </p>
 </li><li>
 <p>
 а)&nbsp;Не існує, оскільки \(A&apos;_{\mu }\) часоподібний. б)&nbsp;\(A_{\mu } = \left \lbrace -\frac {Va}{\sqrt {1-V^2}},\frac {a}{\sqrt {1-V^2}},0,0 \right \rbrace \).
 </p>
 </div>
-
 <div class="cb-answer">
-
-<p>                                   id="solution4.{2}"></a><b><a  href="relativity.html#LWR-ht-problem:4.{2}">4.2.</a></b>
-<a id="LWR-ht-solution:4.{2}"></a><a
+<p>
+<a id="LWR-ht-solution:4.{2}"></a><a id="solution4.{2}"></a><b><a href="relativity.html#LWR-ht-problem:4.{2}">4.2.</a></b>
 </p>
 </li><li>
 <p>
-
 </p>
 </li><li>
 <p>
 а)&nbsp;\(A_{\mu } = \left \lbrace \frac {a}{\sqrt {1-V^2}},-\frac {aV}{\sqrt {1-V^2}},0,0 \right \rbrace \). б)&nbsp;Не існує, оскільки \(A&apos;_{\mu }\) простороподібний.
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:4.{3}"></a><a id="solution4.{3}"></a><b><a href="relativity.html#LWR-ht-problem:4.{3}">4.3.</a></b> \(V_C = \frac {p_1 + p_2}{\sqrt {p_1^2 + m_1^2} + \sqrt {p_2^2 + m_2^2}}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:4.{7}"></a><a id="solution4.{7}"></a><b><a href="relativity.html#LWR-ht-problem:4.{7}">4.7.</a></b> \(\frac {N_\rightarrow }{N_\leftarrow } = \frac {1+ \beta }{1-\beta }\), де \(\beta = \frac {v}{c}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:4.{9}"></a><a id="solution4.{9}"></a><b><a href="relativity.html#LWR-ht-problem:4.{9}">4.9.</a></b> \(\Efield &apos; = a(-1,1,0)\), \(\Bfield &apos; = a(1,2,1)\), \(\Efield &apos;&apos; = a(-1,\Gamma (1-
 v),2\Gamma v)\), \(\Bfield &apos;&apos; = a(1,2\Gamma ,\Gamma (1- v))\), де \(\Gamma = \frac {1}{\sqrt {1 - v^2}}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:4.{18}"></a><a id="solution4.{18}"></a><b><a href="relativity.html#LWR-ht-problem:4.{18}">4.18.</a></b> \(\vect {v} = c \frac {\left [ \Efield \times \Bfield \right ] }{B^2}\), при \(E&lt;B\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:4.{19}"></a><a id="solution4.{19}"></a><b><a href="relativity.html#LWR-ht-problem:4.{19}">4.19.</a></b> \(\tg \frac {\theta }{2} = \frac qm \frac {Q}{bv_0^2}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
-<p>                                    id="solution4.{20}"></a><b><a  href="relativity.html#LWR-ht-problem:4.{20}">4.20.</a></b>
-<a id="LWR-ht-solution:4.{20}"></a><a
+<p>
+<a id="LWR-ht-solution:4.{20}"></a><a id="solution4.{20}"></a><b><a href="relativity.html#LWR-ht-problem:4.{20}">4.20.</a></b>
 </p>
 </li><li>
 <p>
-
 </p>
 </li><li>
 <p>
@@ -1914,699 +1664,615 @@ v),2\Gamma v)\), \(\Bfield &apos;&apos; = a(1,2\Gamma ,\Gamma (1- v))\), де \(
 {\frac {3e^2}{R\pi mυ_0^2}}\cdot \theta ^{-5/2}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:4.{21}"></a><a id="solution4.{21}"></a><b><a href="relativity.html#LWR-ht-problem:4.{21}">4.21.</a></b> \(x(t) = \frac {E_0}{B_0}c\left ( t - \frac {1}{\Omega }\sin \Omega t \right ) \), \(y(t) =
 \frac {E_0}{B_0} \frac {c}{\Omega }\left ( 1 - \cos \Omega t \right ) \), де \(\Omega = \frac {qB_0}{mc}\)&nbsp;— циклотронна частота.
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:4.{23}"></a><a id="solution4.{23}"></a><b><a href="relativity.html#LWR-ht-problem:4.{23}">4.23.</a></b> \(x(t) = \frac {qE_0}{2m\Omega ^2}\left ( \sin \Omega t - \Omega t\cos \Omega t \right ) \),
 \(y(t) = \frac {qE_0}{2m\Omega }t\sin \Omega t\).
 </p>
 </div>
-
 </li>
 <!--
 ...... section Діелектрики та магнетики в статичних полях ......
 -->
-<h4 id="autosec-311">Діелектрики та магнетики в статичних полях</h4>
-<a id="main-html-autopage-311"></a>
-
+<h4 id="autosec-111">Діелектрики та магнетики в статичних полях</h4>
+<a id="main-html-autopage-111"></a>
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:6.{5}"></a><a id="solution6.{5}"></a><b><a href="emmedia.html#LWR-ht-problem:6.{5}">6.5.</a></b> \(\Efield _2 = \Efield _1 + \left ( \frac {\epsilon _1}{\epsilon _2} - 1 \right )\vect {n}\left (
 \vect {n} \cdot \Efield _1 \right ) - \frac {4\pi \sigma }{\epsilon _2}{\vect {n}}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:6.{6}"></a><a id="solution6.{6}"></a><b><a href="emmedia.html#LWR-ht-problem:6.{6}">6.6.</a></b> \(\pot = \frac {2}{{{\varepsilon _1} + {\varepsilon _2}}}\frac {q}{r}, \) \(\Efield = \frac
 {2q}{\epsilon _1 + \epsilon _2}\frac {\vect {r}}{r^3}, \) \(\Dfield _i = \frac {2\epsilon _i}{\epsilon _1 + \epsilon _2}\frac {q\vect {r}}{r^3} \) (\(i = 1,2\)).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:6.{7}"></a><a id="solution6.{7}"></a><b><a href="emmedia.html#LWR-ht-problem:6.{7}">6.7.</a></b> Граничні умови на поверхні провідника \(\pot = \const \) та межі розділу діелектриків можна задовольнити, використовуючи
 сферично-симетричний потенціал \(\pot (r) = \frac {C}{r}\), \(r &gt; R\) . Константу \(C\) знаходимо з теореми Гаусса для індукції. Остаточно маємо потенціал:
 </p>
-
 <p>
 \[ \pot (r) = \frac {2q}{(\epsilon _1 + \epsilon _2)r}, \quad r &gt; R, \]
 </p>
-
 <p>
 та густину зарядів на поверхнях кулі:
 </p>
-
 <p>
 \[ \sigma _i = \frac {q\epsilon _i}{2\pi (\epsilon _1 + \epsilon _2)R^2}, \quad i = 1,2. \]
 </p>
-
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:6.{14}"></a><a id="solution6.{14}"></a><b><a href="emmedia.html#LWR-ht-problem:6.{14}">6.14.</a></b> Зовні кулі на зовнішнє однорідне поле накладається поле, що створюється поляризаційними зарядами які виникли на кулі. З
 урахуванням нульової умови на нескінченності для поля зарядів на кулі та умови регулярності в початку координат, шукатимемо потенціал у вигляді:
 </p>
-
 <p>
 \[ \pot (r) = \begin {cases} -Cr\cos \theta , \quad r \le R \\ -E_0 r \cos \theta + \frac {p\cos \theta }{r^2}, \quad r &gt; R. \end {cases} \]
 </p>
-
 <p>
 Граничні умови мають вигляд:
 </p>
-
 <p>
 \[ \left . \pot ^{(i)} \right |_{r = R} = \left . \pot ^{(e)} \right |_{r = R} \left ., \quad \epsilon ^{(i)}\frac {\partial \pot ^{(i)}}{\partial r}\right |_{r = R} = \left . \epsilon ^{(e)}\frac {\partial \pot
 ^{(e)}}{\partial r}\right |_{r = R}, \]
 </p>
-
 <p>
 і дають змогу визначити константу \(C\) та дипольний момент \(p\):
 </p>
-
 <p>
 \[ \begin {cases} -CR\cos \theta = -E_0 R \cos \theta + \frac {p\cos \theta }{R^2} \\ \epsilon ^{(i)}(-C\cos \theta ) = \epsilon ^{(e)} E_0 \cos \theta + \epsilon ^{(e)}\frac {2p\cos \theta }{R^3}. \end {cases}
 \]
 </p>
-
 <p>
 Звідки:
 </p>
-
 <p>
 \[ p = \frac {\epsilon ^{(i)} - \epsilon ^{(e)}}{\epsilon ^{(i)} + 2\epsilon ^{(e)}}R^3E_0, \]
 </p>
-
 <p>
 \[ C = \frac {3\epsilon ^{(e)}}{\epsilon ^{(i)} + 2\epsilon ^{(e)}}. \]
 </p>
-
 <p>
 Потенціал дорівнює:
 </p>
-
 <p>
 \[ \pot = \begin {cases} -\frac {3\epsilon ^{(e)}}{\epsilon ^{(i)} + 2\epsilon ^{(e)}}\left ( \Efield _0\cdot \vect {r}\right ), &amp; r \le R \\ -\left ( \Efield _0\cdot \vect {r}\right ) + \frac {\vect {p}
 \vect {r}}{r^3}, &amp; r &gt; R. \end {cases} \]
 </p>
-
 <p>
 Густина зв’язаного заряду:
 </p>
-
 <p>
 \[ \sigma _ \text {зв&apos;яз} = P_{1n} - P_{2n} = \frac {1}{4\pi } \left ( \left .\frac {\partial \pot ^{(i)}}{\partial r}\right |_{r = R} - \left . \frac {\partial \pot ^{(e)}}{\partial r}\right |_{r = R}
 \right ) = \frac {3}{4\pi } \frac {\epsilon _i - \epsilon _e}{\epsilon _i + 2\epsilon _e} E_0\cos \theta . \]
 </p>
-
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:6.{15}"></a><a id="solution6.{15}"></a><b><a href="emmedia.html#LWR-ht-problem:6.{15}">6.15.</a></b> <em>Вказівка</em>: Шукаємо розв’язок рівняння Лапласа всередині кулі (в сферичних координатах) у вигляді \(\pot
 (r,\theta ,\phi ) = f(r)\cos \theta \). Маємо загальний розв’язок для \(f(r) = A\frac {r}{R} + B\left ( \frac {R}{r}\right )^2\). Константи знаходимо з умови регулярності в нулі та з граничної умови при \(r = R\). Густина зв’язаних зарядів визначається за
 формулою \(\sigma = \vect {P}\cdot \vect {n}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:6.{16}"></a><a id="solution6.{16}"></a><b><a href="emmedia.html#LWR-ht-problem:6.{16}">6.16.</a></b> \(\pot = \pot _0 \left ( \frac {R}{r}\right )^2\cos \theta \).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:6.{17}"></a><a id="solution6.{17}"></a><b><a href="emmedia.html#LWR-ht-problem:6.{17}">6.17.</a></b> <em>Вказівка</em>: Шукаємо розв’язок рівняння Лапласа всередині кулі (в сферичних координатах) у вигляді \(\pot
 (r,\theta ,\phi ) = f(r)\cos \theta \). Маємо загальний розв’язок для \(f(r) = A\frac {r}{R} + B\left ( \frac {R}{r}\right )^2\). Константи \(A\) та \(B\) в середині та зовні кулі різні. Знаходимо іх з нульової умови на нескінченності при \(r&gt;R\), умови
 регулярності та з граничної умови при \(r = R\). Густину вільного заряду знаходимо з граничної умови для нормальної компоненти індукції на поверхні кулі.
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:6.{18}"></a><a id="solution6.{18}"></a><b><a href="emmedia.html#LWR-ht-problem:6.{18}">6.18.</a></b> \(\pot (R,z,\phi ) = \begin {cases} \pot _0\left ( \frac {r}{R} \right )^m\cos (m\varphi ), r
 &lt; R \\ \pot _0\left ( \frac {R}{r} \right )^m\cos (m\varphi ), r \ge R. \end {cases} \), \(\sigma _\text {вільн} = \frac {m(\varepsilon + 1)}{4\pi }\cos (m\varphi ). \)
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:6.{19}"></a><a id="solution6.{19}"></a><b><a href="emmedia.html#LWR-ht-problem:6.{19}">6.19.</a></b> Розв’язок слід шукати окремо зовні кулі (\(r &gt;R\) ) та всередині (\(r&lt;R\)). Користуючись повнотою системи сферичних
 функцій на сфері, шукаємо розв’язок у вигляді:
 </p>
-
 <p>
 \[ \pot (r,\theta ,\varphi ) = \sum \limits _{n = 0}^\infty {\sum \limits _{m = - n}^n {{f_{nm}}(r){Y_{nm}}(\theta ,\varphi )} } . \]
 </p>
-
 <p>
 Підставимо це в рівняння Лапласа в сферичних координатах:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{19}\)</span>
-
 <!--
-
-                                                                                                                    1 𝜕 2 𝜕ϕ 1̂                                                         (8.20)                                            --><a id="Laplace_prb:L"></a><!--
-                                                                                                          Δϕ ≡ 2 (𝑟 ) + 2 Λ𝜓 = 0,
-
-                                                                                                                   𝑟 𝜕𝑟 𝜕𝑟 𝑟
+Δϕ ≡
+1
+𝑟2
+𝜕
+𝜕𝑟
+(𝑟2
+𝜕ϕ
+𝜕𝑟
+) +
+1
+𝑟2
+̂
+Λ𝜓 = 0, (8.20) --><a id="Laplace_prb:L"></a><!--
 -->
 <p>
-
 \begin{equation}
 \label {Laplace_prb:L} \Delta \pot \equiv \frac {1}{{{r^2}}}\frac {\partial }{{\partial r}}\left ( {{r^2}\frac {{\partial \pot }}{{\partial r}}} \right ) + \frac {1}{{{r^2}}}\hat \Lambda \psi = 0,
 \end{equation}
-
 </p>
-
 <p>
 де \(\hat \Lambda {Y_{nm}} \equiv \frac {1}{{\sin \theta }}\frac {\partial }{{\partial \theta }}\left ( {\sin \theta \frac {{\partial {Y_{nm}}}}{{\partial \theta }}} \right ) + \frac {1}{{{{\sin }^2}\theta
 }}\frac {{{\partial ^2}{Y_{nm}}}}{{\partial {\varphi ^2}}} = - n\left ( {n + 1} \right ){Y_{nm}}\left ( {\theta ,\varphi } \right )\) .
 </p>
-
 <p>
 Звідси, з огляду на незалежність сферичних функцій з різними індексами і лінійність рівняння Лапласа по \(\pot \) (принцип суперпозиції!), кожну складову потенціалу можна розглядати окремо. Маємо
 </p>
-
 <p>
 \[ \frac {1}{{{r^2}}}\frac {\partial }{{\partial r}}\left ( {{r^2}\frac {{\partial {f_{nm}}}}{{\partial r}}} \right ) - \frac {{n\left ( {n + 1} \right )}}{{{r^2}}}{f_{nm}}(r) = 0 \]
 </p>
-
 <p>
 для усіх \(n= 0,1,2,\ldots \) , і \(m = -n, -(n-1), \ldots , 0, \ldots , n-1, n\) для кожного \(n\). Загальний розв’язок рівняння&nbsp;<span class="textup">(<a href="answers.html#Laplace_prb:L">8.20</a>)</span> є комбінацією степеневих функцій
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{20}\)</span>
-
 <!--
-
-                                                                          𝑟𝑛  𝑅 𝑛+1                                                                                                                                                       --><a id="star_prb:L"></a><!--
-                                                  𝑓𝑛𝑚(𝑟) = 𝐴𝑛𝑚( 𝑅 ) + 𝐵𝑛𝑚( 𝑟 )                                                                                                          (8.21)
-
+𝑓𝑛𝑚(𝑟) = 𝐴𝑛𝑚(
+𝑟
+𝑅
+)
+𝑛
++ 𝐵𝑛𝑚(
+𝑅
+𝑟
+)
+𝑛+1
+(8.21) --><a id="star_prb:L"></a><!--
 -->
 <p>
-
 \begin{equation}
 \label {star_prb:L} f_{nm}(r) = A_{nm}{\left ( {\frac {r}{R}} \right )^n} + {B_{nm}}{\left ( {\frac {R}{r}} \right )^{n + 1}}
 \end{equation}
-
 </p>
-
 <p>
 Нормування на \(R\) введено для зручності, константи \(A_{nm}\) та \(B_{nm}\)&nbsp;— різні всередині і зовні кулі. Зовні кулі (\(r &gt;R\)) поле обмеженої системи зарядів має прямувати до нуля на нескінченності, тому \(A_{nm} = 0\),
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{21}\)</span>
 <!--
-
-                                                                      ∞𝑛      𝑅 𝑛+1
-
-                                                  𝑛=0 𝑚=−𝑛 ϕout(𝑟, 𝜃, 𝜑) = ∑ ∑ 𝐵𝑛𝑚( 𝑟 ) 𝑌𝑛𝑚(𝜃, 𝜑).                                                                                      (8.22)                                            --><a id="dstar_prb:L"></a><!--
-
+ϕout
+(𝑟, 𝜃, 𝜑) =
+∞
+∑
+𝑛=0
+𝑛
+∑
+𝑚=−𝑛
+𝐵𝑛𝑚(
+𝑅
+𝑟
+)
+𝑛+1
+𝑌𝑛𝑚(𝜃, 𝜑). (8.22) --><a id="dstar_prb:L"></a><!--
 -->
-
 <p>
-
 \begin{equation}
 \label {dstar_prb:L} \pot _\mathrm {out}(r,\theta ,\varphi ) = \sum \limits _{n = 0}^\infty {\sum \limits _{m = - n}^n {{B_{nm}}{{\left ( {\frac {R}{r}} \right )}^{n + 1}}{Y_{nm}}(\theta ,\varphi )} }.
 \end{equation}
-
 </p>
-
 <p>
 Аналогічно розглядаємо розв’язок усередині кулі, де, однак, поле має бути регулярним в нулі (<em>в центрі немає якихось точкових зарядів</em>); тому в&nbsp;<span class="textup">(<a href="answers.html#star_prb:L">8.21</a>)</span> слід відкинути члени з від’ємними
 степенями змінної \(r &lt; R\) :
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{22}\)</span>
 <!--
-
-                                                                                                    ϕin(𝑟, 𝜃, 𝜑) = ∑ ∑ 𝐴̃𝑛𝑚( ∞ 𝑛 𝑟 ) 𝑌𝑛𝑚(𝜃, 𝜑) 𝑛 𝑛=0 𝑚=−𝑛 𝑅                             (8.23)                                            --><a id="ddstar_prb:L"></a><!--
+ϕin
+(𝑟, 𝜃, 𝜑) =
+∞
+∑
+𝑛=0
+𝑛
+∑
+𝑚=−𝑛
+̃
+𝐴𝑛𝑚(
+𝑟
+𝑅
+)
+𝑛
+𝑌𝑛𝑚(𝜃, 𝜑) (8.23) --><a id="ddstar_prb:L"></a><!--
 -->
 <p>
-
 \begin{equation}
 \label {ddstar_prb:L} \pot _\mathrm {in}(r,\theta ,\varphi ) = \sum \limits _{n = 0}^\infty {\sum \limits _{m = - n}^n {{{\tilde A}_{nm}}{{\left ( {\frac {r}{R}} \right )}^n}{Y_{nm}}(\theta ,\varphi )} }
 \end{equation}
-
 </p>
-
 <p>
 Маємо дві граничні умови на поверхні кулі (\(r = R\)). Умову для тангенціальних компонент напруженості електричного поля в даній задачі можна замінити умовою неперервності потенціалу
 </p>
-
 <p>
 \[ \pot _\mathrm {out}(R,\theta ,\varphi ) = {\pot _\mathrm {in}}(R,\theta ,\varphi ). \]
 </p>
-
 <p>
 Це дає \(\tilde {A}_{nm} = B_{mn}\). Друга гранична умова використовує нормальні компоненти індукції \(D_n = - \epsilon \vect {n} \cdot \vect {\nabla }\pot = - \epsilon \frac {\partial \pot }{\partial r}\) , вона дає
 </p>
-
 <p>
 \[ - \left . {\frac {{\partial {\pot _\mathrm {out}}}}{{\partial r}}} \right |_{r = R} + \varepsilon {\left . {\frac {{\partial {\pot _\mathrm {in}}}}{{\partial r}}} \right |_{r = R}} = 4\pi \sum \limits _{n =
 0}^\infty {\sum \limits _{m = - n}^n {{s_{nm}}{Y_{nm}}(\theta ,\varphi )} }. \]
 </p>
-
 <p>
 Підстановка&nbsp;<span class="textup">(<a href="answers.html#dstar_prb:L">8.22</a>)</span>, <span class="textup">(<a href="answers.html#ddstar_prb:L">8.23</a>)</span> з урахуванням \(\tilde {A}_{nm} = B_{mn}\) визначає ці коефіцієнти:
 </p>
-
 <p>
 \[ \left ( n + 1 + n\varepsilon \right )B_{nm} = 4\pi s_{nm}. \]
 </p>
-
 <p>
 Отже, остаточно маємо:
 </p>
-
-<p>                        = \begin {cases} 4\pi  \sum \limits _{n = 0}^\infty {\sum \limits _{m = - n}^n {\frac {{{s_{nm}}}}{{n +                           1 + n\varepsilon }}{{\left         ( {\frac {r}{R}} \right )}^n}{Y_{nm}}(\theta ,\varphi
-\[ \pot (r,\theta ,\phi )  4\pi \sum \limits _{n  = 0}^\infty {\sum \limits _{m = - n}^n {\frac {{{s_{nm}}}}{{n + 1 + n\varepsilon                           }}{{\left ( {\frac {R}{r}}         \right )}^{n + 1}}{Y_{nm}}(\theta ,\varphi )} } , \quad
-)} } , \quad r &lt; R \\
+<p>
+\[ \pot (r,\theta ,\phi ) = \begin {cases} 4\pi \sum \limits _{n = 0}^\infty {\sum \limits _{m = - n}^n {\frac {{{s_{nm}}}}{{n + 1 + n\varepsilon }}{{\left ( {\frac {r}{R}} \right )}^n}{Y_{nm}}(\theta ,\varphi
+)} } , \quad r &lt; R \\ 4\pi \sum \limits _{n = 0}^\infty {\sum \limits _{m = - n}^n {\frac {{{s_{nm}}}}{{n + 1 + n\varepsilon }}{{\left ( {\frac {R}{r}} \right )}^{n + 1}}{Y_{nm}}(\theta ,\varphi )} } , \quad
 r \ge R. \end {cases} \]
 </p>
-
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:6.{22}"></a><a id="solution6.{22}"></a><b><a href="emmedia.html#LWR-ht-problem:6.{22}">6.22.</a></b> \(\Hfield _2 = \Hfield _1 + \left ( \frac {\mu _1}{\mu _2} - 1 \right )\vect {n}\left ( \vect
 {n} \cdot \Hfield _1 \right ) + \frac {4\pi }{c}\left [\vect {n}\times \vect {i}\right ] \).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:6.{24}"></a><a id="solution6.{24}"></a><b><a href="emmedia.html#LWR-ht-problem:6.{24}">6.24.</a></b> \(\vect {A}(r) = \begin {cases} -\mu a (r - R) \vect {e}_z, &amp; r \leqslant R, \\ -\mu a R
 \ln \left ( \dfrac {r}{R} \right ) \vect {e}_z, &amp; r &gt; R. \end {cases} \)
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:6.{26}"></a><a id="solution6.{26}"></a><b><a href="emmedia.html#LWR-ht-problem:6.{26}">6.26.</a></b> \(F = \frac {\epsilon _2 - \epsilon _1}{(\epsilon _2 + \epsilon _1)\epsilon _1} \frac
 {q}{4d^2}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:6.{27}"></a><a id="solution6.{27}"></a><b><a href="emmedia.html#LWR-ht-problem:6.{27}">6.27.</a></b> В діелектрику виникає зображення диполя, з моментом \(\vect {p}&apos; = -\vect {p}\frac {\epsilon -
 1}{\epsilon + 1}\).
 </p>
-
 <p>
 Сумарний момент сил, що діє на диполь
 </p>
-
 <p>
 \[ \left [\vect {p}\times \Efield \right ] + \left [\vect {p}\times \left ( \frac {3(\vect {p}&apos;\vect {r})\vect {r}}{r^5} - \frac {\vect {p}&apos;}{r^3} \right ) \right ] = 0 \]
 </p>
-
 <p>
 Звідси для положень рівноваги маємо \(\alpha =0\) та \(\alpha = \pi \) . При \(\xi = \left |\frac {E}{\frac {\epsilon - 1}{\epsilon + 1} \frac 38\frac {p}{d^3}}\right |&lt;1\) також маємо \(\alpha = \pi \pm \arccos \xi \). Положення
 рівноваги \(\alpha = 0\) є стійким. Положення рівноваги \(\alpha = \pi \) є нестійким при при \(\xi &gt;1\) , але стає стійким при \(\xi &lt; 1\). Положення, що відповідають \(\alpha = \pi \pm \arccos \xi \) при \(\xi &lt;1\), є нестійкими.
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:6.{28}"></a><a id="solution6.{28}"></a><b><a href="emmedia.html#LWR-ht-problem:6.{28}">6.28.</a></b> \(\phi = \sqrt {8mg/(\epsilon -1)}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:6.{29}"></a><a id="solution6.{29}"></a><b><a href="emmedia.html#LWR-ht-problem:6.{29}">6.29.</a></b> \(\sigma _\text {зв&apos;яз} = - \frac {\epsilon - 1}{\epsilon + 1} \frac {qd}{2\pi (x^2
 +h^2)^{3/2}}\), де \(x\)&nbsp;– координата вздовж межі розділу, \(q_\text {зв&apos;яз} = - \frac {\epsilon - 1}{\epsilon + 1}q\).
 </p>
 </div>
-
 <div class="cb-answer">
-
-<p>                                    id="solution6.{30}"></a><b><a href="emmedia.html#LWR-ht-problem:6.{30}">6.30.</a></b> \(F_1 = \frac                       {\epsilon _1 - \epsilon _2}{(\epsilon _1 + \epsilon _2)\epsilon _1} \frac
-<a id="LWR-ht-solution:6.{30}"></a><a  + \epsilon _2} \frac {q_1q_2}{4d^2}\), \(F_2 = \frac {\epsilon _2 - \epsilon _1}{(\epsilon _1 +                       \epsilon _2)\epsilon _2} \frac {q_2^2}{4d^2} + \frac {2}{\epsilon _1 + \epsilon
-{q_1^2}{4d^2} + \frac {2}{\epsilon _1
+<p>
+<a id="LWR-ht-solution:6.{30}"></a><a id="solution6.{30}"></a><b><a href="emmedia.html#LWR-ht-problem:6.{30}">6.30.</a></b> \(F_1 = \frac {\epsilon _1 - \epsilon _2}{(\epsilon _1 + \epsilon _2)\epsilon _1} \frac
+{q_1^2}{4d^2} + \frac {2}{\epsilon _1 + \epsilon _2} \frac {q_1q_2}{4d^2}\), \(F_2 = \frac {\epsilon _2 - \epsilon _1}{(\epsilon _1 + \epsilon _2)\epsilon _2} \frac {q_2^2}{4d^2} + \frac {2}{\epsilon _1 + \epsilon
 _2} \frac {q_1q_2}{4d^2}\).
 </p>
 </div>
 <!--
 ...... section Квазістаціонарні поля і струми ......
 -->
-<h4 id="autosec-312">Квазістаціонарні поля і струми</h4>
-<a id="main-html-autopage-312"></a>
-
+<h4 id="autosec-112">Квазістаціонарні поля і струми</h4>
+<a id="main-html-autopage-112"></a>
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:7.{2}"></a><a id="solution7.{2}"></a><b><a href="quasistationary.html#LWR-ht-problem:7.{2}">7.2.</a></b> Передусім відзначимо, що тут ми розглядаємо ідеальну картину з неперервним рівномірним розподілом густини заряду, як це зазвичай
 прийнято в макроскопічній електродинаміці. Виберемо систему декартових координат з абсцисою ортогонально до початкового шару.
 </p>
-
 <p>
 Нехай \(X(x,t)\)&nbsp;— траєкторія частинки, яка при \(t = 0\) мала координату \(x\) , тобто \(X(0,t) = x\). Напруженість поля зростає монотонно по \(x\), відповідно, швидкість і прискорення кожної частинки&nbsp;— також. Тому «задні» частинки не наздоганяють «передні», тобто
 \(X(x_1,t) &gt; X(x_2,t)\) при \({x_1} &gt; {x_2}\).
 </p>
-
 <p>
 Оскільки поле плаского шару &nbsp;— однорідне у просторі, це означає, що на кожну частинку весь час діє одне і теж саме електричне поле:
 </p>
-
 <p>
 \[ \frac {{{\partial ^2}X(x,t)}}{{\partial {t^2}}} = \frac {e}{m_e}E(x) = \omega _p^2x, \]
 </p>
-
 <p>
 \[ \omega _p^2 = \frac {{4\pi {e^2}{n_0}}}{m_e}, \]
 </p>
-
 <p>
 \(m_e\)&nbsp;— маса електрона. Поле однорідного шару визначено за теоремою Гаусса.
 </p>
-
 <p>
 З рівнянь рівноприскореного руху:
 </p>
-
 <p>
 \[ X(x,t) = x\left [ {1 + \omega _p^2\frac {{{t^2}}}{2}} \right ] \]
 </p>
-
 <p>
 видно, що розподіл частинок весь час пропорційний початковому положенню.
 </p>
-
 <p>
 Положення крайніх частинок \(X(a,t) = a\left [ {1 + \omega _p^2\frac {{{t^2}}}{2}} \right ]\).
 </p>
-
 <p>
 Густина у будь-якій точці шару, що розширюється, є
 </p>
-
 <p>
 \[ \rho (x,t) = e{n_0}{\left [ {1 + \omega _p^2\frac {{{t^2}}}{2}} \right ]^{ - 1}}\theta \left [ {X(a,t) - x} \right ]. \]
 </p>
-
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:7.{3}"></a><a id="solution7.{3}"></a><b><a href="quasistationary.html#LWR-ht-problem:7.{3}">7.3.</a></b> Всередині плити відбувається розтікання заряду (максвелівська релаксація), яке має місце за умови виконання закону Ома. А саме, з
 рівняння неперервності, закону Ома та рівняння Максвелла \(\vect {\nabla }\cdot \Efield = -4\pi \rho \) випливає:
 </p>
-
 <p>
 \[ \rho (x,t) = \rho _1\exp \left ( - \frac {4\pi \lambda _1}{\epsilon _1}t \right ). \]
 </p>
-
 <p>
 Для плаского розподілу заряду поле спрямовано по осі \(x\). З рівняння Максвелла маємо:
 </p>
-
 <p>
 \[ E_x(x,t) = 4\pi \left ( {x - \frac {a}{2}} \right )\frac {{{\rho _1}}}{{{\epsilon _1}}}\exp \left ( { - \frac {{4\pi {\lambda _1}}}{{{\epsilon _1}}}t} \right ), \]
 </p>
-
 <p>
 звідки, за законом Ома:
 </p>
-
 <p>
 \[ \vect {j}(x,t) = 4\pi \vect {e}_x\left ( x - \frac {a}{2} \right )\frac {\lambda _1\rho _1}{\epsilon _1}\exp \left ( - \frac {4\pi \lambda _1}{\epsilon _1}t \right ). \]
 </p>
-
 <p>
 Заряд, що був всередині, з часом порівну розподіляється між двома поверхнями плити і на кожній з них
 </p>
-
 <p>
 \[ \sigma (t) = \frac {a\rho _1}{2}\left [ {1 - \exp \left ( { - \frac {{4\pi {\lambda _1}}}{{{\varepsilon _1}}}t} \right )} \right ]. \]
 </p>
-
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:7.{4}"></a><a id="solution7.{4}"></a><b><a href="quasistationary.html#LWR-ht-problem:7.{4}">7.4.</a></b> Задача аналогічна&nbsp;<a href="quasistationary.html#prb:MaxwellRelax">7.3</a>. З урахуванням циліндричної симетрії задачі
 видно, що напруженість електричного поля має лише радіальну (перпендикулярну до осі циліндра) компоненту. З інтегральної форми рівнянь Максвелла в середовищі маємо:
 </p>
-
 <p>
 \[ \Efield ({\vect {r}},t) = 2\pi {\vect {r}}\frac {{{\rho _1}}}{{{\epsilon _1}}}\exp \left ( { - \frac {{4\pi {\lambda _1}}}{{{\epsilon _1}}}t} \right ), \]
 </p>
-
 <p>
 звідки
 </p>
-
 <p>
 \[ \vect {j}(\vect {r},t) = 2\pi \vect {r}\frac {{{\lambda _1}{\rho _1}}}{{{\epsilon _1}}}\exp \left ( { - \frac {{4\pi {\lambda _1}}}{{{\epsilon _1}}}t} \right ). \]
 </p>
-
 <p>
 Для поверхневої густини заряду маємо:
 </p>
-
 <p>
 \[ \sigma (t) = \frac {{R{\rho _1}}}{2}\left [ {1 - \exp \left ( { - \frac {{4\pi {\lambda _1}}}{{{\varepsilon _1}}}t} \right )} \right ]. \]
 </p>
-
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:7.{5}"></a><a id="solution7.{5}"></a><b><a href="quasistationary.html#LWR-ht-problem:7.{5}">7.5.</a></b> Всередині кулі маємо:
 </p>
-
 <p>
 \[ \rho (t) = {\rho _1}\exp \left ( { - \frac {{4\pi {\lambda _1}}}{{{\varepsilon _1}}}t} \right ). \]
 </p>
-
 <p>
 Заряд зосереджується на поверхні кулі з густиною:
 </p>
-
 <p>
 \[ \sigma (t) = \frac {{R{\rho _1}}}{3}\left [ {1 - \exp \left ( { - \frac {{4\pi {\lambda _1}}}{{{\varepsilon _1}}}t} \right )} \right ]. \]
 </p>
-
 <p>
 З урахуванням сферичної симетрії задачі (напруженість електричного в окремій точці спрямована по радіусу) та з інтегральної форми рівнянь Максвелла в середовищі отримуємо напруженість поля. Густина струму:
 </p>
-
 <p>
 \[ \vect {j}(\vect {r},t) = 4\pi \vect {r}\frac {{{\lambda _1}{\rho _1}}}{{3{\epsilon _1}}}\exp \left ( { - \frac {{4\pi {\lambda _1}}}{{{\epsilon _1}}}t} \right ). \]
 </p>
-
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:7.{7}"></a><a id="solution7.{7}"></a><b><a href="quasistationary.html#LWR-ht-problem:7.{7}">7.7.</a></b> Використавши рівняння для електричного поля&nbsp;<a id="eq:skin-effect-dup2"></a> в циліндричних координатах та
 закон Ома отримаємо рівняння для густини струму:
 </p>
-
 <p>
 \[ \frac {1}{r}\frac {\partial }{{\partial r}}\left ( {r\frac {{\partial {j_z}}}{{\partial r}}} \right ) + {k^2}{j_z} = 0, \quad k^2 = \frac {4i\pi \lambda \mu \omega }{c^2} = \frac {2i}{\delta ^2}. \]
 </p>
-
 <p>
 Розв’язком цього рівняння є функція вигляду \(j_z = AJ_0(kr) + BN_0(kr)\). Оскільки \(\lim \limits _{r\to 0}N_0(kr) = -\infty \), то стала \(B = 0\). Сталу \(A\) можна знайти знаючи амплітуду струму
 </p>
-
 <p>
 \[ I_0 = \int \limits _0^a j_z(r)\ 2\pi rdr = 2\pi A \int \limits _0^a r J_0(kr) dr = 2\pi A \frac {a}{k} J_1(ka), \]
 </p>
-
 <p>
 отже, густина струму
 </p>
-
 <p>
 \[ j_z = \frac {k}{2\pi a} \frac {J_0(kr)}{J_1(ka)} I_0e^{-i\omega t}. \]
 </p>
-
 <p>
 За великих частот \(ka \gg 1\) та в області біля краю провідника \(r \lessapprox a\) (див. формулу&nbsp;<span class="textup">(<a href="appendices.html#eq:Jxgg1">Г.10</a>)</span>) маємо:
 </p>
-
 <p>
 \[ j_z = \frac {1-i}{2\pi \delta } I_0 \sqrt {\frac 1{ar}} e^{\left ( \frac {i - 1}{\delta } (a-r) - i\omega t\right ) }. \]
 </p>
-
 <p>
 Дійсна амплітуда густини струму має вигляд:
 </p>
-
 <p>
 \[ j_0(r) = \frac {I_0\sqrt {2}}{2\pi \delta } \sqrt {\frac 1{ar}}e^{\frac {r-a}{\delta }}, \]
 </p>
-
 <p>
 графічне зображення зображення цієї залежності подано на рисунку
 </p>
 <div class="center">
-
 <p>
 <span
-
-      id="lateximage-main-html-14"
-      class="lateximagesource"
+id="lateximage-main-html-14"
+class="lateximagesource"
 ><!--
-        𝑗
-
+𝑎
+𝑎 − 𝛿
 𝐼0√2
 2𝜋𝑎𝛿
-
-                                                      𝑟
-                                    𝑎−𝛿 𝑎
+𝑟
+𝑗
 --><img
-      src="main-html-images/image-14.svg"
-      alt="Рисунок 1"
-      style=""
-      class="lateximage"
-
+src="main-html-images/image-14.svg"
+alt="Рисунок 1"
+style=""
+class="lateximage"
 ></span>
 </p>
 </div>
-
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:7.{8}"></a><a id="solution7.{8}"></a><b><a href="quasistationary.html#LWR-ht-problem:7.{8}">7.8.</a></b> Густина струму в циліндричному провіднику (див. розв’язок до задачі&nbsp;<a href="quasistationary.html#prb:TrueSkin">7.7</a>)
 </p>
-
 <p>
 \[ j_z = \frac {k}{2\pi a} \frac {J_0(kr)}{J_1(ka)} I_0e^{-i\omega t}. \]
 </p>
-
 <p>
 Опір будемо шукати як \(R = \frac {\left \langle Q \right \rangle }{\frac 12I_0^2}\).
 </p>
-
 <p>
 Із закону Джоуля-Ленца розрахуємо теплоту, яка виділяється в провіднику як
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{23}\)</span>
-
 <!--
-
-     1  ˆ𝑎     2𝜋 𝐼02  |𝑘|2 ˆ𝑎
-
-⟨𝑄⟩ = 2𝜆 ||𝑗𝑧|| 2𝜋𝑟𝑑𝑟 = 2(2𝜋𝑎)2 𝜆 𝐽1(𝑘𝑎)𝐽1(𝑘∗𝑎) 𝐽0(𝑘𝑟)𝐽0(𝑘 𝑟)𝑟𝑑𝑟 =2∗
-
-        0                   0
-
-                                                                    2𝜋𝑎  𝐼2       |𝑘|2         𝑘𝐽1(𝑘𝑎)𝐽0(𝑘∗𝑎) − 𝑘∗𝐽1(𝑘∗𝑎)𝐽0(𝑘𝑎)
-
-                                                                          0
-                                                                    = 2(2𝜋𝑎)2 𝜆 𝐽1(𝑘𝑎)𝐽1(𝑘∗𝑎)                                                                                                          =
-                                                                                                               𝑘2 − 𝑘∗2
-
-                                                                             2𝜋𝑎     𝐼2  |𝑘|2𝛿2      𝑘𝐽0(𝑘∗𝑎)  𝑘∗𝐽0(𝑘𝑎)  )=
-                                                                         =2                       (  ∗−
-                                                                                      0
-
-                                                                         2(2𝜋𝑎) 𝜆 4𝑖 𝐽1(𝑘 𝑎) 𝐽1(𝑘𝑎)
-
-                                                                                                                                                                                                          2𝜋𝑎  𝐼2  1  𝑘∗𝐽0(𝑘∗𝑎)  𝑘𝐽0(𝑘𝑎)  )=  1  𝐼2        𝑘𝐽0(𝑘𝑎)  ).
-
-                                                                                                                                                                                                                0                                 0
-                                                                                                                                                                                                          = 2 ( ∗+                                   Re (
-                                                                                                                                                                                                          2(2𝜋𝑎) 𝜆 2 𝐽1(𝑘 𝑎)     𝐽1(𝑘𝑎)       4𝜋𝑎 𝜆        𝐽1(𝑘𝑎)
-
+⟨𝑄⟩ =
+1
+2𝜆
+𝑎
+ˆ
+0
+|
+|𝑗2
+𝑧
+|
+| 2𝜋𝑟𝑑𝑟 =
+2𝜋
+2(2𝜋𝑎)2
+𝐼2
+0
+𝜆
+|𝑘|2
+𝐽1(𝑘𝑎)𝐽1(𝑘∗𝑎)
+𝑎
+ˆ
+0
+𝐽0(𝑘𝑟)𝐽0(𝑘∗𝑟)𝑟𝑑𝑟 =
+=
+2𝜋𝑎
+2(2𝜋𝑎)2
+𝐼2
+0
+𝜆
+|𝑘|2
+𝐽1(𝑘𝑎)𝐽1(𝑘∗𝑎)
+𝑘𝐽1(𝑘𝑎)𝐽0(𝑘∗𝑎) − 𝑘∗𝐽1(𝑘∗𝑎)𝐽0(𝑘𝑎)
+𝑘2 − 𝑘∗2
+=
+=
+2𝜋𝑎
+2(2𝜋𝑎)2
+𝐼2
+0
+𝜆
+|𝑘|2𝛿2
+4𝑖
+(
+𝑘𝐽0(𝑘∗𝑎)
+𝐽1(𝑘∗𝑎)
+−
+𝑘∗𝐽0(𝑘𝑎)
+𝐽1(𝑘𝑎)
+) =
+=
+2𝜋𝑎
+2(2𝜋𝑎)2
+𝐼2
+0
+𝜆
+1
+2
+(
+𝑘∗𝐽0(𝑘∗𝑎)
+𝐽1(𝑘∗𝑎)
++
+𝑘𝐽0(𝑘𝑎)
+𝐽1(𝑘𝑎)
+) =
+1
+4𝜋𝑎
+𝐼2
+0
+𝜆
+Re (
+𝑘𝐽0(𝑘𝑎)
+𝐽1(𝑘𝑎)
+) .
 -->
-
 <p>
-
-\begin{multline*}                                                                                                                                                                                                                         \limits _0^a
-\left \langle Q \right \rangle = \frac 1{2\lambda }\int \limits _0^a \left | j_z^2\right | 2\pi r dr = \frac {2\pi }{2(2\pi a)^2} \frac {I_0^2}{\lambda } \frac {|k|^2}{J_1(ka)J_1(k^*a)} \int                                            a }{2(2\pi a)^2}
-J_0(kr)J_0(k^*r) r dr = \\ = \frac {2\pi a}{2(2\pi a)^2} \frac {I_0^2}{\lambda } \frac {|k|^2}{J_1(ka)J_1(k^*a)} \frac {kJ_1(ka)J_0(k^*a) - k^*J_1(k^*a)J_0(ka)}{k^2-k^{*2}} =\\ = \frac {2\pi                                            12 \left ( \frac
-\frac {I_0^2}{\lambda } \frac {|k|^2\delta ^2}{4i}\left ( \frac {kJ_0(k^*a)}{J_1(k^*a)} - \frac {k^*J_0(ka)}{J_1(ka)}\right ) = \\ = \frac {2\pi a}{2(2\pi a)^2} \frac {I_0^2}{\lambda } \frac
+\begin{multline*}
+\left \langle Q \right \rangle = \frac 1{2\lambda }\int \limits _0^a \left | j_z^2\right | 2\pi r dr = \frac {2\pi }{2(2\pi a)^2} \frac {I_0^2}{\lambda } \frac {|k|^2}{J_1(ka)J_1(k^*a)} \int \limits _0^a
+J_0(kr)J_0(k^*r) r dr = \\ = \frac {2\pi a}{2(2\pi a)^2} \frac {I_0^2}{\lambda } \frac {|k|^2}{J_1(ka)J_1(k^*a)} \frac {kJ_1(ka)J_0(k^*a) - k^*J_1(k^*a)J_0(ka)}{k^2-k^{*2}} =\\ = \frac {2\pi a }{2(2\pi a)^2}
+\frac {I_0^2}{\lambda } \frac {|k|^2\delta ^2}{4i}\left ( \frac {kJ_0(k^*a)}{J_1(k^*a)} - \frac {k^*J_0(ka)}{J_1(ka)}\right ) = \\ = \frac {2\pi a}{2(2\pi a)^2} \frac {I_0^2}{\lambda } \frac 12 \left ( \frac
 {k^*J_0(k^*a)}{J_1(k^*a)} + \frac {kJ_0(ka)}{J_1(ka)}\right ) = \frac {1}{4\pi a} \frac {I_0^2}{\lambda } \mathrm {Re}\left ( \frac {kJ_0(ka)}{J_1(ka)} \right ).
 \end{multline*}
-
 </p>
-
 <p>
 Отже
 </p>
-
 <p>
 \[ R = \frac {1}{2\pi a\lambda } \mathrm {Re}\left [ \frac {kJ_0(ka)}{J_1(ka)} \right ]. \]
 </p>
-
 <p>
 Розглянемо випадок малих частот \(|ka| \ll 1\):
 </p>
-
 <p>
 \[ R \approx \frac {1}{2\pi a\lambda } \mathrm {Re} \left [k\left ( 1 - \frac {k^2a^2}{4}\right )\frac {2}{ka} \right ] = \frac {1}{\pi a^2 \lambda }. \]
 </p>
-
 <p>
 Тобто, при малих частотах опір такий же, як і для для постійного струму.
 </p>
-
 <p>
 Розглянемо випадок великих частот \(|ka| \gg 1\):
 </p>
-
 <p>
 \[ R \approx \frac {1}{2\pi a\lambda } \mathrm {Re}\left [ ke^{k(r-a)} \right ] \approx \frac {1}{2\pi a\lambda } \mathrm {Re}\left [ k(1-k(r-a)) \right ] = \frac {1}{2\pi a\delta \lambda }. \]
 </p>
-
 <p>
 З останньої формули випливає, що ефективна площа перерізу провідника в області великих частот дорівнює \(2\pi a\delta \), тобто має дуже маленьку величину, зосереджену поблизу поверхні провідника.
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:7.{9}"></a><a id="solution7.{9}"></a><b><a href="quasistationary.html#LWR-ht-problem:7.{9}">7.9.</a></b> \(B_{\phi _{\mathrm {in}}} = \frac {2}{cr} \int \limits _0^r j_z 2\pi r dt = \frac {2I}{ca} \frac
 {J_1(kr)}{J_1(ka)}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:7.{10}"></a><a id="solution7.{10}"></a><b><a href="quasistationary.html#LWR-ht-problem:7.{10}">7.10.</a></b> Внутрішню індуктивність можна обчислити знаючи магнітне поле в середині провідника (див. відповідь до задачі&nbsp;<a
 href="quasistationary.html#prb:BfieldTrueSkin">7.9</a>) виходячи з виразу \(\frac {1}{4c^2}L_\mathrm {in}I^2 = \int \limits _0^a \frac {\left \langle B_{\phi _{\mathrm {in}}}^2\right \rangle }{8\pi } 2\pi rdr\), маємо \(L_\mathrm {in}
@@ -2614,189 +2280,142 @@ href="quasistationary.html#prb:BfieldTrueSkin">7.9</a>) виходячи з ви
 \(L_\mathrm {in} = \frac \delta a\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:7.{12}"></a><a id="solution7.{12}"></a><b><a href="quasistationary.html#LWR-ht-problem:7.{12}">7.12.</a></b> Соленоїд створює однорідне магнітне поле, напрямлене по осі Z всередині нього. Зовні соленоїда поле дорівнює нулю. За
 наявності циліндра в ньому виникають індукційні струми, що течуть по колам в площинах, ортогональних осі циліндра. Цю систему струмів можна розглядати як систему коаксіальних соленоїдів, поле яких не дає внесок зовні провідного циліндра.
 </p>
-
 <p>
 Звідси магнітне поле \(\Bfield = \Hfield = B_0\vect {e}_z\) при \(r \in [a,b]\), де \(B_0 = \frac {4\pi }{c}nI\), а зовні соленоїда (при \(r &gt; b\)) \(\Bfield = 0\).
 </p>
-
 <p>
 Усередині циліндра магнітне поле також напрямлене по осі \(OZ\). Залежність усіх полів та струмів від часу така ж, як струм через обмотку.
 </p>
-
 <p>
 З рівнянь для квазістаціонарного поля (див. «Теоретичні відомості, ф-ла &nbsp;<span class="textup">(<a href="quasistationary.html#eq:skin-effect">7.1</a>)</span>») отримуємо
 </p>
-
 <p>
 \[ \frac {1}{r}\frac {\partial }{{\partial r}}\left ( {r\frac {{\partial {H_z}}}{{\partial r}}} \right ) + {k^2}{H_z} = 0, \quad k^2 = \frac {4i\pi \lambda \mu \omega }{c^2} = \frac {2i}{\delta ^2}, \]
 </p>
-
 <p>
 що зводиться до рівняння для функції Бесселя \(J_0\). Звідси, з урахуванням граничних умов для магнітного поля при \(r = a\) та \(r = b\), маємо
 </p>
-
 <p>
 \[H_z = \begin {cases} \frac {4\pi }{c}\frac {J_0(kr)}{J_0(ka)}nI_0e^{-i\omega t}, \quad r &lt;a \\ nI_0e^{-i\omega t}, \quad a \le r \le b \\ 0, r &gt; b. \end {cases} \]
 </p>
-
 <p>
 Зауважимо, що \(J_0(ka) \neq 0\), оскільки \(k\)&nbsp;— комплексне, а нулі функції Бесселя лежать на дійсній осі. З розкладу для \(J_0\) видно, що в формулу входить саме степені \(k^2\), тому знак \(k\) тут несуттєвий.
 </p>
-
 <p>
 При \(r &lt; a\), \(\vect {j} = \frac {c}{4\pi }\rot \Hfield = \frac {c}{4\pi }\frac {d{H_z}}{dr}\left [ \vect {e}_r \times \vect {e}_z \right ]\), звідки
 </p>
-
 <p>
 \[ \vect {j} = knI_0\frac {J_1(kr)}{J_0(ka)}e^{-i\omega t}\vect {e}_{\phi }, \]
 </p>
-
 <p>
 де використано що \(J&apos;_0(x) = -J_1(x)\). Використовуючи закон Ома \(\Efield = \frac {\vect {j}}{\lambda }\), отримуємо електричне поле в середині провідника. Для областей \(r &gt;a\) та \(r &gt;b\) електричне поле можна знайти з рівняння Максвелла
 </p>
-
 <p>
 \[ \frac {1}{r}\frac {\partial }{{\partial r}}\left ( {r{E_\varphi }} \right ) = \frac {{i\omega }}{c}{B_z} = \frac {{i\omega }}{c}{B_0}(t). \]
 </p>
-
 <p>
 Остаточно маємо
 </p>
-
 <p>
 \[ E_{\phi } = \begin {cases} \frac {kcB_0}{4\pi \lambda }\frac {J_1(ka)}{J_0(ka)}e^{-i\omega t}, \quad r &lt;a \\ \frac {k}{\lambda }\frac {J_1(ka)}{J_0(ka)}\frac {a}{r}nI_0e^{-i\omega t} + \frac {4i\pi \omega
 }{2c^2r}\left ( r^2 - a^2\right ) nI_0e^{-i\omega t}, \quad a \le r \le b \\ \frac {k}{\lambda }\frac {J_1(ka)}{J_0(ka)}\frac {a}{r}nI_0e^{-i\omega t} + \frac {4i\pi \omega }{2c^2r}\left ( b^2 - a^2\right
 )nI_0e^{-i\omega t} , \quad r &gt; b. \end {cases} \]
 </p>
-
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:7.{13}"></a><a id="solution7.{13}"></a><b><a href="quasistationary.html#LWR-ht-problem:7.{13}">7.13.</a></b> Розподіл полів і струму аналогічний задачі&nbsp;<a href="quasistationary.html#prb:Bat379">7.12</a>, але тут немає соленоїду.
 Розв’язок шукаємо в циліндричних координатах у вигляді \(\Bfield (r) = f(r)\vect {e}_ze^{- i\omega t}\), \(\vect {e}_z\)&nbsp;— одиничний вектор осі \(OZ\). Зовні циліндру є лише зовнішнє поле, тому гранична умова для напруженості така \(f(a) = B_0\) .
 </p>
-
 <p>
 Аналогічно до задачі&nbsp;<a href="quasistationary.html#prb:Bat379">7.12</a> рівняння для магнітного поля за умови регулярності при \(r = 0\) дає
 </p>
-
 <p>
 \[ \Hfield (r) = \vect {e}_z{B_0}\frac {{{J_0}(kr)}}{{{J_0}(ka)}} e^{ - i\omega t}, \]
 </p>
-
 <p>
 де \(k = \frac {1 + i}{\delta }\), \(\delta = \frac {c}{\sqrt {2\pi \mu \lambda \omega }}\).
 </p>
-
 <p>
 Густину струму знайдемо з рівняння Максвела як
 </p>
-
 <p>
 \[ \vect {j}= - \frac {c}{4\pi }\frac {dH_z}{dr}\vect {e}_\phi = \vect {e}_\phi B_0\frac {kc}{4\pi }\frac {J_1(kr)}{J_0(ka)}e^{ - i\omega t}. \]
 </p>
-
 <p>
 Для малих частот \(|ka| \ll 1\) (або \(\delta \gg a\)) маємо
 </p>
-
 <p>
 \[ \vect {j} = \vect {e}_\phi \frac {\lambda \mu \omega ir}{{2c}}e^{ - i\omega t}. \]
 </p>
-
 <p>
 За високих частот \(|ka| \gg 1\) (або \(\delta \ll a\)) в області \(r \gg \delta \)
 </p>
-
 <p>
 \[ \vect {j}= \vect {e}_\phi \frac {{c{B_0}(i - 1)}}{{4\pi \delta }}\sqrt {\frac {a}{r}} \exp \left [ { - \frac {{a - r}}{\delta }(1 - i) - i\omega t} \right ]. \]
 </p>
-
 <p>
 Тут використано асимптотичні формули для функцій Бесселя&nbsp;<span class="textup">(<a href="appendices.html#eq:Jxgg1">Г.10</a>)</span>.
 </p>
-
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:7.{14}"></a><a id="solution7.{14}"></a><b><a href="quasistationary.html#LWR-ht-problem:7.{14}">7.14.</a></b> Використаємо формулу густини струму \(j_{\phi } = knI_0\frac {J_1(kr)}{J_0(ka)}e^{-i\omega t}\),
 отриману в задачі&nbsp;<a href="quasistationary.html#prb:Bat379">7.12</a>.
 </p>
-
 <p>
 Кількість теплоти, яка виділяється на одиницю довжини циліндра знайдемо як:
 </p>
-
 <p>
 \[ Q = \frac {1}{2\lambda }\int \limits _0^a |j_{\phi }|^2 2\pi rdr. \]
 </p>
-
 <p>
 За малих частот \(|ka| \ll 1\) (або \(\delta \gg a\)) маємо \(j_{\phi } \approx nI_0\frac {k^2}{2}re^{-i\omega t} = inI_0\frac {r}{\delta ^2}e^{-i\omega t}\) \(\left ( k^2 = \frac {2i}{\delta ^2},\, \delta = \frac {c}{\sqrt
 {2\pi \mu \lambda \omega }}\right ) \), звідки
 </p>
-
 <p>
 \[ Q = \frac {\pi n^2 I_0^2}{16\lambda }\left ( \frac {a}{\delta }\right )^4. \]
 </p>
-
 <p>
 За високих частот \(|ka| \gg 1\) (або \(\delta \ll a\)) основний внесок дає область поблизу поверхні циліндра, де можна застосувати асимптотичну формулу (див.&nbsp;<span class="textup">(<a href="appendices.html#eq:Jxgg1">Г.10</a>)</span>) для густини струму
 </p>
-
 <p>
 \[ j_{\phi } = nI_0\frac {i - 1}{\delta }\sqrt {\frac {a}{r}}e^{-(1-i)\frac {a-r}{\delta } - i\omega t}, \]
 </p>
-
 <p>
 звідси
 </p>
-
 <p>
 \[ Q = \frac {\pi n^2I_0^2}{\lambda }\left ( \frac {a}{\delta }\right ). \]
 </p>
-
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:7.{15}"></a><a id="solution7.{15}"></a><b><a href="quasistationary.html#LWR-ht-problem:7.{15}">7.15.</a></b> \(\Hfield = H_0e^{-\frac {x}{\delta }}\vect {e}_y\), \(\vect {j} = -\frac {cH_0}{4\pi \delta
 }e^{-\frac {x}{\delta }}\vect {e}_z \).
 </p>
 </div>
-
 <div class="cb-answer">
 <p>
 <a id="LWR-ht-solution:7.{16}"></a><a id="solution7.{16}"></a><b><a href="quasistationary.html#LWR-ht-problem:7.{16}">7.16.</a></b> Магнітне поле зовні кулі (\(r &gt; R\)):
 </p>
 <span class="hidden"> \(\seteqnumber{0}{8.}{23}\)</span>
-
 <!--
-
-                                                                                                                                                                                                 2𝑚
-                                                                                                                                                                                𝐻𝑟 = (𝐻0 + 3 ) cos 𝜃,
-
-                                                                                                                                                                                                  𝑟
-                                                                                                                                                                                                   𝑚
-                                                                                                                                                                               𝐻𝜃 = (−𝐻0 + 3 ) sin 𝜃,
-                                                                                                                                                                                                   𝑟
-
+𝐻𝑟 = (𝐻0 +
+2𝑚
+𝑟3
+) cos 𝜃,
+𝐻𝜃 = (−𝐻0 +
+𝑚
+𝑟3
+) sin 𝜃,
 -->
-
 <p>
-
 \begin{align*}
 H_r = \left ( H_0 + \frac {2m}{r^3}\right ) \cos \theta , \\ H_{\theta } = \left ( - H_0 + \frac {m}{r^3}\right ) \sin \theta ,
 \end{align*}
@@ -2809,117 +2428,109 @@ H_r = \left ( H_0 + \frac {2m}{r^3}\right ) \cos \theta , \\ H_{\theta } = \left
 Магнітне всередині кулі (\(r &lt; R\)):
 </p>
 <span class="hidden"> \(\seteqnumber{0}{8.}{23}\)</span>
-
 <!--
-
-                                                                                          2𝛿2𝐴 𝑟 𝑟 𝑟
-                                                                                  𝐻𝑟 = 3 [sh − ch ] cos 𝜃,
-                                                                                               𝑟     𝛿𝛿𝛿
-
-                                                                                  𝛿2𝐴             𝑟2 𝑟 𝑟 𝑟
-                                                                         𝐻𝜃 = 3 [(1 + 2 ) sh − ch ] sin 𝜃,
-                                                                                  𝑟               𝛿 𝛿𝛿𝛿
-
+𝐻𝑟 =
+2𝛿2𝐴
+𝑟3
+[sh
+𝑟
+𝛿
+−
+𝑟
+𝛿
+ch
+𝑟
+𝛿
+] cos 𝜃,
+𝐻𝜃 =
+𝛿2𝐴
+𝑟3
+[(1 +
+𝑟2
+𝛿2
+) sh
+𝑟
+𝛿
+−
+𝑟
+𝛿
+ch
+𝑟
+𝛿
+] sin 𝜃,
 -->
-
 <p>
-
 \begin{align*}
 H_r = \frac {2\delta ^2A}{r^3}\left [ \sh \frac {r}{\delta } - \frac {r}{\delta }\ch \frac {r}{\delta }\right ]\cos \theta , \\ H_{\theta } = \frac {\delta ^2A}{r^3}\left [ \left ( 1+ \frac {r^2}{\delta
 ^2}\right ) \sh \frac {r}{\delta } - \frac {r}{\delta }\ch \frac {r}{\delta }\right ]\sin \theta ,
 \end{align*}
 де
 </p>
-
 <p>
 \[ A = - \frac 32\frac {H_0R}{\sh \frac {R}{\delta } }. \]
 </p>
-
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:7.{17}"></a><a id="solution7.{17}"></a><b><a href="quasistationary.html#LWR-ht-problem:7.{17}">7.17.</a></b> \(H_z = H_0\frac {I_0(r/\delta )}{I_0(R/\delta )}\), \(\left \langle M_z\right \rangle = -\frac
 {1}{4\pi }H_0\left ( 1 - 2\frac {\delta }{R}\frac {I_1(r/\delta )}{I_0(R/\delta )}\right )\), де \(I_0\) та \(I_1\)&nbsp;— модифіковані функції Бесселя, \(\delta \)&nbsp;— глибина проникнення магнітного поля.
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:7.{18}"></a><a id="solution7.{18}"></a><b><a href="quasistationary.html#LWR-ht-problem:7.{18}">7.18.</a></b> Потік вектора магнітної індукції через довільну поверхню, що «натягнута» на кільце (тобто опирається на кільце), не залежить
 від вибору цієї поверхні. Далі обчислюємо потік через напівсферу радіуса R , що опирається на кільце. Повний магнітний потік, що пронизує пронизує надпровідне кільце, зберігається \(\Phi = \const \). Оскільки, в спочатку диполь не було внесено, \(\Phi = 0\), і він залишатиметься
 таким же. Коли магнітний диполь опиниться в центрі кільця, повний магнітний потік, що пронизує кільце, є сумою потоку, створюваного струмом кільця, та потоку \(\Phi _m\), створюваного диполем:
 </p>
-
 <p>
 \[ \Phi = \frac 1c LI + \Phi _m = 0, \]
 </p>
-
 <p>
 де \(L\)&nbsp;– індуктивність кільця, \(I\)&nbsp;– струм, що тече по кільцю.
 </p>
-
 <p>
 Потік \(\Phi _m\) через напівсферу легко обчислити, виходячи з формули для поля магнітного диполя, розташованого в центрі кільця:
 </p>
-
 <p>
 \[ \Bfield = \frac {3(\vect {m}\cdot \vect {r})\vect {r}- \vect {m}r^2}{r^5}. \]
 </p>
-
 <p>
 Обчислення потоку дає
 </p>
-
 <p>
 \[ \Phi _m = \frac {2\pi m}{R} . \]
 </p>
-
 <p>
 Звідси,
 </p>
-
 <p>
 \[ I = - \frac { 2\pi c m}{RL}. \]
 </p>
-
 <p>
 Знак мінус вказує на те, що індукційний що магнітний момент струму протилежний напрямку магнітного диполя.
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:7.{19}"></a><a id="solution7.{19}"></a><b><a href="quasistationary.html#LWR-ht-problem:7.{19}">7.19.</a></b> \(I = \frac {c\Phi _0}{L}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:7.{20}"></a><a id="solution7.{20}"></a><b><a href="quasistationary.html#LWR-ht-problem:7.{20}">7.20.</a></b> \(I = \frac {cB\pi R^2}{L}\), \(A = \frac {\Phi ^2}{2L} = \frac {B^2\pi ^2 R^4}{2L}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:7.{21}"></a><a id="solution7.{21}"></a><b><a href="quasistationary.html#LWR-ht-problem:7.{21}">7.21.</a></b> \(h = \frac 12 \sqrt [4]{\frac {3p_m^2}{mg}}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:7.{22}"></a><a id="solution7.{22}"></a><b><a href="quasistationary.html#LWR-ht-problem:7.{22}">7.22.</a></b> За умови \(\delta \ll r\), \(F=\frac {6\pi ^2 I^2 R^4 r^3 z}{(R^2+z^2)^4}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:7.{23}"></a><a id="solution7.{23}"></a><b><a href="quasistationary.html#LWR-ht-problem:7.{23}">7.23.</a></b> \(F_x = \frac {H_0^2}{8\pi }\).
 </p>
@@ -2927,504 +2538,404 @@ H_r = \frac {2\delta ^2A}{r^3}\left [ \sh \frac {r}{\delta } - \frac {r}{\delta 
 <!--
 ...... section Електромагнітні хвилі в середовищі ......
 -->
-<h4 id="autosec-316">Електромагнітні хвилі в середовищі</h4>
-<a id="main-html-autopage-316"></a>
-
+<h4 id="autosec-116">Електромагнітні хвилі в середовищі</h4>
+<a id="main-html-autopage-116"></a>
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:8.{8}"></a><a id="solution8.{8}"></a><b><a href="waves.html#LWR-ht-problem:8.{8}">8.8.</a></b> \(\alpha _{ik} = \frac {e^2}{m(\omega _0^2 - \omega ^2)}\delta _{ik} - i \frac {e^3\omega
 H_{0l}}{m^2c(\omega _0^2 - \omega ^2)^2}e_{ikl}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
-<p>                                                                  href="waves.html#LWR-ht-problem:8.{15}">8.15.</a></b>  Виберемо вісь \(OZ\) декартових координат у напрямку руху хвилі, електричне поле направимо по осі OX. Шукаємо розв’язок у
-<a id="LWR-ht-solution:8.{15}"></a><a id="solution8.{15}"></a><b><a
-
+<p>
+<a id="LWR-ht-solution:8.{15}"></a><a id="solution8.{15}"></a><b><a href="waves.html#LWR-ht-problem:8.{15}">8.15.</a></b> Виберемо вісь \(OZ\) декартових координат у напрямку руху хвилі, електричне поле направимо по осі OX. Шукаємо розв’язок у
 вигляді:
 </p>
 <span class="hidden"> \(\seteqnumber{0}{8.}{23}\)</span>
-
 <!--
-
-                                                                     𝐄 = 𝐸1𝐞𝑥𝑒𝑖(𝑘1𝑧−𝜔𝑡), 𝑧 < 0,
-
-                                                                     𝐄 = 𝐸 𝐞 𝑒𝑖(𝑘2𝑧+𝜔𝑡) + 𝐸′ 𝐞 𝑒−𝑖(𝑘2𝑧+𝜔𝑡),    0 < 𝑧 < 𝑑,
-                                                                     2𝑥      2𝑥
-
-                                                                     𝐄 = 𝐸2𝐞𝑥𝑒𝑖(𝑘2(𝑧−𝑑)−𝜔𝑡), 𝑧 > 𝑑,
-
+𝐄 = 𝐸1𝐞𝑥𝑒𝑖(𝑘1𝑧−𝜔𝑡), 𝑧 < 0,
+𝐄 = 𝐸2𝐞𝑥𝑒𝑖(𝑘2𝑧+𝜔𝑡) + 𝐸′
+2
+𝐞𝑥𝑒−𝑖(𝑘2𝑧+𝜔𝑡), 0 < 𝑧 < 𝑑,
+𝐄 = 𝐸2𝐞𝑥𝑒𝑖(𝑘2(𝑧−𝑑)−𝜔𝑡), 𝑧 > 𝑑,
 -->
-
 <p>
-
 \begin{align*}
 \Efield &amp; = E_1\vect {e}_x e^{i(k_1z - \omega t)}, \quad z&lt;0, \\ \Efield &amp; = E_2\vect {e}_x e^{i(k_2z + \omega t)} + E&apos;_2\vect {e}_x e^{-i(k_2z + \omega t)}, \quad 0&lt;z&lt;d, \\ \Efield &amp;
 = E_2\vect {e}_x e^{i(k_2(z-d) - \omega t)}, \quad z&gt;d,
 \end{align*}
 де \(k_s = \frac {\omega _s}{c}n_s\), \(s = 1,2,3\).
 </p>
-
 <p>
 Магнітні поля отримуємо з рівнянь Максвелла. З граничних умов для тангенціальних компонент електричного та магнітного поля при \(z = 0\) маємо:
 </p>
-
 <p>
 \[ E_2 = \frac {1}{2}\left (1 + \frac {k_1}{k_2} \right ){E_1}, \quad E&apos;_2 = \frac {1}{2}\left ( 1 - \frac {k_1}{k_2} \right ){E_1}. \]
 </p>
-
 <p>
 З граничних умов при \(z = d\):
 </p>
-
 <p>
 \[ e^{ik_2d}{E_2} = \frac {1}{2}\left ( 1 + \frac {k_3}{k_2} \right )E_3, \quad E&apos;_2e^{- ik_2d} = \frac {1}{2}\left ( 1 - \frac {k_3}{k_2} \right )E_3. \]
 </p>
-
 <p>
 Аналіз сумісності цих рівнянь дає умову існування нетривіального розв’язку:
 </p>
-
 <p>
 \[ e^{2ik_2d} = \frac {(n_2 - n_1)(n_2 + n_3)}{(n_2 + n_1)(n_2 - n_3)}. \]
 </p>
-
 <p>
 Ліва частина цього співвідношення є дійсною, коли вона дорівнює \(1\) чи \(-1\). Звідси маємо дві можливості:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{23}\)</span>
-
 <!--
-
-                                                                         𝑚 𝜆2 , 𝑛1 = 𝑛3
-                                                                     𝑑={ 2                                     .
-                                                                             𝜆                   𝑛2
-                                                                         (2𝑚 + 1) 2 ,                 =  𝑛1𝑛3
-                                                                             2                     2
-
+𝑑 = {
+𝑚𝜆2
+2
+, 𝑛1 = 𝑛3
+(2𝑚 + 1) 𝜆2
+2
+, 𝑛2
+2
+= 𝑛1𝑛3
+.
 -->
-
 <p>
-
 \begin{equation*}
 d= \begin{cases} m\frac {\lambda _2}{2}, \quad n_1 = n_3 \\ (2m+1)\frac {\lambda _2}{2}, \quad n_2^2 = n_1n_3 \end {cases}.
 \end{equation*}
-
 </p>
-
 <p>
 де \(\lambda _2 = \frac {2\pi c}{\omega n_2}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:8.{16}"></a><a id="solution8.{16}"></a><b><a href="waves.html#LWR-ht-problem:8.{16}">8.16.</a></b> Дисперсійне рівняння \(\vect {k}^2c^2=\omega ^2-\omega _p^2\). Групова швидкість
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{23}\)</span>
 <!--
-
-                                                                                                                                                                                 𝜕𝜔 = 𝐤𝑐 ,
-                                                                                                                                                                                 𝜕𝐤 √𝐤2 + 𝜔2𝑝/𝑐2
-
+𝜕𝜔
+𝜕𝐤
+=
+𝐤𝑐
+√𝐤2 + 𝜔2
+𝑝/𝑐2
+,
 -->
-
 <p>
-
 \begin{equation*}
 \frac {\partial \omega }{\partial \vect {k}}=\frac {\vect {k} c}{\sqrt {\vect {k}^2+\omega _p^2/c^2}}\,,
 \end{equation*}
-
 </p>
-
 <p>
 показник заломлення \(n = \sqrt {1 - \frac {\omega _p^2}{\omega ^2}}\), де \(\omega _p = \frac {4\pi N e^2}{m}\)&nbsp;— плазмова частота.
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:8.{17}"></a><a id="solution8.{17}"></a><b><a href="waves.html#LWR-ht-problem:8.{17}">8.17.</a></b>
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{23}\)</span>
 <!--
-
-                                                                                                                                                                                         𝛼 𝑖𝛽 0
-                                                                                                                                                                            {𝜖} = ( −𝑖𝛽 𝛼 0 ) ,
-
-                                                                                                                                                                                         0 0𝛾
-
+{𝜖} = (
+𝛼 𝑖𝛽 0
+−𝑖𝛽 𝛼 0
+0 0 𝛾
+) ,
 -->
-
 <p>
-
 \begin{equation*}
 \{ \epsilon \} = \left ( {\begin{array}{*{20}{c}} \alpha &amp; {i\beta } &amp; 0 &amp; \\ { - i\beta } &amp; \alpha &amp; 0 &amp; \\ 0 &amp; 0 &amp; \gamma &amp; \end {array}} \right ),
 \end{equation*}
-
 </p>
-
 <p>
 де константи \(\alpha \), \(\beta \), \(\gamma \) задані формулами:
 </p>
 <span class="hidden"> \(\seteqnumber{0}{8.}{23}\)</span>
-
 <!--
-
-                                                                         𝛼=1−          𝜔2𝑝            2,
-
-                                                                                𝜔2 − 𝜔𝐵
-
-                                                                         𝛽=     𝜔𝐵 𝜔2𝑝                2,
-
-                                                                             𝜔(𝜔2 − 𝜔𝐵)
-
-                                                                                        𝜔2𝑝
-                                                                             𝛾 = 1 − 𝜔2 ,
-
+𝛼 = 1 −
+𝜔2
+𝑝
+𝜔2 − 𝜔2
+𝐵
+,
+𝛽 =
+𝜔𝐵𝜔2
+𝑝
+𝜔(𝜔2 − 𝜔2
+𝐵
+)
+,
+𝛾 = 1 −
+𝜔2
+𝑝
+𝜔2
+,
 -->
-
 <p>
-
 \begin{align*}
 \alpha = 1 - \frac {\omega _p^2}{\omega ^2 - \omega _B^2}, \\ \beta = \frac {\omega _B\omega _p^2}{\omega (\omega ^2 - \omega _B^2)}, \\ \gamma = 1 - \frac {\omega _p^2}{\omega ^2},
 \end{align*}
 де \(\omega _p^2 = \frac {4\pi n_e e^2}{m_e}\), \(\omega _B = \frac {\left | e \right |B}{m_ec}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:8.{18}"></a><a id="solution8.{18}"></a><b><a href="waves.html#LWR-ht-problem:8.{18}">8.18.</a></b> Магнітне поле направимо по осі \(OZ\) (в декартових координатах) та позначимо \(\vect {m}_{\pm } = (1, \mp i,0)\),
 \(k_\pm ^2 = \frac {\omega }{c^2} \cdot \frac {\omega ^2 \pm \omega \omega _B - \omega _p^2}{\omega \pm \omega _B}\).
 </p>
-
 <p>
 Для хвиль, що поширюються у додатному напрямку осі \(OZ\), розв’язки рівнянь Максвелла мають вигляд \(\Efield = E_0\vect {m}_{\pm } e^{i(k_\pm z - \omega t)}\) при \(\omega &gt; 0\) для дійсного \(k_{\pm } &gt;0\).
 </p>
-
 <p>
 Хвилі з поляризацією \(\vect {m}_+\) проходять у додатному напрямку осі \(OZ\) при \(\omega &gt; \omega _1 = \sqrt {\frac {{\omega _B^2}}{4} + \omega _p^2} - \frac {\omega _B}{2}\).
 </p>
-
 <p>
 Хвилі з поляризацією \(\vect {m}_-\) проходять при \(0&lt;\omega &lt;\omega _B\) та при<br />
 \(\omega &gt; \sqrt {\frac {\omega _B^2}{4} + \omega _p^2} + \frac {\omega _B}{2}\).
 </p>
-
 <p>
 Якщо \({\omega _p} &gt; \sqrt 2 {\omega _B}\), тоді інтервал \(\omega _B &lt; \omega _1 \) є забороненим для обох типів хвиль.
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:8.{19}"></a><a id="solution8.{19}"></a><b><a href="waves.html#LWR-ht-problem:8.{19}">8.19.</a></b> На рисунку показана плоска хвиля, яка поширюється в напрямку \(x\) перпендикулярно до металевого циліндра, вісь якого
 напрямлена вздовж осі \(z\).
 </p>
 <div class="center">
-
 <p>
 <span
-
-      id="lateximage-main-html-15"
-      class="lateximagesource"
+id="lateximage-main-html-15"
+class="lateximagesource"
 ><!--
-                                 𝑦
-                                              𝐤
-
-                                         𝜙
-𝑎 𝐤 𝑥
+𝑥
+𝑦
+𝐤
+𝜙
+𝑎
+𝐤
 --><img
-      src="main-html-images/image-15.svg"
-      alt="Рис. 8.1. До пояснення задачі"
-      style=""
-      class="lateximage"
-
+src="main-html-images/image-15.svg"
+alt="Рис. 8.1. До пояснення задачі"
+style=""
+class="lateximage"
 ></span>
 </p>
-
 <div class="figurecaption">
-<a id="autoid-415" ></a >
+<a id="autoid-11" ></a >
 Рис.&nbsp;8.1. До пояснення задачі
 </div>
 </div>
-
 <p>
 Розглянемо випадок а) (\(\Efield \parallel \vect {e}_z\)).
 </p>
-
 <p>
 Поляризація, паралельна до осі циліндра, викликає поверхневі струми лише у напрямку осі \(z\), а тому магнітного поля вздовж осі \(z\) немає.
 </p>
-
 <p>
 Монохроматична плоска хвиля з частотою \(\omega \) індукує гармонічні струми і, як наслідок ми маємо розсіяну хвилю, яка теж є гармонічною.
 </p>
-
 <p>
 Поза циліндром електричне та магнітне поля задовольняють хвильовому рівнянню. Тому просторові частини \(E_z\) і \(B_z\) задовольняють рівнянню Гельмгольца:
 </p>
-
 <p>
 \[ \left [ \Delta + \frac {\omega ^2}{c^2}\right ] u = 0, \]
 </p>
-
 <p>
 або в циліндричних координатах:
 </p>
-
 <p>
 \[ \frac 1r \frac {\partial }{\partial r} \left ( r \frac {\partial u}{\partial r} \right ) + \frac {1}{r^2} \frac {\partial ^2 u}{\partial \phi ^2} + k^2 u = 0. \]
 </p>
-
 <p>
 Розділимо змінні в останньому рівнянні \(u(r,\phi ) = R(r)G(\phi )\), одразу отримаємо \(G(\phi ) = e^{\pm im\phi }\), а рівняння для \(R(r)\), як відомо, задовольняє рівняння диференціальному Бесселя&nbsp;<span class="textup">(<a
 href="appendices.html#eq:Bessel_eq">Г.1</a>)</span>, якщо покласти \(x = kr\):
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{23}\)</span>
-
 <!--
-
-     𝑑2𝑅 1 𝑑𝑅  𝑚2                                                                                                               --><a id="eq:BessProblem"></a><!--
-     +         + (1 − 2 ) 𝑅 = 0,                                                                                           (*)
-     𝑑𝑥2 𝑥 𝑑𝑥  𝑥
-
+𝑑2𝑅
+𝑑𝑥2
++
+1
+𝑥
+𝑑𝑅
+𝑑𝑥
++ (1 −
+𝑚2
+𝑥2
+) 𝑅 = 0, (*) --><a id="eq:BessProblem"></a><!--
 -->
 <p>
-
 \begin{equation}
 \label {eq:BessProblem}\tag {*} \frac {d^2R}{dx^2} + \frac 1x\frac {dR}{dx} + \left (1 - \frac {m^2}{x^2} \right ) R = 0,
 \end{equation}
-
 </p>
-
 <p>
 розв’язок якого, як відомо, можна представити за допомогою функцій Бесселя \(J_m(x)\) та Неймана \(N_m\). В нашому випадку краще скористатись функціями Ганкеля 1-го роду, що дають асимптотику на нескінченності \(e^{ikr}/\sqrt {r}\) (див.&nbsp;<span
 class="textup">(<a href="appendices.html#eq:Hxgg1">Г.12</a>)</span>), яка відповідає умовам випромінювання.
 </p>
-
 <p>
 Поле \(E_z\) розсіяної хвилі будемо шукати як лінійну комбінацію функцій \(H_m^{(1)}e^{im\phi }\) з коефіцієнтами \(A_m\):
 </p>
-
 <p>
 \[ E_{z,\text {розс}} = \sum \limits _{m = -\infty }^{\infty } A^m H^{(1)}_m(k r)e^{im\phi }. \]
 </p>
-
 <p>
 Поле плоскої падаючої хвилі \(E_{z,\text {пад}} = E_0e^{ikx} = E_0e^{ikr\cos \phi }\) розкладемо за функціями Бесселя (див&nbsp;<span class="textup">(<a href="appendices.html#eq:JacobiAnger">Г.13</a>)</span>):
 </p>
-
 <p>
 \[ E_{z,\text {пад}} = E_0e^{ikr\cos \phi } = E_0 \sum \limits _{m = -\infty }^{\infty } i^m J_m(k r)e^{im\phi }. \]
 </p>
-
 <p>
 Загальне поле є сумою падаючої та розсіяної хвиль, за принципом суперпозиції:
 </p>
-
 <p>
 \[ E_z = E_0 \sum \limits _{m = -\infty }^{\infty }[ i^mJ_m(kr) + A_mH^{(1)}_m(kr)]e^{im\phi }. \]
 </p>
-
 <p>
 Далі скористаємось граничною умовою \(E_z(r = a) = 0\) і визначимо \(a_m\) з рівняння&nbsp;<span class="textup">(<a href="answers.html#eq:BessProblem">*</a>)</span>; матимемо:
 </p>
-
 <p>
 \[ E_z(r,\phi ) = E_0e^{ikr\cos \phi } - E_0\sum \limits _{m = -\infty }^{\infty } i^m \frac {J_m(ka)}{H_m^{(1)}(ka)}H_m^{(1)}(kr)e^{im\phi }. \]
 </p>
-
 <p>
 Магнітне поле отримуємо з рівняння Максвелла \(\Bfield = \frac 1k\rot \Efield = \frac 1k \vect {\nabla }E_z\times \vect {e}_z\),
 </p>
-
 <p>
 \[ B_r=\frac {1}{kr}\frac {\partial E_z}{\partial \phi }, \]
 </p>
-
 <p>
 \[ B_\phi =-\frac {1}{k}\frac {\partial E_z}{\partial r}. \]
 </p>
-
 <p>
 Легко перевірити, що \(B_r=0\) при \(r=a\) на поверхні надпровідного циліндра і, таким чином, задовольняє граничній умові.
 </p>
-
 <p>
 Випадок б) (\(\Efield \perp \vect {e}_z\)).
 </p>
-
 <p>
 Для перпендикулярної поляризації викладки аналогічні, але тут зручніше починати з складової магнітного поля, яке у плоскій хвилі має вигляд \(B_z = E_0e^{ikx}\). Гранична умова для тангенціальної компоненти електричного поля дає:
 </p>
-
 <p>
 \[ E_{\phi }(r = a) = \left . \frac 1k\frac {\partial B_z}{\partial r}\right |_{r = a} = 0. \]
 </p>
-
 <p>
 Отже
 </p>
-
 <p>
 \[ B_z = E_0e^{ikr\cos \phi } - E_0\sum \limits _{m = -\infty }^{\infty } i^m \frac {J_m&apos;(ka)}{H_m^{(1)\prime }(ka)}H_m^{(1)}(kr)e^{im\phi }, \]
 </p>
-
 <p>
 де штрих «\(\prime \)» означає похідну по радіальній аргументу \(kr\).
 </p>
-
 <p>
 Знайдемо тепер диференціальні перерізи розсіювання \(\frac {d\sigma }{d\phi } = r \frac {|\Efield _\text {розс}|^2}{|\Efield _\text {пад}|^2} \).
 </p>
-
 <p>
 Враховуючи, що\(\lim \limits _{r\to \infty }H_m^{(1)}(kr) = \sqrt {\frac {2}{\pi k r}}\), маємо:
 </p>
-
 <p>
 \[ \frac {d\sigma _{\parallel }}{d\phi } = \frac {2}{\pi k} \left | \sum \limits _{m = -\infty }^{\infty } \frac {J_m(ka)}{H_m^{(1)}(ka)}e^{im\phi } \right |^2, \quad \frac {d\sigma _{\perp }}{d\phi } = \frac
 {2}{\pi k} \left | \sum \limits _{m = -\infty }^{\infty } \frac {J_m(ka)&apos;}{H_m^{(1)\prime }(ka)}e^{im\phi } \right |^2. \]
 </p>
-
 <p>
 Ці диференціальні перерізи мають розмірність довжини (а не площі), оскільки вони визначають потужність на одиницю довжини циліндра, тобто потужність, випромінювана через границю великого кола, співвісного з циліндром.
 </p>
-
 <p>
 Повні перерізи:
 </p>
-
 <p>
 \[ \sigma _{\parallel } = \frac 4k \sum \limits _{m = -\infty }^{\infty } \frac {J_m^2(ka)}{J_m^2(ka) + N_m^2(ka)}, \quad \sigma _{\perp } = \frac 4k \sum \limits _{m = -\infty }^{\infty } \frac {J_m^{2\prime
 }(ka)}{J_m^{2\prime }(ka) + N_m^{2\prime }(ka)}. \]
 </p>
-
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:8.{20}"></a><a id="solution8.{20}"></a><b><a href="waves.html#LWR-ht-problem:8.{20}">8.20.</a></b> На рисунку показана плоска хвиля, яка поширюється в напрямку \(x\) перпендикулярно до діелектричного циліндра, вісь якого
 напрямлена вздовж осі \(z\).
 </p>
 <div class="center">
-
 <p>
 <span
-
-      id="lateximage-main-html-16"
-      class="lateximagesource"
+id="lateximage-main-html-16"
+class="lateximagesource"
 ><!--
-                                   𝑦
-                                               𝐤
-
-                                           𝜙
-𝑎 𝐤0 𝑥
+𝑥
+𝑦
+𝐤
+𝜙
+𝑎
+𝐤0
 --><img
-      src="main-html-images/image-16.svg"
-      alt="Рис. 8.2. До пояснення задачі"
-      style=""
-      class="lateximage"
-
+src="main-html-images/image-16.svg"
+alt="Рис. 8.2. До пояснення задачі"
+style=""
+class="lateximage"
 ></span>
 </p>
-
 <div class="figurecaption">
-<a id="autoid-416" ></a >
+<a id="autoid-12" ></a >
 Рис.&nbsp;8.2. До пояснення задачі
 </div>
 </div>
-
 <p>
 Вказівка: дивіться розв’язок задачі&nbsp;<a href="waves.html#prb:Zang_metall_Cyllinder">8.19</a> і врахуйте необхідну поляризацію, та граничні умови для поля на межі розділу.
 </p>
-
 <p>
 Поле в циліндрі \(r &lt; a\) шукаємо у вигляді:
 </p>
-
 <p>
 \[ E_{z,\text {in}} = \sum \limits _{m = -\infty }^{\infty }A_mJ_m(kr)e^{im\phi }, \quad k=\sqrt {\epsilon } \omega /c. \]
 </p>
-
 <p>
 Зовні, електричне поле є сумою падаючої та розсіяної хвилі:
 </p>
-
 <p>
 \[ E_z = E_0 \sum \limits _{m = -\infty }^{\infty } \left ( i^m J_m(k_0 r) + B_m H_m^{(1)(k_0r)} \right ) e^{im\phi }, \quad k= \omega /c. \]
 </p>
-
 <p>
 де
 </p>
-
 <p>
 \[ A_m = E_0i^m \frac { H_m^{(1)}(k_0a) J&apos;_m(k_0a) - H_m^{(1)\prime }(k_0a) J_m(k_0a) }{ \sqrt {\epsilon } H_m^{(1)}(k_0a) J&apos;_m(ka) - H_m^{(1)\prime }(k_0a) J_m(ka)}, \]
 </p>
-
 <p>
 \[ B_m = E_0i^m \frac { J_m(ka) J&apos;_m(k_0a) - \sqrt {\epsilon } J_m&apos;(ka) J_m(k_0a) }{ \sqrt {\epsilon } H_m^{(1)}(k_0a) J&apos;_m(ka) - H_m^{(1)\prime }(k_0a) J_m(ka)}. \]
 </p>
-
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:8.{21}"></a><a id="solution8.{21}"></a><b><a href="waves.html#LWR-ht-problem:8.{21}">8.21.</a></b> За умови задачі електричне і магнітне поля хвилі, які можна вважати квазистаціонарними, індукують в надпровідній кулі
 електричний дипольний момент \(p_e=ER^3\) та магнітний момент \(p_m=-BR^{3/2}\). Звідси отримуємо сумарне магнітне поле в хвильовій зоні за формулами дипольного та магнітодипольного випромінювання. Диференціальний переріз
 </p>
-
 <p>
 \[ \frac {d\sigma }{do} = R^6 k^4 \left [\frac 58 (1 + \cos ^2\theta ) -\cos \theta \right ], \]
 </p>
-
 <p>
 де \(k\)&nbsp;— хвильове число, \(\theta = \widehat {\vect {k}_0,\vect {k}}\)&nbsp;— кут між напрямками падаючої та розсіяної хвилі. Повний переріз \(\sigma = \frac {10\pi R^6 k^4}{3}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:8.{22}"></a><a id="solution8.{22}"></a><b><a href="waves.html#LWR-ht-problem:8.{22}">8.22.</a></b> \(I(x,y) = I_0\frac {\sin ^2\alpha }{\alpha ^2}\frac {\sin ^2\beta }{\beta ^2}\), де \(\alpha =
 \frac {kax}{2l}\), \(\beta =\frac {kby}{2l}\).
 </p>
 </div>
-
 <div class="cb-answer">
-
 <p>
 <a id="LWR-ht-solution:8.{23}"></a><a id="solution8.{23}"></a><b><a href="waves.html#LWR-ht-problem:8.{23}">8.23.</a></b> Вказівка: при інтегруванні слід врахувати співвідношення для функцій Бесселя&nbsp;<span class="textup">(<a
 href="appendices.html#eq:recInt">Г.7</a>)</span> \(\int \limits _0^x x&apos;J_0(x&apos;)dx&apos; = xJ_1(x)\).
 </p>
-
 <p>
 Відповідь: \(I(r) = 4I_0\left ( \frac {J_1\left ( \frac {kRr}{l}\right ) }{\frac {kRr}{l}}\right )^2\).
 </p>
 </div>
-
 </section>
-
 </main>
-
 <nav class="botnavigation"><a href="main-html.html" class="linkhome" >
 Головна</a></nav>
-
 </div><!-- grid -->
 <script src="assets/book.js" defer></script>
 </body>

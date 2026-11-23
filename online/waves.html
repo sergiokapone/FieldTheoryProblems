@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -7,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Класична електродинаміка. Збірник задач — Електромагнітні хвилі в середовищі</title>
 <link rel="stylesheet" type="text/css" href="assets/conspect.css" />
-
 <script>
 // Lwarp MathJax emulation code
 //
@@ -24,260 +22,196 @@
 // number is auto-incremented by MathJax between equations.
 //
 MathJax = {
-
-   subequations: "0",
-   section: "",
-   loader: {
-
-       load: ['[tex]/tagformat', '[tex]/textmacros'],
-   },
-   startup: {
-
-       ready() {
-          // These would be replaced by import commands if you wanted to make
-          // a proper extension.
-          const Configuration = MathJax._.input.tex.Configuration.Configuration;
-          const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
-          const Macro = MathJax._.input.tex.Symbol.Macro;
-          const TexError = MathJax._.input.tex.TexError.default;
-          const ParseUtil = MathJax._.input.tex.ParseUtil.default;
-          const expandable = MathJax._.util.Options.expandable;
-
+subequations: "0",
+section: "",
+loader: {
+load: ['[tex]/tagformat', '[tex]/textmacros'],
+},
+startup: {
+ready() {
+// These would be replaced by import commands if you wanted to make
+// a proper extension.
+const Configuration = MathJax._.input.tex.Configuration.Configuration;
+const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+const Macro = MathJax._.input.tex.Symbol.Macro;
+const TexError = MathJax._.input.tex.TexError.default;
+const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+const expandable = MathJax._.util.Options.expandable;
 // Insert the replacement string into the TeX string, and check
 // that there haven't been too many maxro substitutions (prevents
 // infinite loops).
 const useArgument = (parser, text) => {
-
-   parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
-   parser.i = 0;
-   if (++parser.macroCount > parser.configuration.options.maxMacros) {
-
-       throw new TexError('MaxMacroSub1',
-       'MathJax maximum macro substitution count exceeded; ' +
-       'is there a recursive macro call?');
-   }
+parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+parser.i = 0;
+if (++parser.macroCount > parser.configuration.options.maxMacros) {
+throw new TexError('MaxMacroSub1',
+'MathJax maximum macro substitution count exceeded; ' +
+'is there a recursive macro call?');
 }
-
+}
 // Create the command map for:
-
 // \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
-
 new CommandMap('Lwarp-macros', {
-
 ifstar: 'IfstarFunction',
-
 ifnextchar: 'IfnextcharFunction',
-
 ifblank: 'IfblankFunction',
-
 ifstrequal: 'IfstrequalFunction',
-
 gsubstitute: 'GsubstituteFunction',
-
 seteqnumber: 'SeteqnumberFunction'
-
 }, {
-
 // This function implements an ifstar macro.
-
 IfstarFunction(parser, name) {
-
-     const resultstar = parser.GetArgument(name);
-
-     const resultnostar = parser.GetArgument(name);
-
-     const star = parser.GetStar();                                  // true if there is a *
-
-     useArgument(parser, star ? resultstar : resultnostar);
-
+const resultstar = parser.GetArgument(name);
+const resultnostar = parser.GetArgument(name);
+const star = parser.GetStar(); // true if there is a *
+useArgument(parser, star ? resultstar : resultnostar);
 },
-
 // This function implements an ifnextchar macro.
 IfnextcharFunction(parser, name) {
-
-   let whichchar = parser.GetArgument(name);
-   if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
-
-       // $ syntax highlighting
-       whichchar = String.fromCodePoint(parseInt(whichchar));
-   }
-   const resultnextchar = parser.GetArgument(name);
-   const resultnotnextchar = parser.GetArgument(name);
-   const gotchar = (parser.GetNext() === whichchar);
-   useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+let whichchar = parser.GetArgument(name);
+if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+// $ syntax highlighting
+whichchar = String.fromCodePoint(parseInt(whichchar));
+}
+const resultnextchar = parser.GetArgument(name);
+const resultnotnextchar = parser.GetArgument(name);
+const gotchar = (parser.GetNext() === whichchar);
+useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
 },
-
 // This function implements an ifblank macro.
 IfblankFunction(parser, name) {
-
-   const blankarg = parser.GetArgument(name);
-   const resultblank = parser.GetArgument(name);
-   const resultnotblank = parser.GetArgument(name);
-   const isblank = (blankarg.trim() == "");
-   useArgument(parser, isblank ? resultblank : resultnotblank);
+const blankarg = parser.GetArgument(name);
+const resultblank = parser.GetArgument(name);
+const resultnotblank = parser.GetArgument(name);
+const isblank = (blankarg.trim() == "");
+useArgument(parser, isblank ? resultblank : resultnotblank);
 },
-
 // This function implements an ifstrequal macro.
 IfstrequalFunction(parser, name) {
-
-   const strequalfirst = parser.GetArgument(name);
-   const strequalsecond = parser.GetArgument(name);
-   const resultequal = parser.GetArgument(name);
-   const resultnotequal = parser.GetArgument(name);
-   const isequal = (strequalfirst == strequalsecond);
-   useArgument(parser, isequal ? resultequal : resultnotequal);
+const strequalfirst = parser.GetArgument(name);
+const strequalsecond = parser.GetArgument(name);
+const resultequal = parser.GetArgument(name);
+const resultnotequal = parser.GetArgument(name);
+const isequal = (strequalfirst == strequalsecond);
+useArgument(parser, isequal ? resultequal : resultnotequal);
 },
-
-// This function implements a gsub macro.                            gsubthird);
+// This function implements a gsub macro.
 GsubstituteFunction(parser, name) {
-
-   const gsubfirst = parser.GetArgument(name);
-   const gsubsecond = parser.GetArgument(name);
-   const gsubthird = parser.GetArgument(name);
-   let gsubresult=gsubfirst.replace(gsubsecond,
-   useArgument(parser, gsubresult);
+const gsubfirst = parser.GetArgument(name);
+const gsubsecond = parser.GetArgument(name);
+const gsubthird = parser.GetArgument(name);
+let gsubresult=gsubfirst.replace(gsubsecond, gsubthird);
+useArgument(parser, gsubresult);
 },
-
 // This function modifies the equation numbers.
-
 SeteqnumberFunction(parser, name) {
-
-      // Get the macro parameters
-
-      const star = parser.GetStar();                                 // true if there is a *
-
-      const optBrackets = parser.GetBrackets(name); // contents of optional brackets
-
-      const newsubequations = parser.GetArgument(name); // the subequations argument
-
-      const neweqsection = parser.GetArgument(name); // the eq section argument
-
-      const neweqnumber = parser.GetArgument(name); // the eq number argument
-
-      MathJax.config.subequations=newsubequations ; // a string with boolean meaning
-
-      MathJax.config.section=neweqsection ;                          // a string with numeric meaning
-
-      parser.tags.counter = parser.tags.allCounter = neweqnumber ;
-
+// Get the macro parameters
+const star = parser.GetStar(); // true if there is a *
+const optBrackets = parser.GetBrackets(name); // contents of optional brackets
+const newsubequations = parser.GetArgument(name); // the subequations argument
+const neweqsection = parser.GetArgument(name); // the eq section argument
+const neweqnumber = parser.GetArgument(name); // the eq number argument
+MathJax.config.subequations=newsubequations ; // a string with boolean meaning
+MathJax.config.section=neweqsection ; // a string with numeric meaning
+parser.tags.counter = parser.tags.allCounter = neweqnumber ;
 }
-
 });
-
 // Create the Lwarp-macros package
 Configuration.create('Lwarp-macros', {
-
-   handler: {macro: ['Lwarp-macros']}
+handler: {macro: ['Lwarp-macros']}
 });
-
 MathJax.startup.defaultReady();
-
 // For forward references:
 MathJax.startup.input[0].preFilters.add(({math}) => {
-
-   if (math.inputData.recompile){
-          MathJax.config.subequations = math.inputData.recompile.subequations;
-          MathJax.config.section = math.inputData.recompile.section;
-
-   }
+if (math.inputData.recompile){
+MathJax.config.subequations = math.inputData.recompile.subequations;
+MathJax.config.section = math.inputData.recompile.section;
+}
 });
 MathJax.startup.input[0].postFilters.add(({math}) => {
-
-   if (math.inputData.recompile){
-          math.inputData.recompile.subequations = MathJax.config.subequations;
-          math.inputData.recompile.section = MathJax.config.section;
-
-   }
+if (math.inputData.recompile){
+math.inputData.recompile.subequations = MathJax.config.subequations;
+math.inputData.recompile.section = MathJax.config.section;
+}
 });
-
-          // For \left, \right with unicode-math:
-          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
-          const {Symbol} = MathJax._.input.tex.Symbol;
-          const {MapHandler} = MathJax._.input.tex.MapHandler;
-          const delimiter = MapHandler.getMap('delimiter');
-          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
-          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
-          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
-          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
-          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
-          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
-          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
-          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
-          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
-          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
-          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
-          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
-          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
-          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
-          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
-          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
-          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
-          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
-          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
-          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
-          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
-          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
-          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
-          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
-          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
-          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
-          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
-          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
-          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
-          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
-          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
-          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
-          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
-          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
-          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
-          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
-          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
-          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
-          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
-   } // ready
+// For \left, \right with unicode-math:
+const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+const {Symbol} = MathJax._.input.tex.Symbol;
+const {MapHandler} = MathJax._.input.tex.MapHandler;
+const delimiter = MapHandler.getMap('delimiter');
+delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+} // ready
 }, // startup
-
-   tex: {                                                            'textmacros']},
-       packages: {'[+]': ['tagformat', 'Lwarp-macros',
-       tags: "ams",                                                  n);
-              tagformat: {                                           String.fromCharCode(96+n));
-                     number: function (n) {
-                             if(MathJax.config.subequations==0)
-                                    return(MathJax.config.section +
-                             else
-                                    return(MathJax.config.section +
-                     },
-              },
-
-   }
+tex: {
+packages: {'[+]': ['tagformat', 'Lwarp-macros', 'textmacros']},
+tags: "ams",
+tagformat: {
+number: function (n) {
+if(MathJax.config.subequations==0)
+return(MathJax.config.section + n);
+else
+return(MathJax.config.section + String.fromCharCode(96+n));
+},
+},
+}
 }
 </script>
-
 <script
-       id="MathJax-script"
-       src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
-
+id="MathJax-script"
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
 ></script>
-
 </head>
 <body>
-
-<a id="main-html-autopage-273"></a>
+<a id="main-html-autopage-98"></a>
 <div class="pagegrid">
-
 <nav class="topnavigation"><a href="main-html.html" class="linkhome" >
 Головна</a></nav>
 <div class="sidetoccontainer">
-
 <nav class="sidetoc">
-
 <div class="sidetoctitle">
 <p>
 <span class="sidetocthetitle">Класична електродинаміка. Збірник задач</span>
 </p>
 <p class="sidetoc-meta"><a href="../index.html">Про посібник</a><span aria-hidden="true">·</span><a href="../FTProblems.pdf">PDF</a></p>
 </div>
-
 <div class="sidetoccontents">
 <p>
 <a href="main-html.html" class="linkhome" >
@@ -287,244 +221,195 @@ MathJax.startup.input[0].postFilters.add(({math}) => {
 <a href="preface.html#autosec-6" class="tocchapter" >
 Передмова</a>
 </p>
-
 <p>
 <a href="vanaliz.html#autosec-9" class="tocchapter" >
 <span class="sectionnumber">0</span><span class="toctitle">&#x2003;Співвідношення векторного аналізу в декартових координатах </span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-18" class="tocpart" >
+<a href="maxwellmicro.html#autosec-12" class="tocpart" >
 <span class="sectionnumber">I</span><span class="toctitle">&#x2003;Мікроскопічна теорія</span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-19" class="tocchapter" >
+<a href="maxwellmicro.html#autosec-13" class="tocchapter" >
 <span class="sectionnumber">1</span><span class="toctitle">&#x2003;Система мікроскопічних рівнянь Максвелла</span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-20" class="tocsection" >
+<a href="maxwellmicro.html#autosec-14" class="tocsection" >
 <span class="sectionnumber">1.1</span><span class="toctitle">&#x2003;Рівняння Максвелла</span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-21" class="tocsection" >
+<a href="maxwellmicro.html#autosec-15" class="tocsection" >
 <span class="sectionnumber">1.2</span><span class="toctitle">&#x2003;Закони збереження (диференціальна форма)</span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-22" class="tocsection" >
+<a href="maxwellmicro.html#autosec-16" class="tocsection" >
 <span class="sectionnumber">1.3</span><span class="toctitle">&#x2003;Граничні умови для границі розділу двох середовищ</span></a>
 </p>
-
 <p>
-<a href="maxwellmicro.html#autosec-23" class="tocsection" >
+<a href="maxwellmicro.html#autosec-17" class="tocsection" >
 <span class="sectionnumber">1.4</span><span class="toctitle">&#x2003;Потенціали електромагнітного поля</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-26" class="tocchapter" >
+<a href="emstatics.html#autosec-20" class="tocchapter" >
 <span class="sectionnumber">2</span><span class="toctitle">&#x2003;Електро- та магнітостатика у вакуумі</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-27" class="tocsection" >
+<a href="emstatics.html#autosec-21" class="tocsection" >
 <span class="sectionnumber">2.1</span><span class="toctitle">&#x2003;Прості задачі на рівняння Максвелла</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-68" class="tocsection" >
+<a href="emstatics.html#autosec-44" class="tocsection" >
 <span class="sectionnumber">2.2</span><span class="toctitle">&#x2003;Рівняння Пуассона та Лапласа. Граничні задачі електростатики</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-69" class="tocsection" >
+<a href="emstatics.html#autosec-45" class="tocsection" >
 <span class="sectionnumber">2.3</span><span class="toctitle">&#x2003;Метод електричних зображень</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-74" class="tocsection" >
+<a href="emstatics.html#autosec-46" class="tocsection" >
 <span class="sectionnumber">2.4</span><span class="toctitle">&#x2003;Пошук розв’язків методом розкладання за системою ортогональних функцій</span></a>
 </p>
-
 <p>
-<a href="emstatics.html#autosec-98" class="tocsection" >
+<a href="emstatics.html#autosec-47" class="tocsection" >
 <span class="sectionnumber">2.5</span><span class="toctitle">&#x2003;Розкладання потенціалів за мультиполями</span></a>
 </p>
-
 <p>
-<a href="radiation.html#autosec-129" class="tocchapter" >
+<a href="radiation.html#autosec-64" class="tocchapter" >
 <span class="sectionnumber">3</span><span class="toctitle">&#x2003;Випромінювання та поширення електромагнітних хвиль</span></a>
 </p>
-
 <p>
-<a href="radiation.html#autosec-133" class="tocsection" >
+<a href="radiation.html#autosec-68" class="tocsection" >
 <span class="sectionnumber">3.1</span><span class="toctitle">&#x2003;Співвідношення невизначеностей</span></a>
 </p>
-
 <p>
-<a href="radiation.html#autosec-136" class="tocsection" >
+<a href="radiation.html#autosec-69" class="tocsection" >
 <span class="sectionnumber">3.2</span><span class="toctitle">&#x2003;Монохроматичні хвилі. Інтерференція та поляризація хвиль</span></a>
 </p>
-
 <p>
-<a href="radiation.html#autosec-147" class="tocsection" >
+<a href="radiation.html#autosec-70" class="tocsection" >
 <span class="sectionnumber">3.3</span><span class="toctitle">&#x2003;Випромінювання та розсіювання електромагнітних хвиль</span></a>
 </p>
-
 <p>
-<a href="relativity.html#autosec-170" class="tocchapter" >
+<a href="relativity.html#autosec-73" class="tocchapter" >
 <span class="sectionnumber">4</span><span class="toctitle">&#x2003;Спеціальна теорія відносності</span></a>
 </p>
-
 <p>
-<a href="relativity.html#autosec-171" class="tocsection" >
+<a href="relativity.html#autosec-74" class="tocsection" >
 <span class="sectionnumber">4.1</span><span class="toctitle">&#x2003;Перетворення Лоренца та закони збереження</span></a>
 </p>
-
 <p>
-<a href="relativity.html#autosec-182" class="tocsection" >
+<a href="relativity.html#autosec-75" class="tocsection" >
 <span class="sectionnumber">4.2</span><span class="toctitle">&#x2003;Електродинаміка в релятивістських позначеннях</span></a>
 </p>
-
 <p>
-<a href="relativity.html#autosec-188" class="tocsection" >
+<a href="relativity.html#autosec-76" class="tocsection" >
 <span class="sectionnumber">4.3</span><span class="toctitle">&#x2003;Рух заряджених частинок в електромагнітному полі</span></a>
 </p>
-
 <p>
-<a href="relativity.html#autosec-198" class="tocsection" >
+<a href="relativity.html#autosec-77" class="tocsection" >
 <span class="sectionnumber">4.4</span><span class="toctitle">&#x2003;Випромінювання релятивістських заряджених частинок</span></a>
 </p>
-
 <p>
-<a href="maxwellmacro.html#autosec-202" class="tocpart" >
+<a href="maxwellmacro.html#autosec-80" class="tocpart" >
 <span class="sectionnumber">II</span><span class="toctitle">&#x2003;Електродинаміка суцільних середовищ</span></a>
 </p>
-
 <p>
-<a href="maxwellmacro.html#autosec-203" class="tocchapter" >
+<a href="maxwellmacro.html#autosec-81" class="tocchapter" >
 <span class="sectionnumber">5</span><span class="toctitle">&#x2003;Система макроскопічних рівнянь Максвелла</span></a>
 </p>
-
 <p>
-<a href="maxwellmacro.html#autosec-204" class="tocsection" >
+<a href="maxwellmacro.html#autosec-82" class="tocsection" >
 <span class="sectionnumber">5.1</span><span class="toctitle">&#x2003;Макроскопічні рівняння Максвелла</span></a>
 </p>
-
 <p>
-<a href="maxwellmacro.html#autosec-205" class="tocsection" >
+<a href="maxwellmacro.html#autosec-83" class="tocsection" >
 <span class="sectionnumber">5.2</span><span class="toctitle">&#x2003;Співвідношення для лінійних ізотропних середовищ</span></a>
 </p>
-
 <p>
-<a href="maxwellmacro.html#autosec-206" class="tocsection" >
+<a href="maxwellmacro.html#autosec-84" class="tocsection" >
 <span class="sectionnumber">5.3</span><span class="toctitle">&#x2003;Умови на границі розділу двох середовищ</span></a>
 </p>
-
 <p>
-<a href="emmedia.html#autosec-209" class="tocchapter" >
+<a href="emmedia.html#autosec-87" class="tocchapter" >
 <span class="sectionnumber">6</span><span class="toctitle">&#x2003;Діелектрики та магнетики в статичних полях</span></a>
 </p>
-
 <p>
-<a href="quasistationary.html#autosec-247" class="tocchapter" >
+<a href="quasistationary.html#autosec-95" class="tocchapter" >
 <span class="sectionnumber">7</span><span class="toctitle">&#x2003;Квазістаціонарні поля і струми</span></a>
 </p>
-
 <p>
-<a href="quasistationary.html#autosec-248" class="tocsection" >
+<a href="quasistationary.html#autosec-96" class="tocsection" >
 <span class="sectionnumber">7.1</span><span class="toctitle">&#x2003;Розтікання зарядів в провідниках. Струми Фуко</span></a>
 </p>
-
 <p>
-<a href="quasistationary.html#autosec-263" class="tocsection" >
+<a href="quasistationary.html#autosec-97" class="tocsection" >
 <span class="sectionnumber">7.2</span><span class="toctitle">&#x2003;Магнітні поля в надпровідниках</span></a>
 </p>
-
 <p>
-<a href="waves.html#autosec-275" class="tocchapter" >
+<a href="waves.html#autosec-100" class="tocchapter" >
 <span class="sectionnumber">8</span><span class="toctitle">&#x2003;Електромагнітні хвилі в середовищі</span></a>
 </p>
-
 <p>
-<a href="waves.html#autosec-276" class="tocsection" >
+<a href="waves.html#autosec-101" class="tocsection" >
 <span class="sectionnumber">8.1</span><span class="toctitle">&#x2003;Поширення електромагнітних хвиль в середовищі</span></a>
 </p>
-
 <p>
-<a href="waves.html#autosec-287" class="tocsection" >
+<a href="waves.html#autosec-102" class="tocsection" >
 <span class="sectionnumber">8.2</span><span class="toctitle">&#x2003;Відбивання та заломлення електромагнітних хвиль на межі двох середовищ</span></a>
 </p>
-
 <p>
-<a href="waves.html#autosec-293" class="tocsection" >
+<a href="waves.html#autosec-103" class="tocsection" >
 <span class="sectionnumber">8.3</span><span class="toctitle">&#x2003;Електромагнітні хвилі в плазмі</span></a>
 </p>
-
 <p>
-<a href="waves.html#autosec-297" class="tocsection" >
+<a href="waves.html#autosec-104" class="tocsection" >
 <span class="sectionnumber">8.4</span><span class="toctitle">&#x2003;Розсіювання та дифракція</span></a>
 </p>
-
 <p>
-<a href="answers.html#autosec-307" class="tocchapter" >
+<a href="answers.html#autosec-107" class="tocchapter" >
 Відповіді</a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-325" class="tocchapter" >
+<a href="appendices.html#autosec-125" class="tocchapter" >
 Додатки</a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-326" class="tocsection" >
+<a href="appendices.html#autosec-126" class="tocsection" >
 <span class="sectionnumber">А</span><span class="toctitle">&#x2003;Основні формули векторного аналізу</span></a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-335" class="tocsection" >
+<a href="appendices.html#autosec-135" class="tocsection" >
 <span class="sectionnumber">Б</span><span class="toctitle">&#x2003;Поліноми Лежандра</span></a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-336" class="tocsection" >
+<a href="appendices.html#autosec-136" class="tocsection" >
 <span class="sectionnumber">В</span><span class="toctitle">&#x2003;Сферичні гармоніки</span></a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-337" class="tocsection" >
+<a href="appendices.html#autosec-137" class="tocsection" >
 <span class="sectionnumber">Г</span><span class="toctitle">&#x2003;Циліндричні функції</span></a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-344" class="tocsection" >
+<a href="appendices.html#autosec-144" class="tocsection" >
 <span class="sectionnumber">Д</span><span class="toctitle">&#x2003;Дельта-функція Дірака</span></a>
 </p>
-
 <p>
-<a href="appendices.html#autosec-345" class="tocsection" >
+<a href="appendices.html#autosec-145" class="tocsection" >
 <span class="sectionnumber">Е</span><span class="toctitle">&#x2003;Фізичні константи</span></a>
 </p>
-
 <p>
-<a href="bibliography.html#autosec-351" class="tocchapter" >
+<a href="bibliography.html#autosec-151" class="tocchapter" >
 Література</a>
 </p>
-
 </div>
 </nav>
 </div>
-
 <main class="bodycontainer" data-pagefind-body data-pagefind-meta="title[data-title]" data-title="Електромагнітні хвилі в середовищі">
-
 <section class="textbody">
 <h1 data-pagefind-ignore>Класична електродинаміка. Збірник задач</h1>
 <!--MathJax customizations:-->
 <div data-nosnippet
-
-      style="display:none"
+style="display:none"
 >
 \(\newcommand{\footnotename}{footnote}\)
 \(\def \LWRfootnote {1}\)
@@ -929,680 +814,415 @@ MathJax.startup.input[0].postFilters.add(({math}) => {
 <!--
 ...... chapter Електромагнітні хвилі в середовищі ......
 -->
-<h3 id="autosec-275"><span class="sectionnumber">8&#x2003;</span>Електромагнітні хвилі в середовищі</h3>
-<a id="main-html-autopage-275"></a>
+<h3 id="autosec-100"><span class="sectionnumber">8&#x2003;</span>Електромагнітні хвилі в середовищі</h3>
+<a id="main-html-autopage-100"></a>
 <a id="main-html-autofile-10"></a>
 <a id="WavesInLinearMedia-dup7"></a>
 <!--
 ...... section Поширення електромагнітних хвиль в середовищі ......
 -->
-<h4 id="autosec-276"><span class="sectionnumber">&#xA7;&#x202F;8.1&#x2003;</span>Поширення електромагнітних хвиль в середовищі</h4>
-<a id="main-html-autopage-276"></a>
-
+<h4 id="autosec-101"><span class="sectionnumber">&#xA7;&#x202F;8.1&#x2003;</span>Поширення електромагнітних хвиль в середовищі</h4>
+<a id="main-html-autopage-101"></a>
 <div class="cb-theory">
-
 <p>
 <b>Теоретичні відомості</b>
 </p>
-
 <p>
 Електромагнітні хвилі в вакуумі – це коливання напруженостей електричного і магнітного полів, які можуть відбуватися за відсутності джерел випромінювання. У речовині ці коливання супроводжуються коливаннями заряджених частинок — електронів та іонів речовини. Тому коливальні
 процеси стають більш різноманітними. Зокрема, в загальному випадку в середовищах електромагнітні хвилі непоперечні — вектори поля можуть мати як поперечні, так і поздовжні складові відносно напрямку поширення.
 </p>
-
 <p>
 У випадку однорідного середовища без вільних зарядів та вільних струмів, за умови, що в розглядуваному діапазоні частот діелектричну та магнітну проникності можна вважати незмінними, рівняння Максвела зводяться до рівнянь:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{0}\)</span>
-
 <!--
-
-                                                                                                                        √𝜖𝜇 𝜕2𝐄                    √𝜖𝜇 𝜕2𝐇
-                                                                                                                        Δ𝐄 − 2 2 = 0, Δ𝐇 − 2 2 = 0.                                                                                                                                (8.1)
-                                                                                                                        𝑐 𝜕𝑡                       𝑐 𝜕𝑡
-
+Δ𝐄 −
+√𝜖𝜇
+𝑐2
+𝜕2𝐄
+𝜕𝑡2
+= 0, Δ𝐇 −
+√𝜖𝜇
+𝑐2
+𝜕2𝐇
+𝜕𝑡2
+= 0. (8.1)
 -->
-
 <p>
-
 \begin{equation}
 \Delta \Efield - \frac {\sqrt {\epsilon \mu }}{c^2}\frac {\partial ^2\Efield }{\partial t^2} = 0, \quad \Delta \Hfield - \frac {\sqrt {\epsilon \mu }}{c^2}\frac {\partial ^2\Hfield }{\partial t^2} = 0.
 \end{equation}
-
 </p>
-
 <p>
 <b>Поляризація ізотропного середовища в змінних електромагнітних полях</b>
 </p>
-
 <p>
 За наявності дисперсії, у випадку змінних полів, електрична індукція в момент часу \(t\) залежить від значень поля у попередні моменти часу:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{1}\)</span>
-
 <!--
-
-                                           ˆ𝑡                                                                                                                                 (8.2)                       --><a id="eq:DtEt"></a><!--
-                       𝐃(𝑡) = 𝐄(𝑡) + 𝑓(𝑡 − 𝑡′)𝐄(𝑡′)𝑑𝑡′,
-
-                                                −∞
-
+𝐃(𝑡) = 𝐄(𝑡) +
+𝑡
+ˆ
+−∞
+𝑓(𝑡 − 𝑡′)𝐄(𝑡′)𝑑𝑡′, (8.2) --><a id="eq:DtEt"></a><!--
 -->
-
 <p>
-
 \begin{equation}
 \label {eq:DtEt} \Dfield (t) = \Efield (t) + \int \limits _{-\infty }^t f(t - t&apos;)\Efield (t&apos;)dt&apos;,
 \end{equation}
-
 </p>
-
 <p>
 де \(f(t - t&apos;)\)&nbsp;— функція, що визначається властивостями середовища. В цьому випадку пропорційність між індукціями та напруженостями зберігається лише для Фур’є-компонент цих векторів:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{2}\)</span>
 <!--
-
-                       𝐃(𝜔) = 𝜖̂(𝜔)𝐄(𝜔), 𝐁(𝜔) = 𝜇̂(𝜔)𝐇(𝜔) ,                                                                                                                          (8.3)                --><a id="zv1"></a><!--
-
+𝐃(𝜔) = ̂
+𝜖(𝜔)𝐄(𝜔), 𝐁(𝜔) = ̂
+𝜇(𝜔)𝐇(𝜔) , (8.3) --><a id="zv1"></a><!--
 -->
 <p>
-
 \begin{equation}
 \label {zv1} \Dfield (\omega ) = \hat \epsilon (\omega )\Efield (\omega ), \quad \Bfield (\omega ) = \hat \mu (\omega )\Hfield (\omega )\,,
 \end{equation}
-
 </p>
-
 <p>
 а проникності \(\hat \epsilon (\omega ), \,\hat \mu (\omega )\) в ізотропному середовищі є комплексними співмножниками, що залежать від частоти.
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{3}\)</span>
 <!--
-
-                                                                                                                        𝜖̂ = 𝜖′ + 𝑖𝜖″, 𝜇̂ = 𝜇′ + 𝑖𝜇″.                                                                                                                              (8.4)
-
+̂
+𝜖 = 𝜖′ + 𝑖𝜖″, ̂
+𝜇 = 𝜇′ + 𝑖𝜇″. (8.4)
 -->
 <p>
-
 \begin{equation}
 \hat {\epsilon } = \epsilon &apos; + i\epsilon &apos;&apos;, \quad \hat {\mu } = \mu &apos; + i\mu &apos;&apos;.
 \end{equation}
-
 </p>
-
 <p>
 Уявні частини проникностей \(\epsilon &apos;&apos;\) та \(\mu &apos;&apos;\) визначають дисипацію електромагнітної енергії в середовищі.
 </p>
-
 <p>
 Важливо, що у випадку монохроматичних полів (тобто, які залежать від часу гармонічно) зв’язок між амплітудами полів матиме такий самий вигляд, як в (<a href="waves.html#zv1">8.3</a>). Тому при визначенні, наприклад, діелектричної проникності в простих моделях, як правило,
 цілком достатньо розглянути відгук середовища на монохроматичне електричне поле \(\Efield \sim e^{-i\omega t}\).
 </p>
-
 <p>
 Для визначення конкретного вигляду залежностей \(\hat \epsilon (\omega )\) та \(\hat \mu (\omega )\) необхідно мати уявлення про будову речовини. Так, згідно класичної механіки і моделі атома як осцилятора, на якого діє пружна сила \(\vect {F} = -m\omega
 _0^2\vect {r}\) та «сила в’язкого тертя» \(\vect {F}_\text {тер} = -m\gamma \dot {\vect {r}}\), діелектрична проникність речовини має вигляд:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{4}\)</span>
-
 <!--
-
-                                                                                                                        𝜖̂(𝜔) = 1 + 2         𝜔2𝑝            ,                                                                                                                     (8.5)
-
-                                                                                                                                              𝜔0 − 𝜔2 − 𝑖𝛾𝜔
-
+̂
+𝜖(𝜔) = 1 +
+𝜔2
+𝑝
+𝜔2
+0
+− 𝜔2 − 𝑖𝛾𝜔
+, (8.5)
 -->
-
 <p>
-
 \begin{equation}
 \hat \epsilon (\omega ) = 1+ \frac {\omega _p^2}{\omega _0^2 - \omega ^2 - i\gamma \omega }, \quad
 \end{equation}
-
 </p>
-
 <p>
 де \(\omega _p = \frac {4\pi e^2N}{m}\), \(\omega _0\)&nbsp;— власна частота коливання атомного осцилятора, \(\gamma \)&nbsp;— коефіцієнт згасання, \(N\)&nbsp;— число атомів в одиниці об’єму, \(m\) та \(e\)&nbsp;— заряд та маса електрона, відповідно.
 </p>
-
 <p>
 Між дійсною та уявною частиною діелектричної проникності \(\hat \epsilon (\omega )\) існує зв’язок, який дається співвідношенням Крамерса-Кроніга:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{5}\)</span>
 <!--
-
-      ′ 1 ˆ 𝜖 ∞ ″(𝜔′) ′        ″ 1 ˆ 𝜖 ∞ ′(𝜔′) − 1 ′                                                                                                                                                      --><a id="eq:Kramers-Kronig"></a><!--
-      𝜖 (𝜔) = 1 +      ′ 𝑑𝜔 ,  𝜖 (𝜔) = −                                                    𝑑𝜔                                                                  (8.6)
-                   𝜋 𝜔 −𝜔                 𝜋                                           𝜔 −𝜔′
-
-                   −∞                        −∞
-
+𝜖′(𝜔) = 1 +
+1
+𝜋
+∞
+ˆ
+−∞
+𝜖″(𝜔′)
+𝜔′ − 𝜔
+𝑑𝜔′, 𝜖″(𝜔) = −
+1
+𝜋
+∞
+ˆ
+−∞
+𝜖′(𝜔′) − 1
+𝜔′ − 𝜔
+𝑑𝜔′ (8.6) --><a id="eq:Kramers-Kronig"></a><!--
 -->
-
 <p>
-
 \begin{equation}
 \label {eq:Kramers-Kronig} \epsilon &apos;(\omega ) = 1 + \frac 1\pi \int \limits _{- \infty }^{\infty }\frac {\epsilon &apos;&apos;(\omega &apos;)}{\omega &apos;-\omega }d\omega &apos;, \quad \epsilon
 &apos;&apos;(\omega ) = - \frac 1\pi \int \limits _{- \infty }^{\infty }\frac {\epsilon &apos;(\omega &apos;) - 1}{\omega &apos;-\omega }d\omega &apos;
 \end{equation}
-
 </p>
-
 <p>
 <b>Поляризація анізотропних речовин змінних електромагнітних полях</b>
 </p>
-
 <p>
 У <em>анізотропних</em> середовищах електричні та магнітні властивості залежать від напрямків. Електрична і магнітна проникності таких середовищ є тензорами (матричними операторами). Оптична анізотропія може бути наслідком кристалічної структури тіла, виникати за наявності
 зовнішнього магнітного поля, механічних впливів тошо. У негіротропному прозорому (тобто за відсутності поглинання) середовищі тензори діелектричної та магнітної проникностей симетричні:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{6}\)</span>
-
 <!--
-
-                       𝜖𝑖𝑘(𝜔) = 𝜖𝑘𝑖(𝜔), 𝜇𝑖𝑘(𝜔) = 𝜇𝑘𝑖(𝜔).                                                                                                               (8.7)                              --><a id="eq:symm_e_m"></a><!--
-
+𝜖𝑖𝑘(𝜔) = 𝜖𝑘𝑖(𝜔), 𝜇𝑖𝑘(𝜔) = 𝜇𝑘𝑖(𝜔). (8.7) --><a id="eq:symm_e_m"></a><!--
 -->
 <p>
-
 \begin{equation}
 \label {eq:symm_e_m} \epsilon _{ik}(\omega ) = \epsilon _{ki}(\omega ), \quad \mu _{ik}(\omega ) = \mu _{ki}(\omega ).
 \end{equation}
-
 </p>
-
 <p>
 У більш загальному випадку, коли можливі ефекти гіротропії (див. нижче), але середовище є прозорим, вони є ермітовими:
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{7}\)</span>
 <!--
-
-                   𝜖𝑖𝑘(𝜔) = 𝜖∗𝑘𝑖(𝜔), 𝜇𝑖𝑘(𝜔) = 𝜇∗𝑘𝑖(𝜔).                                                                                                          (8.8)                                     --><a id="eq:symm_e_m-dup2"></a><!--
-
+𝜖𝑖𝑘(𝜔) = 𝜖∗
+𝑘𝑖
+(𝜔), 𝜇𝑖𝑘(𝜔) = 𝜇∗
+𝑘𝑖
+(𝜔). (8.8) --><a id="eq:symm_e_m-dup2"></a><!--
 -->
 <p>
-
 \begin{equation}
 \label {eq:symm_e_m-dup2} \epsilon _{ik}(\omega ) = \epsilon _{ki}^*(\omega ), \quad \mu _{ik}(\omega ) = \mu _{ki}^*(\omega ).
 \end{equation}
-
 </p>
-
 <p>
 У цьому випадку уявна частина кожного з тензорів антисиметрична щодо перестановки індексів \(\epsilon ^{\prime \prime }_{ik} = -\epsilon ^{\prime \prime }_{ki}\), \(\mu ^{\prime \prime }_{ik} = -\mu ^{\prime \prime }_{ki}\) і їх можна замінити
 дуальними векторами, \(\vect {g}_e\) і \(\vect {g}_m\), які називаються векторами електричної та магнітної гірації, відповідно. Зв’язок між напруженностями полів та індукціями можна записати у вигляді:
 </p>
 <span class="hidden"> \(\seteqnumber{0}{8.}{8}\)</span>
-
 <!--
-
-                                                                                                                        𝐃 = 𝜖̂′𝐄 + 𝑖 [𝐄 × 𝐠𝑒]                                                                                                                (8.9)
-                                                                                                                        𝐁 = 𝜇̂′𝐇 + 𝑖 [𝐇 × 𝐠𝑚] ,                                                                                                             (8.10)
-
+𝐃 = ̂
+𝜖′𝐄 + 𝑖 [𝐄 × 𝐠𝑒] (8.9)
+𝐁 = ̂
+𝜇′𝐇 + 𝑖 [𝐇 × 𝐠𝑚] , (8.10)
 -->
-
 <p>
-
-\begin{align}                                                                         {g}_e\right ] \\ \Bfield &amp; = \hat {\mu }&apos; \Hfield + i\left [ \Hfield \times \vect {g}_m\right ] ,
-\Dfield &amp; = \hat {\epsilon }&apos; \Efield + i\left [ \Efield \times \vect        \). Тензори \(\epsilon &apos;_{ik}\) та \(\mu &apos;_{ik}\) дійсні і симетричні. Середовища, в яких вектори полів пов’язані такими рівняннями, називають
+\begin{align}
+\Dfield &amp; = \hat {\epsilon }&apos; \Efield + i\left [ \Efield \times \vect {g}_e\right ] \\ \Bfield &amp; = \hat {\mu }&apos; \Hfield + i\left [ \Hfield \times \vect {g}_m\right ] ,
 \end{align}
-де \(\hat {\epsilon }&apos; \Efield \)&nbsp;— компонентами \(\epsilon &apos;_{ik}E_k
+де \(\hat {\epsilon }&apos; \Efield \)&nbsp;— компонентами \(\epsilon &apos;_{ik}E_k \). Тензори \(\epsilon &apos;_{ik}\) та \(\mu &apos;_{ik}\) дійсні і симетричні. Середовища, в яких вектори полів пов’язані такими рівняннями, називають
 <em>гіротропними</em>.
 </p>
-
 <p>
 У гіротропних середовищах в заданому напрямку можуть поширюватися з різними швидкостями дві плоскі хвилі однієї частоти, які мають колову або еліптичну поляризацію з протилежними напрямками обертання.
 </p>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-365"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.1.</span></span> <a id="autoid-366" ></a ><a id="LWR-ht-problem:8.{1}"></a> Дослідити електромагнітні монохроматичні хвилі \(\sim e^{i(kx - \omega t)}\), в необмеженому
-середовищі, що має провідність \(\lambda \), діелектричну і магнітну проникності \(\epsilon = \const \) та \(\mu = \const \).
+<a id="LWR-ht-problem:8.{1}"></a><span class="probnum">8.1.</span> Дослідити електромагнітні монохроматичні хвилі \(\sim e^{i(kx - \omega t)}\), в необмеженому середовищі, що має провідність \(\lambda \), діелектричну і магнітну проникності \(\epsilon
+= \const \) та \(\mu = \const \).
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-367"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.2.</span></span> <a id="autoid-368" ></a ><a id="LWR-ht-problem:8.{2}"></a> Дослідити електромагнітні монохроматичні хвилі \(\sim e^{i(kx - \omega t)}\), що поширюються
-в напрямі осі \(OX\) між двома надпровідними площинами \(z=0\) та \(z=d\), \(\epsilon = \const \) та \(\mu = \const \). Знайти дисперсійні рівняння, перевірити граничні умови.
+<a id="LWR-ht-problem:8.{2}"></a><span class="probnum">8.2.</span> Дослідити електромагнітні монохроматичні хвилі \(\sim e^{i(kx - \omega t)}\), що поширюються в напрямі осі \(OX\) між двома надпровідними площинами \(z=0\) та \(z=d\), \(\epsilon =
+\const \) та \(\mu = \const \). Знайти дисперсійні рівняння, перевірити граничні умови.
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-369"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.3.</span></span> <a id="autoid-370" ></a ><a id="LWR-ht-problem:8.{3}"></a> Дослідити електромагнітні монохроматичні хвилі \(\sim e^{i(kx - \omega t)}\), що поширюються
-в напрямі осі \(OX\) в ідеальному нескінченному хвилеводі, \(\epsilon = \const \) та \(\mu = \const \). Переріз хвилеводу — квадрат з стороною \(a\). Знайти дисперсійні рівняння, обчислити потік енергії.
+<a id="LWR-ht-problem:8.{3}"></a><span class="probnum">8.3.</span> Дослідити електромагнітні монохроматичні хвилі \(\sim e^{i(kx - \omega t)}\), що поширюються в напрямі осі \(OX\) в ідеальному нескінченному хвилеводі, \(\epsilon = \const \) та \(\mu
+= \const \). Переріз хвилеводу — квадрат з стороною \(a\). Знайти дисперсійні рівняння, обчислити потік енергії.
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-371"></a>                                                                  id="autoid-372" ></a ><a id="LWR-ht-problem:8.{4}"></a> Для деякої речовини функцію \(f(t)\) (рівняння&nbsp;<span  class="textup">(<a
-<li>                                                                                     {t}{\tau }}\), де \(f_0\) та \(\tau \) — сталі. Знайти діелектричну проникність такої речовини у просторі частот.
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.4.</span></span> <a
-href="waves.html#eq:DtEt">8.2</a>)</span>) можна вибрати у вигляді \(f(t) = f_0e^{-\frac
+<a id="LWR-ht-problem:8.{4}"></a><span class="probnum">8.4.</span> Для деякої речовини функцію \(f(t)\) (рівняння&nbsp;<span class="textup">(<a href="waves.html#eq:DtEt">8.2</a>)</span>) можна вибрати у вигляді \(f(t) = f_0e^{-\frac
+{t}{\tau }}\), де \(f_0\) та \(\tau \) — сталі. Знайти діелектричну проникність такої речовини у просторі частот.
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-373"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.5.</span></span> <a id="autoid-374" ></a ><a id="LWR-ht-problem:8.{5}"></a> Напруженість електричного поля має вид \(E = E_0\delta (t)\). Діелектрична сприйнятливість (в
-усій комплексній площині частот)
+<a id="LWR-ht-problem:8.{5}"></a><span class="probnum">8.5.</span> Напруженість електричного поля має вид \(E = E_0\delta (t)\). Діелектрична сприйнятливість (в усій комплексній площині частот)
 </p>
-
 <p>
 \[ \alpha (\omega ) = \frac {\alpha _0}{\omega _0^2 - \omega ^2 - 2i\gamma \omega }. \]
 </p>
-
 <p>
 Знайти вектор поляризації \(P(t) = \frac {1}{\sqrt {2\pi }}\int \limits _{- \infty }^\infty \alpha (\omega )\tilde E(\omega ){e^{ - i\omega t}}d\omega \) для усіх дійсних \(t\) (тільда \(\tilde {}\) означає перетворення Фур’є) та проаналізувати
 модуль \(|P(t)|\) у двох випадках:
 </p>
 <ul class="enumerate" style="list-style-type:none">
-
 <li>
 <p>
 <span class="listmarker">а)</span> \(\omega _0 &gt; \gamma &gt;0\),
 </p>
-
 </li>
 <li>
-
 <p>
 <span class="listmarker">б)</span> \(\omega _0 = \gamma \).
 </p>
 </li>
 </ul>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-375"></a>                                                                                          ><a id="LWR-ht-problem:8.{6}"></a> Хвиля падає з вакууму на грань одновісного (негіротропного) кристалу (\(z = 0\)), яка перпендикулярна
-<li>                                                                                                             \epsilon _\parallel \}\) не залежить від частоти хвилі. Кут падіння \(i\). Знайти напрям поширення променя у кристалі (тангенс кута нахилу
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.6.</span></span> <a id="autoid-376" ></a
-оптичній осі. У власній системі кристалу \(\hat {\epsilon } = \mathrm {diag}\{\epsilon _\bot , \epsilon _\bot ,
-групової швидкості до оптичної осі).
+<a id="LWR-ht-problem:8.{6}"></a><span class="probnum">8.6.</span> Хвиля падає з вакууму на грань одновісного (негіротропного) кристалу (\(z = 0\)), яка перпендикулярна оптичній осі. У власній системі кристалу \(\hat {\epsilon } = \mathrm
+{diag}\{\epsilon _\bot , \epsilon _\bot , \epsilon _\parallel \}\) не залежить від частоти хвилі. Кут падіння \(i\). Знайти напрям поширення променя у кристалі (тангенс кута нахилу групової швидкості до оптичної осі).
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-377"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.7.</span></span> <a id="autoid-378" ></a ><a id="LWR-ht-problem:8.{7}"></a> Монохроматична плоска хвиля поширюється у гіротропному середовищі вздовж вектора гірації \(\vect
-{g} = (0,0,g)\). Зв’язок індукції з напруженістю \(\Dfield = \Efield + i[\Efield \times \vect {g} ]\) . При \(z= 0\) хвиля лінійно поляризована \(\Efield = E_0\vect {e}_x e^{- i\omega t}\). Знайти кут повороту площини поляризації при проходженні
-відстані \(L\).
+<a id="LWR-ht-problem:8.{7}"></a><span class="probnum">8.7.</span> Монохроматична плоска хвиля поширюється у гіротропному середовищі вздовж вектора гірації \(\vect {g} = (0,0,g)\). Зв’язок індукції з напруженістю \(\Dfield = \Efield + i[\Efield
+\times \vect {g} ]\) . При \(z= 0\) хвиля лінійно поляризована \(\Efield = E_0\vect {e}_x e^{- i\omega t}\). Знайти кут повороту площини поляризації при проходженні відстані \(L\).
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-379"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.8.</span></span> <a id="autoid-380" ></a ><a id="LWR-ht-problem:8.{8}"></a>Знайти діелектричну сприйнятливість атома \(\hat \alpha = || \alpha _{ik} ||\) в полі плоскої
-монохроматичної хвилі за наявності слабкого зовнішнього постійного магнітного поля \(\Hfield _0\). Виходити з моделі пружно зв’язаного електрона з резонансною частотою \(\omega _0\); застосувати метод збурень за умови, що частота зовнішнього поля далека від резонансної. Дією
-магнітного поля плоскої хвилі і реакцією випромінювання знехтувати. <a href="answers.html#LWR-ht-solution:8.{8}">[відповідь]</a>
+<a id="LWR-ht-problem:8.{8}"></a><span class="probnum">8.8.</span> Знайти діелектричну сприйнятливість атома \(\hat \alpha = || \alpha _{ik} ||\) в полі плоскої монохроматичної хвилі за наявності слабкого зовнішнього постійного магнітного поля
+\(\Hfield _0\). Виходити з моделі пружно зв’язаного електрона з резонансною частотою \(\omega _0\); застосувати метод збурень за умови, що частота зовнішнього поля далека від резонансної. Дією магнітного поля плоскої хвилі і реакцією випромінювання знехтувати. <a
+href="answers.html#LWR-ht-solution:8.{8}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-381"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.9.</span></span> <a id="autoid-382" ></a ><a id="LWR-ht-problem:8.{9}"></a><a id="pr:etensor"></a>
+<a id="LWR-ht-problem:8.{9}"></a><span class="probnum">8.9.</span> <a id="pr:etensor"></a>
 </p>
-
 <p>
 Тензор діелектричної проникності гіротропного середовища, що межує з вакуумом, має вид (в декартовій системі координат, оптична вісь вздовж осі \(OZ\)):
 </p>
-
 <span class="hidden"> \(\seteqnumber{0}{8.}{10}\)</span>
-
 <!--
-
-                                                ⎛ 𝛼 𝑖𝛽 0 ⎞
-
-                                                𝜖𝑖𝑘 = ⎜ −𝑖𝛽 𝛼 0 ⎟ ,                                                                                               (8.11)                                                                 --><a id="eq:etensor"></a><!--
-                                                ⎜  ⎟
-                                                ⎝0 0 𝛾 ⎠
-
+𝜖𝑖𝑘 = (
+𝛼 𝑖𝛽 0
+−𝑖𝛽 𝛼 0
+0 0 𝛾
+) , (8.11) --><a id="eq:etensor"></a><!--
 -->
-
 <p>
-
 \begin{equation}
 \label {eq:etensor} \epsilon _{ik} = \left ( {\begin{array}{*{20}{c}} \alpha &amp; {i\beta } &amp; 0 &amp; \\ { - i\beta } &amp; \alpha &amp; 0 &amp; \\ 0 &amp; 0 &amp; \gamma &amp; \end {array}} \right ),
 \end{equation}
-
 </p>
-
 <p>
 де \(\alpha \), \(\beta \), \(\gamma \)&nbsp;— дійсні константи. Дослідіть, які можливі типи хвиль з різними поляризаціями, що рухаються в паралельно оптичній осі. Запишіть загальний розв’язок через суперпозицію різних типів хвиль.
 </p>
-
-<p>
-
-</p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-383"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.10.</span></span> <a id="autoid-384" ></a ><a id="LWR-ht-problem:8.{10}"></a> За умов задачі&nbsp;<a href="waves.html#pr:etensor">8.9</a> знайдіть густину потоку
-енергії для суперпозиції різних типів хвиль, що рухаються у додатному напрямку осі \(OZ\).
+<a id="LWR-ht-problem:8.{10}"></a><span class="probnum">8.10.</span> За умов задачі&nbsp;<a href="waves.html#pr:etensor">8.9</a> знайдіть густину потоку енергії для суперпозиції різних типів хвиль, що рухаються у додатному напрямку осі \(OZ\).
 </p>
-
-</li>
-</ul>
 </div>
 <!--
 ...... section Відбивання та заломлення електромагнітних хвиль на межі двох середовищ ......
 -->
-<h4 id="autosec-287"><span class="sectionnumber">&#xA7;&#x202F;8.2&#x2003;</span>Відбивання та заломлення електромагнітних хвиль на межі двох середовищ</h4>
-<a id="main-html-autopage-287"></a>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-385"></a>
-<li>
+<h4 id="autosec-102"><span class="sectionnumber">&#xA7;&#x202F;8.2&#x2003;</span>Відбивання та заломлення електромагнітних хвиль на межі двох середовищ</h4>
+<a id="main-html-autopage-102"></a>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.11.</span></span> <a id="autoid-386" ></a ><a id="LWR-ht-problem:8.{11}"></a> На межу середовища з діелектричною проникністю \(\epsilon &gt; 0 \) нормально падає плоска
-електромагнітна хвиля з вакууму. Знайти коефіцієнт відбиття.
+<a id="LWR-ht-problem:8.{11}"></a><span class="probnum">8.11.</span> На межу середовища з діелектричною проникністю \(\epsilon &gt; 0 \) нормально падає плоска електромагнітна хвиля з вакууму. Знайти коефіцієнт відбиття.
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-387"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.12.</span></span> <a id="autoid-388" ></a ><a id="LWR-ht-problem:8.{12}"></a> На межу середовища з (дійсною) діелектричною проникністю \(\epsilon &lt; 0 \) нормально падає
-електромагнітна хвиля з вакууму. Знайти коефіцієнт відбиття.
+<a id="LWR-ht-problem:8.{12}"></a><span class="probnum">8.12.</span> На межу середовища з (дійсною) діелектричною проникністю \(\epsilon &lt; 0 \) нормально падає електромагнітна хвиля з вакууму. Знайти коефіцієнт відбиття.
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-389"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.13.</span></span> <a id="autoid-390" ></a ><a id="LWR-ht-problem:8.{13}"></a>Границя середовища з діелектричною проникністю з задачі (<a
-href="waves.html#pr:etensor">8.9</a>), яка межує з вакуумом, перпендикулярна оптичній осі (паралельній \(OZ\)). На цю границю з вакууму нормально падає циркулярно поляризована електромагнітна хвиля. Знайти коефіцієнти відбиття та проходження для двох різних колових
-поляризацій.
+<a id="LWR-ht-problem:8.{13}"></a><span class="probnum">8.13.</span> Границя середовища з діелектричною проникністю з задачі (<a href="waves.html#pr:etensor">8.9</a>), яка межує з вакуумом, перпендикулярна оптичній осі (паралельній \(OZ\)). На цю
+границю з вакууму нормально падає циркулярно поляризована електромагнітна хвиля. Знайти коефіцієнти відбиття та проходження для двох різних колових поляризацій.
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-391"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.14.</span></span> <a id="autoid-392" ></a ><a id="LWR-ht-problem:8.{14}"></a> На межу середовища з діелектричною проникністю \(\epsilon = \epsilon &apos; +
-i\epsilon &apos;&apos;\) нормально падає електромагнітна хвиля з вакууму. Знайти коефіцієнт відбиття.
+<a id="LWR-ht-problem:8.{14}"></a><span class="probnum">8.14.</span> На межу середовища з діелектричною проникністю \(\epsilon = \epsilon &apos; + i\epsilon &apos;&apos;\) нормально падає електромагнітна хвиля з вакууму. Знайти коефіцієнт
+відбиття.
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-393"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.15.</span></span> <a id="autoid-394" ></a ><a id="LWR-ht-problem:8.{15}"></a> Між середовищами з показниками заломлення \(n_1\) і \(n_3\) знаходиться нескінченна
-плоско-паралельна пластина з показником заломлення \(n_2\) і товщиною \(d\). Всі показники заломлення більші за одиницю. Електромагнітна хвиля падає на пластину нормально з боку середовища \(1\). Магнітні проникності в усіх середовищах дорівнюють одиниці. З’ясувати, за яких умов
-буде нульове відбиття. Частота хвилі \(\omega \). <a href="answers.html#LWR-ht-solution:8.{15}">[відповідь]</a>
+<a id="LWR-ht-problem:8.{15}"></a><span class="probnum">8.15.</span> Між середовищами з показниками заломлення \(n_1\) і \(n_3\) знаходиться нескінченна плоско-паралельна пластина з показником заломлення \(n_2\) і товщиною \(d\). Всі показники заломлення
+більші за одиницю. Електромагнітна хвиля падає на пластину нормально з боку середовища \(1\). Магнітні проникності в усіх середовищах дорівнюють одиниці. З’ясувати, за яких умов буде нульове відбиття. Частота хвилі \(\omega \). <a
+href="answers.html#LWR-ht-solution:8.{15}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
 <!--
 ...... section Електромагнітні хвилі в плазмі ......
 -->
-<h4 id="autosec-293"><span class="sectionnumber">&#xA7;&#x202F;8.3&#x2003;</span>Електромагнітні хвилі в плазмі</h4>
-<a id="main-html-autopage-293"></a>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-395"></a>
-<li>
+<h4 id="autosec-103"><span class="sectionnumber">&#xA7;&#x202F;8.3&#x2003;</span>Електромагнітні хвилі в плазмі</h4>
+<a id="main-html-autopage-103"></a>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.16.</span></span> <a id="autoid-396" ></a ><a id="LWR-ht-problem:8.{16}"></a> Холодна розріджена плазма містить містить \(N\) електронів в одному кубічному метрі. Отримайте вираз
-для швидкості поширення електромагнітних хвиль в цьому середовищі та показник заломлення середовища. <a href="answers.html#LWR-ht-solution:8.{16}">[відповідь]</a>
+<a id="LWR-ht-problem:8.{16}"></a><span class="probnum">8.16.</span> Холодна розріджена плазма містить містить \(N\) електронів в одному кубічному метрі. Отримайте вираз для швидкості поширення електромагнітних хвиль в цьому середовищі та показник заломлення
+середовища. <a href="answers.html#LWR-ht-solution:8.{16}">[відповідь]</a>
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-397"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.17.</span></span> <a id="autoid-398" ></a ><a id="LWR-ht-problem:8.{17}"></a><a id="prb:plasma"></a> Знайти тензор діелектричної проникності холодної розрідженої плазми з
-електронною концентрацією \(n_e\), що знаходиться у зовнішньому магнітному полі \(\Bfield \). Рухом іонів знехтувати. <a href="answers.html#LWR-ht-solution:8.{17}">[відповідь]</a>
+<a id="LWR-ht-problem:8.{17}"></a><span class="probnum">8.17.</span> <a id="prb:plasma"></a> Знайти тензор діелектричної проникності холодної розрідженої плазми з електронною концентрацією \(n_e\), що знаходиться у зовнішньому магнітному полі
+\(\Bfield \). Рухом іонів знехтувати. <a href="answers.html#LWR-ht-solution:8.{17}">[відповідь]</a>
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-399"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.18.</span></span> <a id="autoid-400" ></a ><a id="LWR-ht-problem:8.{18}"></a> Використовуючи тензор діелектричної проникності холодної розрідженої плазми в зовнішньому
-магнітному полі (див. попередню задачу&nbsp;<a href="waves.html#prb:plasma">8.17</a>), дослідити, за яких частот можливе проходження хвиль з різною коловою поляризацією в напрямку магнітного поля. Коли неможливе проходження хвиль з будь-якою поляризацією? <a
-href="answers.html#LWR-ht-solution:8.{18}">[відповідь]</a>
+<a id="LWR-ht-problem:8.{18}"></a><span class="probnum">8.18.</span> Використовуючи тензор діелектричної проникності холодної розрідженої плазми в зовнішньому магнітному полі (див. попередню задачу&nbsp;<a href="waves.html#prb:plasma">8.17</a>),
+дослідити, за яких частот можливе проходження хвиль з різною коловою поляризацією в напрямку магнітного поля. Коли неможливе проходження хвиль з будь-якою поляризацією? <a href="answers.html#LWR-ht-solution:8.{18}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
 <!--
 ...... section Розсіювання та дифракція ......
 -->
-<h4 id="autosec-297"><span class="sectionnumber">&#xA7;&#x202F;8.4&#x2003;</span>Розсіювання та дифракція</h4>
-<a id="main-html-autopage-297"></a>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-401"></a>
+<h4 id="autosec-104"><span class="sectionnumber">&#xA7;&#x202F;8.4&#x2003;</span>Розсіювання та дифракція</h4>
+<a id="main-html-autopage-104"></a>
+<div class="cb-problem">
+<p>
+<a id="LWR-ht-problem:8.{19}"></a><span class="probnum">8.19.</span> <a id="prb:Zang_metall_Cyllinder"></a>Поляризоване монохроматичне світло, хвильовий вектор якого \(\vect {k}\) і амплітуда \(E_0\) нормально падає з вакууму на бічну поверхню
+нескінченного надпровідного циліндра радіуса \(a\). Знайдіть електричне поле у всьому просторі, диференціальний та повний перерізи розсіювання, якщо напрямок поляризації
+</p>
 <li>
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.19.</span></span> <a id="autoid-402" ></a ><a id="LWR-ht-problem:8.{19}"></a><a id="prb:Zang_metall_Cyllinder"></a>Поляризоване монохроматичне світло, хвильовий
-вектор якого \(\vect {k}\) і амплітуда \(E_0\) нормально падає з вакууму на бічну поверхню нескінченного надпровідного циліндра радіуса \(a\). Знайдіть електричне поле у всьому просторі, диференціальний та повний перерізи розсіювання, якщо напрямок поляризації
-</p>
-</li><li>
-<p>
-
 </p>
 </li><li>
 <p>
 а)&nbsp;паралельний до осі циліндра, б)&nbsp;якщо він перпендикулярний до цієї осі. <a href="answers.html#LWR-ht-solution:8.{19}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-403"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.20.</span></span> <a id="autoid-404" ></a ><a id="LWR-ht-problem:8.{20}"></a>Поляризоване монохроматичне світло, хвильовий вектор якого \(\vect {k}_0\) і амплітуда \(E_0\)
-нормально падає з вакууму на бічну поверхню нескінченно довгого діелектричного циліндра радіуса \(a\) з проникністю \(\epsilon \) (для даної частоти). Знайдіть електричне поле у всьому просторі, якщо напрямок поляризації світла паралельний до осі симетрії циліндра. <a
-href="answers.html#LWR-ht-solution:8.{20}">[відповідь]</a>
+<a id="LWR-ht-problem:8.{20}"></a><span class="probnum">8.20.</span> Поляризоване монохроматичне світло, хвильовий вектор якого \(\vect {k}_0\) і амплітуда \(E_0\) нормально падає з вакууму на бічну поверхню нескінченно довгого діелектричного циліндра
+радіуса \(a\) з проникністю \(\epsilon \) (для даної частоти). Знайдіть електричне поле у всьому просторі, якщо напрямок поляризації світла паралельний до осі симетрії циліндра. <a href="answers.html#LWR-ht-solution:8.{20}">[відповідь]</a>
 </p>
-
-</li>
-
-</ul>
-
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-405"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.21.</span></span> <a id="autoid-406" ></a ><a id="LWR-ht-problem:8.{21}"></a> Запишіть диференціальний і повний перерізи розсіювання природного монохроматичного світла
-довжиною \(\lambda \) на металевій сфері радіуса \(R \ll \lambda \). <a href="answers.html#LWR-ht-solution:8.{21}">[відповідь]</a>
+<a id="LWR-ht-problem:8.{21}"></a><span class="probnum">8.21.</span> Запишіть диференціальний і повний перерізи розсіювання природного монохроматичного світла довжиною \(\lambda \) на металевій сфері радіуса \(R \ll \lambda \). <a
+href="answers.html#LWR-ht-solution:8.{21}">[відповідь]</a>
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-407"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.22 (Дифракція Фраунгофера).</span></span> <a id="autoid-408" ></a ><a id="LWR-ht-problem:8.{22}"></a> Плоска хвиля, яка падає нормально на площину, проходить через невеликий
-прямокутний отвір сторонами \(a\) та \(b\), який вирізано в цій площині згідно умов \(|x|&lt; a\), \(|y|&lt;b\). Знайти розподіл інтенсивності на поверхні, що знаходиться на відстані \(l\) від площини. <a href="answers.html#LWR-ht-solution:8.{22}">[відповідь]</a>
+<a id="LWR-ht-problem:8.{22}"></a><span class="probnum">8.22.</span> (<em>Дифракція Фраунгофера</em>) Плоска хвиля, яка падає нормально на площину, проходить через невеликий прямокутний отвір сторонами \(a\) та \(b\), який вирізано в цій площині згідно умов
+\(|x|&lt; a\), \(|y|&lt;b\). Знайти розподіл інтенсивності на поверхні, що знаходиться на відстані \(l\) від площини. <a href="answers.html#LWR-ht-solution:8.{22}">[відповідь]</a>
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-409"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.23.</span></span> <a id="autoid-410" ></a ><a id="LWR-ht-problem:8.{23}"></a> Плоска хвиля, яка падає нормально на площину, проходить через невеликий круглий отвір радіусом
-\(R\), який вирізано в цій площині. Знайти розподіл інтенсивності на поверхні, що знаходиться на відстані \(l\) від площини. <a href="answers.html#LWR-ht-solution:8.{23}">[відповідь]</a>
+<a id="LWR-ht-problem:8.{23}"></a><span class="probnum">8.23.</span> Плоска хвиля, яка падає нормально на площину, проходить через невеликий круглий отвір радіусом \(R\), який вирізано в цій площині. Знайти розподіл інтенсивності на поверхні, що знаходиться на
+відстані \(l\) від площини. <a href="answers.html#LWR-ht-solution:8.{23}">[відповідь]</a>
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-411"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.24 (Дифракція Френеля).</span></span> <a id="autoid-412" ></a ><a id="LWR-ht-problem:8.{24}"></a> Оцінити наближений розподіл інтенсивності на площині екрану, розташованого
-при \(z = D\) при дифракції на напівплощині (\(z = 0\), нормальне падіння) далеко в області тіні.
+<a id="LWR-ht-problem:8.{24}"></a><span class="probnum">8.24.</span> (<em>Дифракція Френеля</em>) Оцінити наближений розподіл інтенсивності на площині екрану, розташованого при \(z = D\) при дифракції на напівплощині (\(z = 0\), нормальне падіння) далеко
+в області тіні.
 </p>
-
-</li>
-</ul>
 </div>
-<div class="theorembodyproblemX">
-
-<ul class="list" style="list-style-type:none">
-
-<a id="autoid-413"></a>
-<li>
+<div class="cb-problem">
 <p>
-<span class="listmarker"> <span class="theoremheaderplain"> 8.25 (Геометрична оптика).</span></span> <a id="autoid-414" ></a ><a id="LWR-ht-problem:8.{25}"></a> Знайти кут відхилення променя у середовищі із коефіцієнтом заломлення \(n =
-1 - \frac {a}{r}\). Промінь проходить в області, де \(\frac {a}{r} \ll 1\). Прицільна відстань відносно початку координат \(b\).
+<a id="LWR-ht-problem:8.{25}"></a><span class="probnum">8.25.</span> (<em>Геометрична оптика</em>) Знайти кут відхилення променя у середовищі із коефіцієнтом заломлення \(n = 1 - \frac {a}{r}\). Промінь проходить в області, де \(\frac {a}{r} \ll
+1\). Прицільна відстань відносно початку координат \(b\).
 </p>
-
-</li>
-
-</ul>
-
 </div>
+</li>
 </section>
 </main>
-
 <nav class="botnavigation"><a href="main-html.html" class="linkhome" >
 Головна</a></nav>
 </div><!-- grid -->
