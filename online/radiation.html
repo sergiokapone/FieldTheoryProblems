@@ -1,0 +1,1723 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<meta name="generator" content="LaTeX Lwarp package" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Класична електродинаміка. Збірник задач — Випромінювання та поширення електромагнітних хвиль</title>
+<link rel="stylesheet" type="text/css" href="assets/conspect.css" />
+
+<script>
+// Lwarp MathJax emulation code
+//
+// Based on code by Davide P. Cervone.
+// Equation numbering: https://github.com/mathjax/MathJax/issues/2427
+// Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+// \left, \right delimiters: https://github.com/mathjax/MathJax/issues/2535
+//
+// Modified by Brian Dunn to adjust equation numbering and add subequations.
+//
+// LaTeX can use \seteqnumber{subequations?}{section}{number} before each equation.
+// subequations? is 0 usually, 1 if inside subequations.
+// section is a string printed as-is, or empty.
+// number is auto-incremented by MathJax between equations.
+//
+MathJax = {
+
+   subequations: "0",
+   section: "",
+   loader: {
+
+       load: ['[tex]/tagformat', '[tex]/textmacros'],
+   },
+   startup: {
+
+       ready() {
+          // These would be replaced by import commands if you wanted to make
+          // a proper extension.
+          const Configuration = MathJax._.input.tex.Configuration.Configuration;
+          const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+          const Macro = MathJax._.input.tex.Symbol.Macro;
+          const TexError = MathJax._.input.tex.TexError.default;
+          const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+          const expandable = MathJax._.util.Options.expandable;
+
+// Insert the replacement string into the TeX string, and check
+// that there haven't been too many maxro substitutions (prevents
+// infinite loops).
+const useArgument = (parser, text) => {
+
+   parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+   parser.i = 0;
+   if (++parser.macroCount > parser.configuration.options.maxMacros) {
+
+       throw new TexError('MaxMacroSub1',
+       'MathJax maximum macro substitution count exceeded; ' +
+       'is there a recursive macro call?');
+   }
+}
+
+// Create the command map for:
+
+// \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+
+new CommandMap('Lwarp-macros', {
+
+ifstar: 'IfstarFunction',
+
+ifnextchar: 'IfnextcharFunction',
+
+ifblank: 'IfblankFunction',
+
+ifstrequal: 'IfstrequalFunction',
+
+gsubstitute: 'GsubstituteFunction',
+
+seteqnumber: 'SeteqnumberFunction'
+
+}, {
+
+// This function implements an ifstar macro.
+
+IfstarFunction(parser, name) {
+
+     const resultstar = parser.GetArgument(name);
+
+     const resultnostar = parser.GetArgument(name);
+
+     const star = parser.GetStar();                                  // true if there is a *
+
+     useArgument(parser, star ? resultstar : resultnostar);
+
+},
+
+// This function implements an ifnextchar macro.
+IfnextcharFunction(parser, name) {
+
+   let whichchar = parser.GetArgument(name);
+   if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+
+       // $ syntax highlighting
+       whichchar = String.fromCodePoint(parseInt(whichchar));
+   }
+   const resultnextchar = parser.GetArgument(name);
+   const resultnotnextchar = parser.GetArgument(name);
+   const gotchar = (parser.GetNext() === whichchar);
+   useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+},
+
+// This function implements an ifblank macro.
+IfblankFunction(parser, name) {
+
+   const blankarg = parser.GetArgument(name);
+   const resultblank = parser.GetArgument(name);
+   const resultnotblank = parser.GetArgument(name);
+   const isblank = (blankarg.trim() == "");
+   useArgument(parser, isblank ? resultblank : resultnotblank);
+},
+
+// This function implements an ifstrequal macro.
+IfstrequalFunction(parser, name) {
+
+   const strequalfirst = parser.GetArgument(name);
+   const strequalsecond = parser.GetArgument(name);
+   const resultequal = parser.GetArgument(name);
+   const resultnotequal = parser.GetArgument(name);
+   const isequal = (strequalfirst == strequalsecond);
+   useArgument(parser, isequal ? resultequal : resultnotequal);
+},
+
+// This function implements a gsub macro.                            gsubthird);
+GsubstituteFunction(parser, name) {
+
+   const gsubfirst = parser.GetArgument(name);
+   const gsubsecond = parser.GetArgument(name);
+   const gsubthird = parser.GetArgument(name);
+   let gsubresult=gsubfirst.replace(gsubsecond,
+   useArgument(parser, gsubresult);
+},
+
+// This function modifies the equation numbers.
+
+SeteqnumberFunction(parser, name) {
+
+      // Get the macro parameters
+
+      const star = parser.GetStar();                                 // true if there is a *
+
+      const optBrackets = parser.GetBrackets(name); // contents of optional brackets
+
+      const newsubequations = parser.GetArgument(name); // the subequations argument
+
+      const neweqsection = parser.GetArgument(name); // the eq section argument
+
+      const neweqnumber = parser.GetArgument(name); // the eq number argument
+
+      MathJax.config.subequations=newsubequations ; // a string with boolean meaning
+
+      MathJax.config.section=neweqsection ;                          // a string with numeric meaning
+
+      parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+
+}
+
+});
+
+// Create the Lwarp-macros package
+Configuration.create('Lwarp-macros', {
+
+   handler: {macro: ['Lwarp-macros']}
+});
+
+MathJax.startup.defaultReady();
+
+// For forward references:
+MathJax.startup.input[0].preFilters.add(({math}) => {
+
+   if (math.inputData.recompile){
+          MathJax.config.subequations = math.inputData.recompile.subequations;
+          MathJax.config.section = math.inputData.recompile.section;
+
+   }
+});
+MathJax.startup.input[0].postFilters.add(({math}) => {
+
+   if (math.inputData.recompile){
+          math.inputData.recompile.subequations = MathJax.config.subequations;
+          math.inputData.recompile.section = MathJax.config.section;
+
+   }
+});
+
+          // For \left, \right with unicode-math:
+          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+          const {Symbol} = MathJax._.input.tex.Symbol;
+          const {MapHandler} = MathJax._.input.tex.MapHandler;
+          const delimiter = MapHandler.getMap('delimiter');
+          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+   } // ready
+}, // startup
+
+   tex: {                                                            'textmacros']},
+       packages: {'[+]': ['tagformat', 'Lwarp-macros',
+       tags: "ams",                                                  n);
+              tagformat: {                                           String.fromCharCode(96+n));
+                     number: function (n) {
+                             if(MathJax.config.subequations==0)
+                                    return(MathJax.config.section +
+                             else
+                                    return(MathJax.config.section +
+                     },
+              },
+
+   }
+}
+</script>
+
+<script
+       id="MathJax-script"
+       src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+
+></script>
+
+</head>
+<body>
+
+<a id="main-html-autopage-127"></a>
+<div class="pagegrid">
+
+<nav class="topnavigation"><a href="main-html.html" class="linkhome" >
+Головна</a></nav>
+<div class="sidetoccontainer">
+
+<nav class="sidetoc">
+
+<div class="sidetoctitle">
+<p>
+<span class="sidetocthetitle">Класична електродинаміка. Збірник задач</span>
+</p>
+<p class="sidetoc-meta"><a href="../index.html">Про посібник</a><span aria-hidden="true">·</span><a href="../FTProblems.pdf">PDF</a></p>
+</div>
+
+<div class="sidetoccontents">
+<p>
+<a href="main-html.html" class="linkhome" >
+Головна</a>
+</p>
+<p>
+<a href="preface.html#autosec-6" class="tocchapter" >
+Передмова</a>
+</p>
+
+<p>
+<a href="vanaliz.html#autosec-9" class="tocchapter" >
+<span class="sectionnumber">0</span><span class="toctitle">&#x2003;Співвідношення векторного аналізу в декартових координатах </span></a>
+</p>
+
+<p>
+<a href="maxwellmicro.html#autosec-18" class="tocpart" >
+<span class="sectionnumber">I</span><span class="toctitle">&#x2003;Мікроскопічна теорія</span></a>
+</p>
+
+<p>
+<a href="maxwellmicro.html#autosec-19" class="tocchapter" >
+<span class="sectionnumber">1</span><span class="toctitle">&#x2003;Система мікроскопічних рівнянь Максвелла</span></a>
+</p>
+
+<p>
+<a href="maxwellmicro.html#autosec-20" class="tocsection" >
+<span class="sectionnumber">1.1</span><span class="toctitle">&#x2003;Рівняння Максвелла</span></a>
+</p>
+
+<p>
+<a href="maxwellmicro.html#autosec-21" class="tocsection" >
+<span class="sectionnumber">1.2</span><span class="toctitle">&#x2003;Закони збереження (диференціальна форма)</span></a>
+</p>
+
+<p>
+<a href="maxwellmicro.html#autosec-22" class="tocsection" >
+<span class="sectionnumber">1.3</span><span class="toctitle">&#x2003;Граничні умови для границі розділу двох середовищ</span></a>
+</p>
+
+<p>
+<a href="maxwellmicro.html#autosec-23" class="tocsection" >
+<span class="sectionnumber">1.4</span><span class="toctitle">&#x2003;Потенціали електромагнітного поля</span></a>
+</p>
+
+<p>
+<a href="emstatics.html#autosec-26" class="tocchapter" >
+<span class="sectionnumber">2</span><span class="toctitle">&#x2003;Електро- та магнітостатика у вакуумі</span></a>
+</p>
+
+<p>
+<a href="emstatics.html#autosec-27" class="tocsection" >
+<span class="sectionnumber">2.1</span><span class="toctitle">&#x2003;Прості задачі на рівняння Максвелла</span></a>
+</p>
+
+<p>
+<a href="emstatics.html#autosec-68" class="tocsection" >
+<span class="sectionnumber">2.2</span><span class="toctitle">&#x2003;Рівняння Пуассона та Лапласа. Граничні задачі електростатики</span></a>
+</p>
+
+<p>
+<a href="emstatics.html#autosec-69" class="tocsection" >
+<span class="sectionnumber">2.3</span><span class="toctitle">&#x2003;Метод електричних зображень</span></a>
+</p>
+
+<p>
+<a href="emstatics.html#autosec-74" class="tocsection" >
+<span class="sectionnumber">2.4</span><span class="toctitle">&#x2003;Пошук розв’язків методом розкладання за системою ортогональних функцій</span></a>
+</p>
+
+<p>
+<a href="emstatics.html#autosec-98" class="tocsection" >
+<span class="sectionnumber">2.5</span><span class="toctitle">&#x2003;Розкладання потенціалів за мультиполями</span></a>
+</p>
+
+<p>
+<a href="radiation.html#autosec-129" class="tocchapter" >
+<span class="sectionnumber">3</span><span class="toctitle">&#x2003;Випромінювання та поширення електромагнітних хвиль</span></a>
+</p>
+
+<p>
+<a href="radiation.html#autosec-133" class="tocsection" >
+<span class="sectionnumber">3.1</span><span class="toctitle">&#x2003;Співвідношення невизначеностей</span></a>
+</p>
+
+<p>
+<a href="radiation.html#autosec-136" class="tocsection" >
+<span class="sectionnumber">3.2</span><span class="toctitle">&#x2003;Монохроматичні хвилі. Інтерференція та поляризація хвиль</span></a>
+</p>
+
+<p>
+<a href="radiation.html#autosec-147" class="tocsection" >
+<span class="sectionnumber">3.3</span><span class="toctitle">&#x2003;Випромінювання та розсіювання електромагнітних хвиль</span></a>
+</p>
+
+<p>
+<a href="relativity.html#autosec-170" class="tocchapter" >
+<span class="sectionnumber">4</span><span class="toctitle">&#x2003;Спеціальна теорія відносності</span></a>
+</p>
+
+<p>
+<a href="relativity.html#autosec-171" class="tocsection" >
+<span class="sectionnumber">4.1</span><span class="toctitle">&#x2003;Перетворення Лоренца та закони збереження</span></a>
+</p>
+
+<p>
+<a href="relativity.html#autosec-182" class="tocsection" >
+<span class="sectionnumber">4.2</span><span class="toctitle">&#x2003;Електродинаміка в релятивістських позначеннях</span></a>
+</p>
+
+<p>
+<a href="relativity.html#autosec-188" class="tocsection" >
+<span class="sectionnumber">4.3</span><span class="toctitle">&#x2003;Рух заряджених частинок в електромагнітному полі</span></a>
+</p>
+
+<p>
+<a href="relativity.html#autosec-198" class="tocsection" >
+<span class="sectionnumber">4.4</span><span class="toctitle">&#x2003;Випромінювання релятивістських заряджених частинок</span></a>
+</p>
+
+<p>
+<a href="maxwellmacro.html#autosec-202" class="tocpart" >
+<span class="sectionnumber">II</span><span class="toctitle">&#x2003;Електродинаміка суцільних середовищ</span></a>
+</p>
+
+<p>
+<a href="maxwellmacro.html#autosec-203" class="tocchapter" >
+<span class="sectionnumber">5</span><span class="toctitle">&#x2003;Система макроскопічних рівнянь Максвелла</span></a>
+</p>
+
+<p>
+<a href="maxwellmacro.html#autosec-204" class="tocsection" >
+<span class="sectionnumber">5.1</span><span class="toctitle">&#x2003;Макроскопічні рівняння Максвелла</span></a>
+</p>
+
+<p>
+<a href="maxwellmacro.html#autosec-205" class="tocsection" >
+<span class="sectionnumber">5.2</span><span class="toctitle">&#x2003;Співвідношення для лінійних ізотропних середовищ</span></a>
+</p>
+
+<p>
+<a href="maxwellmacro.html#autosec-206" class="tocsection" >
+<span class="sectionnumber">5.3</span><span class="toctitle">&#x2003;Умови на границі розділу двох середовищ</span></a>
+</p>
+
+<p>
+<a href="emmedia.html#autosec-209" class="tocchapter" >
+<span class="sectionnumber">6</span><span class="toctitle">&#x2003;Діелектрики та магнетики в статичних полях</span></a>
+</p>
+
+<p>
+<a href="quasistationary.html#autosec-247" class="tocchapter" >
+<span class="sectionnumber">7</span><span class="toctitle">&#x2003;Квазістаціонарні поля і струми</span></a>
+</p>
+
+<p>
+<a href="quasistationary.html#autosec-248" class="tocsection" >
+<span class="sectionnumber">7.1</span><span class="toctitle">&#x2003;Розтікання зарядів в провідниках. Струми Фуко</span></a>
+</p>
+
+<p>
+<a href="quasistationary.html#autosec-263" class="tocsection" >
+<span class="sectionnumber">7.2</span><span class="toctitle">&#x2003;Магнітні поля в надпровідниках</span></a>
+</p>
+
+<p>
+<a href="waves.html#autosec-275" class="tocchapter" >
+<span class="sectionnumber">8</span><span class="toctitle">&#x2003;Електромагнітні хвилі в середовищі</span></a>
+</p>
+
+<p>
+<a href="waves.html#autosec-276" class="tocsection" >
+<span class="sectionnumber">8.1</span><span class="toctitle">&#x2003;Поширення електромагнітних хвиль в середовищі</span></a>
+</p>
+
+<p>
+<a href="waves.html#autosec-287" class="tocsection" >
+<span class="sectionnumber">8.2</span><span class="toctitle">&#x2003;Відбивання та заломлення електромагнітних хвиль на межі двох середовищ</span></a>
+</p>
+
+<p>
+<a href="waves.html#autosec-293" class="tocsection" >
+<span class="sectionnumber">8.3</span><span class="toctitle">&#x2003;Електромагнітні хвилі в плазмі</span></a>
+</p>
+
+<p>
+<a href="waves.html#autosec-297" class="tocsection" >
+<span class="sectionnumber">8.4</span><span class="toctitle">&#x2003;Розсіювання та дифракція</span></a>
+</p>
+
+<p>
+<a href="answers.html#autosec-307" class="tocchapter" >
+Відповіді</a>
+</p>
+
+<p>
+<a href="appendices.html#autosec-325" class="tocchapter" >
+Додатки</a>
+</p>
+
+<p>
+<a href="appendices.html#autosec-326" class="tocsection" >
+<span class="sectionnumber">А</span><span class="toctitle">&#x2003;Основні формули векторного аналізу</span></a>
+</p>
+
+<p>
+<a href="appendices.html#autosec-335" class="tocsection" >
+<span class="sectionnumber">Б</span><span class="toctitle">&#x2003;Поліноми Лежандра</span></a>
+</p>
+
+<p>
+<a href="appendices.html#autosec-336" class="tocsection" >
+<span class="sectionnumber">В</span><span class="toctitle">&#x2003;Сферичні гармоніки</span></a>
+</p>
+
+<p>
+<a href="appendices.html#autosec-337" class="tocsection" >
+<span class="sectionnumber">Г</span><span class="toctitle">&#x2003;Циліндричні функції</span></a>
+</p>
+
+<p>
+<a href="appendices.html#autosec-344" class="tocsection" >
+<span class="sectionnumber">Д</span><span class="toctitle">&#x2003;Дельта-функція Дірака</span></a>
+</p>
+
+<p>
+<a href="appendices.html#autosec-345" class="tocsection" >
+<span class="sectionnumber">Е</span><span class="toctitle">&#x2003;Фізичні константи</span></a>
+</p>
+
+<p>
+<a href="bibliography.html#autosec-351" class="tocchapter" >
+Література</a>
+</p>
+
+</div>
+</nav>
+</div>
+
+<main class="bodycontainer" data-pagefind-body data-pagefind-meta="title[data-title]" data-title="Випромінювання та поширення електромагнітних хвиль">
+
+<section class="textbody">
+<h1 data-pagefind-ignore>Класична електродинаміка. Збірник задач</h1>
+<!--MathJax customizations:-->
+<div data-nosnippet
+
+      style="display:none"
+>
+\(\newcommand{\footnotename}{footnote}\)
+\(\def \LWRfootnote {1}\)
+\(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+\(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+\(\let \LWRorighspace \hspace \)
+\(\renewcommand {\hspace }{\ifstar \LWRorighspace \LWRorighspace }\)
+\(\newcommand {\TextOrMath }[2]{#2}\)
+\(\newcommand {\mathnormal }[1]{{#1}}\)
+\(\newcommand \ensuremath [1]{#1}\)
+\(\newcommand {\LWRframebox }[2][]{\fbox {#2}} \newcommand {\framebox }[1][]{\LWRframebox } \)
+\(\newcommand {\setlength }[2]{}\)
+\(\newcommand {\addtolength }[2]{}\)
+\(\newcommand {\setcounter }[2]{}\)
+\(\newcommand {\addtocounter }[2]{}\)
+\(\newcommand {\arabic }[1]{}\)
+\(\newcommand {\number }[1]{}\)
+\(\newcommand {\noalign }[1]{\text {#1}\notag \\}\)
+\(\newcommand {\cline }[1]{}\)
+\(\newcommand {\directlua }[1]{\text {(directlua)}}\)
+\(\newcommand {\luatexdirectlua }[1]{\text {(directlua)}}\)
+\(\newcommand {\protect }{}\)
+\(\def \LWRabsorbnumber #1 {}\)
+\(\def \LWRabsorbquotenumber &quot;#1 {}\)
+\(\newcommand {\LWRabsorboption }[1][]{}\)
+\(\newcommand {\LWRabsorbtwooptions }[1][]{\LWRabsorboption }\)
+\(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
+\(\def \mathcode #1={\mathchar }\)
+\(\let \delcode \mathcode \)
+\(\let \delimiter \mathchar \)
+\(\def \oe {\unicode {x0153}}\)
+\(\def \OE {\unicode {x0152}}\)
+\(\def \ae {\unicode {x00E6}}\)
+\(\def \AE {\unicode {x00C6}}\)
+\(\def \aa {\unicode {x00E5}}\)
+\(\def \AA {\unicode {x00C5}}\)
+\(\def \o {\unicode {x00F8}}\)
+\(\def \O {\unicode {x00D8}}\)
+\(\def \l {\unicode {x0142}}\)
+\(\def \L {\unicode {x0141}}\)
+\(\def \ss {\unicode {x00DF}}\)
+\(\def \SS {\unicode {x1E9E}}\)
+\(\def \dag {\unicode {x2020}}\)
+\(\def \ddag {\unicode {x2021}}\)
+\(\def \P {\unicode {x00B6}}\)
+\(\def \copyright {\unicode {x00A9}}\)
+\(\def \pounds {\unicode {x00A3}}\)
+\(\let \LWRref \ref \)
+\(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
+\( \newcommand {\multicolumn }[3]{#3}\)
+\(\require {textcomp}\)
+\(\require {colortbl}\)
+\(\let \LWRorigcolumncolor \columncolor \)
+\(\renewcommand {\columncolor }[2][named]{\LWRorigcolumncolor [#1]{#2}\LWRabsorbtwooptions }\)
+\(\let \LWRorigrowcolor \rowcolor \)
+\(\renewcommand {\rowcolor }[2][named]{\LWRorigrowcolor [#1]{#2}\LWRabsorbtwooptions }\)
+\(\let \LWRorigcellcolor \cellcolor \)
+\(\renewcommand {\cellcolor }[2][named]{\LWRorigcellcolor [#1]{#2}\LWRabsorbtwooptions }\)
+\(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+\(\let \Hat \hat \)
+\(\let \Check \check \)
+\(\let \Tilde \tilde \)
+\(\let \Acute \acute \)
+\(\let \Grave \grave \)
+\(\let \Dot \dot \)
+\(\let \Ddot \ddot \)
+\(\let \Breve \breve \)
+\(\let \Bar \bar \)
+\(\let \Vec \vec \)
+\(\let \symnormal \mathit \)
+\(\let \symliteral \mathrm \)
+\(\let \symbb \mathbb \)
+\(\let \symbbit \mathbb \)
+\(\let \symcal \mathcal \)
+\(\let \symscr \mathscr \)
+\(\let \symfrak \mathfrak \)
+\(\let \symsfup \mathsf \)
+\(\let \symsfit \mathit \)
+\(\let \symbfsf \mathbf \)
+\(\let \symbfup \mathbf \)
+\(\newcommand {\symbfit }[1]{\boldsymbol {#1}}\)
+\(\let \symbfcal \mathcal \)
+\(\let \symbfscr \mathscr \)
+\(\let \symbffrak \mathfrak \)
+\(\let \symbfsfup \mathbf \)
+\(\newcommand {\symbfsfit }[1]{\boldsymbol {#1}}\)
+\(\let \symup \mathrm \)
+\(\let \symbf \mathbf \)
+\(\let \symit \mathit \)
+\(\let \symtt \mathtt \)
+\(\let \symbffrac \mathbffrac \)
+\(\newcommand {\mathfence }[1]{\mathord {#1}}\)
+\(\newcommand {\mathover }[1]{#1}\)
+\(\newcommand {\mathunder }[1]{#1}\)
+\(\newcommand {\mathaccent }[1]{#1}\)
+\(\newcommand {\mathbotaccent }[1]{#1}\)
+\(\newcommand {\mathalpha }[1]{\mathord {#1}}\)
+\(\def\upAlpha{\unicode{x0391}}\)
+\(\def\upBeta{\unicode{x0392}}\)
+\(\def\upGamma{\unicode{x0393}}\)
+\(\def\upDigamma{\unicode{x03DC}}\)
+\(\def\upDelta{\unicode{x0394}}\)
+\(\def\upEpsilon{\unicode{x0395}}\)
+\(\def\upZeta{\unicode{x0396}}\)
+\(\def\upEta{\unicode{x0397}}\)
+\(\def\upTheta{\unicode{x0398}}\)
+\(\def\upVartheta{\unicode{x03F4}}\)
+\(\def\upIota{\unicode{x0399}}\)
+\(\def\upKappa{\unicode{x039A}}\)
+\(\def\upLambda{\unicode{x039B}}\)
+\(\def\upMu{\unicode{x039C}}\)
+\(\def\upNu{\unicode{x039D}}\)
+\(\def\upXi{\unicode{x039E}}\)
+\(\def\upOmicron{\unicode{x039F}}\)
+\(\def\upPi{\unicode{x03A0}}\)
+\(\def\upVarpi{\unicode{x03D6}}\)
+\(\def\upRho{\unicode{x03A1}}\)
+\(\def\upSigma{\unicode{x03A3}}\)
+\(\def\upTau{\unicode{x03A4}}\)
+\(\def\upUpsilon{\unicode{x03A5}}\)
+\(\def\upPhi{\unicode{x03A6}}\)
+\(\def\upChi{\unicode{x03A7}}\)
+\(\def\upPsi{\unicode{x03A8}}\)
+\(\def\upOmega{\unicode{x03A9}}\)
+\(\def\itAlpha{\unicode{x1D6E2}}\)
+\(\def\itBeta{\unicode{x1D6E3}}\)
+\(\def\itGamma{\unicode{x1D6E4}}\)
+\(\def\itDigamma{\mathit{\unicode{x03DC}}}\)
+\(\def\itDelta{\unicode{x1D6E5}}\)
+\(\def\itEpsilon{\unicode{x1D6E6}}\)
+\(\def\itZeta{\unicode{x1D6E7}}\)
+\(\def\itEta{\unicode{x1D6E8}}\)
+\(\def\itTheta{\unicode{x1D6E9}}\)
+\(\def\itVartheta{\unicode{x1D6F3}}\)
+\(\def\itIota{\unicode{x1D6EA}}\)
+\(\def\itKappa{\unicode{x1D6EB}}\)
+\(\def\itLambda{\unicode{x1D6EC}}\)
+\(\def\itMu{\unicode{x1D6ED}}\)
+\(\def\itNu{\unicode{x1D6EE}}\)
+\(\def\itXi{\unicode{x1D6EF}}\)
+\(\def\itOmicron{\unicode{x1D6F0}}\)
+\(\def\itPi{\unicode{x1D6F1}}\)
+\(\def\itRho{\unicode{x1D6F2}}\)
+\(\def\itSigma{\unicode{x1D6F4}}\)
+\(\def\itTau{\unicode{x1D6F5}}\)
+\(\def\itUpsilon{\unicode{x1D6F6}}\)
+\(\def\itPhi{\unicode{x1D6F7}}\)
+\(\def\itChi{\unicode{x1D6F8}}\)
+\(\def\itPsi{\unicode{x1D6F9}}\)
+\(\def\itOmega{\unicode{x1D6FA}}\)
+\(\def\upalpha{\unicode{x03B1}}\)
+\(\def\upbeta{\unicode{x03B2}}\)
+\(\def\upvarbeta{\unicode{x03D0}}\)
+\(\def\upgamma{\unicode{x03B3}}\)
+\(\def\updigamma{\unicode{x03DD}}\)
+\(\def\updelta{\unicode{x03B4}}\)
+\(\def\upepsilon{\unicode{x03F5}}\)
+\(\def\upvarepsilon{\unicode{x03B5}}\)
+\(\def\upzeta{\unicode{x03B6}}\)
+\(\def\upeta{\unicode{x03B7}}\)
+\(\def\uptheta{\unicode{x03B8}}\)
+\(\def\upvartheta{\unicode{x03D1}}\)
+\(\def\upiota{\unicode{x03B9}}\)
+\(\def\upkappa{\unicode{x03BA}}\)
+\(\def\upvarkappa{\unicode{x03F0}}\)
+\(\def\uplambda{\unicode{x03BB}}\)
+\(\def\upmu{\unicode{x03BC}}\)
+\(\def\upnu{\unicode{x03BD}}\)
+\(\def\upxi{\unicode{x03BE}}\)
+\(\def\upomicron{\unicode{x03BF}}\)
+\(\def\uppi{\unicode{x03C0}}\)
+\(\def\upvarpi{\unicode{x03D6}}\)
+\(\def\uprho{\unicode{x03C1}}\)
+\(\def\upvarrho{\unicode{x03F1}}\)
+\(\def\upsigma{\unicode{x03C3}}\)
+\(\def\upvarsigma{\unicode{x03C2}}\)
+\(\def\uptau{\unicode{x03C4}}\)
+\(\def\upupsilon{\unicode{x03C5}}\)
+\(\def\upphi{\unicode{x03D5}}\)
+\(\def\upvarphi{\unicode{x03C6}}\)
+\(\def\upchi{\unicode{x03C7}}\)
+\(\def\uppsi{\unicode{x03C8}}\)
+\(\def\upomega{\unicode{x03C9}}\)
+\(\def\italpha{\unicode{x1D6FC}}\)
+\(\def\itbeta{\unicode{x1D6FD}}\)
+\(\def\itvarbeta{\unicode{x03D0}}\)
+\(\def\itgamma{\unicode{x1D6FE}}\)
+\(\def\itdigamma{\mathit{\unicode{x03DD}}}\)
+\(\def\itdelta{\unicode{x1D6FF}}\)
+\(\def\itepsilon{\unicode{x1D716}}\)
+\(\def\itvarepsilon{\unicode{x1D700}}\)
+\(\def\itzeta{\unicode{x1D701}}\)
+\(\def\iteta{\unicode{x1D702}}\)
+\(\def\ittheta{\unicode{x1D703}}\)
+\(\def\itvartheta{\unicode{x1D717}}\)
+\(\def\itiota{\unicode{x1D704}}\)
+\(\def\itkappa{\unicode{x1D705}}\)
+\(\def\itvarkappa{\unicode{x1D718}}\)
+\(\def\itlambda{\unicode{x1D706}}\)
+\(\def\itmu{\unicode{x1D707}}\)
+\(\def\itnu{\unicode{x1D708}}\)
+\(\def\itxi{\unicode{x1D709}}\)
+\(\def\itomicron{\unicode{x1D70A}}\)
+\(\def\itpi{\unicode{x1D70B}}\)
+\(\def\itvarpi{\unicode{x1D71B}}\)
+\(\def\itrho{\unicode{x1D70C}}\)
+\(\def\itvarrho{\unicode{x1D71A}}\)
+\(\def\itsigma{\unicode{x1D70E}}\)
+\(\def\itvarsigma{\unicode{x1D70D}}\)
+\(\def\ittau{\unicode{x1D70F}}\)
+\(\def\itupsilon{\unicode{x1D710}}\)
+\(\def\itphi{\unicode{x1D719}}\)
+\(\def\itvarphi{\unicode{x1D711}}\)
+\(\def\itchi{\unicode{x1D712}}\)
+\(\def\itpsi{\unicode{x1D713}}\)
+\(\def\itomega{\unicode{x1D714}}\)
+\(\let \lparen (\)
+\(\let \rparen )\)
+\(\newcommand {\cuberoot }[1]{\,{}^3\!\!\sqrt {#1}}\,\)
+\(\newcommand {\fourthroot }[1]{\,{}^4\!\!\sqrt {#1}}\,\)
+\(\newcommand {\longdivision }[1]{\mathord {\unicode {x027CC}#1}}\)
+\(\newcommand {\mathcomma }{,}\)
+\(\newcommand {\mathcolon }{:}\)
+\(\newcommand {\mathsemicolon }{;}\)
+\(\newcommand {\overbracket }[1]{\mathinner {\overline {\ulcorner {#1}\urcorner }}}\)
+\(\newcommand {\underbracket }[1]{\mathinner {\underline {\llcorner {#1}\lrcorner }}}\)
+\(\newcommand {\overbar }[1]{\mathord {#1\unicode {x00305}}}\)
+\(\newcommand {\ovhook }[1]{\mathord {#1\unicode {x00309}}}\)
+\(\newcommand {\ocirc }[1]{\mathord {#1\unicode {x0030A}}}\)
+\(\newcommand {\candra }[1]{\mathord {#1\unicode {x00310}}}\)
+\(\newcommand {\oturnedcomma }[1]{\mathord {#1\unicode {x00312}}}\)
+\(\newcommand {\ocommatopright }[1]{\mathord {#1\unicode {x00315}}}\)
+\(\newcommand {\droang }[1]{\mathord {#1\unicode {x0031A}}}\)
+\(\newcommand {\leftharpoonaccent }[1]{\mathord {#1\unicode {x020D0}}}\)
+\(\newcommand {\rightharpoonaccent }[1]{\mathord {#1\unicode {x020D1}}}\)
+\(\newcommand {\vertoverlay }[1]{\mathord {#1\unicode {x020D2}}}\)
+\(\newcommand {\leftarrowaccent }[1]{\mathord {#1\unicode {x020D0}}}\)
+\(\newcommand {\annuity }[1]{\mathord {#1\unicode {x020E7}}}\)
+\(\newcommand {\widebridgeabove }[1]{\mathord {#1\unicode {x020E9}}}\)
+\(\newcommand {\asteraccent }[1]{\mathord {#1\unicode {x020F0}}}\)
+\(\newcommand {\threeunderdot }[1]{\mathord {#1\unicode {x020E8}}}\)
+\(\newcommand {\Bbbsum }{\mathop {\unicode {x2140}}\limits }\)
+\(\newcommand {\oiint }{\mathop {\unicode {x222F}}\limits }\)
+\(\newcommand {\oiiint }{\mathop {\unicode {x2230}}\limits }\)
+\(\newcommand {\intclockwise }{\mathop {\unicode {x2231}}\limits }\)
+\(\newcommand {\ointclockwise }{\mathop {\unicode {x2232}}\limits }\)
+\(\newcommand {\ointctrclockwise }{\mathop {\unicode {x2233}}\limits }\)
+\(\newcommand {\varointclockwise }{\mathop {\unicode {x2232}}\limits }\)
+\(\newcommand {\leftouterjoin }{\mathop {\unicode {x27D5}}\limits }\)
+\(\newcommand {\rightouterjoin }{\mathop {\unicode {x27D6}}\limits }\)
+\(\newcommand {\fullouterjoin }{\mathop {\unicode {x27D7}}\limits }\)
+\(\newcommand {\bigbot }{\mathop {\unicode {x27D8}}\limits }\)
+\(\newcommand {\bigtop }{\mathop {\unicode {x27D9}}\limits }\)
+\(\newcommand {\xsol }{\mathop {\unicode {x29F8}}\limits }\)
+\(\newcommand {\xbsol }{\mathop {\unicode {x29F9}}\limits }\)
+\(\newcommand {\bigcupdot }{\mathop {\unicode {x2A03}}\limits }\)
+\(\newcommand {\bigsqcap }{\mathop {\unicode {x2A05}}\limits }\)
+\(\newcommand {\conjquant }{\mathop {\unicode {x2A07}}\limits }\)
+\(\newcommand {\disjquant }{\mathop {\unicode {x2A08}}\limits }\)
+\(\newcommand {\bigtimes }{\mathop {\unicode {x2A09}}\limits }\)
+\(\newcommand {\modtwosum }{\mathop {\unicode {x2A0A}}\limits }\)
+\(\newcommand {\sumint }{\mathop {\unicode {x2A0B}}\limits }\)
+\(\newcommand {\intbar }{\mathop {\unicode {x2A0D}}\limits }\)
+\(\newcommand {\intBar }{\mathop {\unicode {x2A0E}}\limits }\)
+\(\newcommand {\fint }{\mathop {\unicode {x2A0F}}\limits }\)
+\(\newcommand {\cirfnint }{\mathop {\unicode {x2A10}}\limits }\)
+\(\newcommand {\awint }{\mathop {\unicode {x2A11}}\limits }\)
+\(\newcommand {\rppolint }{\mathop {\unicode {x2A12}}\limits }\)
+\(\newcommand {\scpolint }{\mathop {\unicode {x2A13}}\limits }\)
+\(\newcommand {\npolint }{\mathop {\unicode {x2A14}}\limits }\)
+\(\newcommand {\pointint }{\mathop {\unicode {x2A15}}\limits }\)
+\(\newcommand {\sqint }{\mathop {\unicode {x2A16}}\limits }\)
+\(\newcommand {\intlarhk }{\mathop {\unicode {x2A17}}\limits }\)
+\(\newcommand {\intx }{\mathop {\unicode {x2A18}}\limits }\)
+\(\newcommand {\intcap }{\mathop {\unicode {x2A19}}\limits }\)
+\(\newcommand {\intcup }{\mathop {\unicode {x2A1A}}\limits }\)
+\(\newcommand {\upint }{\mathop {\unicode {x2A1B}}\limits }\)
+\(\newcommand {\lowint }{\mathop {\unicode {x2A1C}}\limits }\)
+\(\newcommand {\bigtriangleleft }{\mathop {\unicode {x2A1E}}\limits }\)
+\(\newcommand {\zcmp }{\mathop {\unicode {x2A1F}}\limits }\)
+\(\newcommand {\zpipe }{\mathop {\unicode {x2A20}}\limits }\)
+\(\newcommand {\zproject }{\mathop {\unicode {x2A21}}\limits }\)
+\(\newcommand {\biginterleave }{\mathop {\unicode {x2AFC}}\limits }\)
+\(\newcommand {\bigtalloblong }{\mathop {\unicode {x2AFF}}\limits }\)
+\(\newcommand {\arabicmaj }{\mathop {\unicode {x1EEF0}}\limits }\)
+\(\newcommand {\arabichad }{\mathop {\unicode {x1EEF1}}\limits }\)
+\(\newcommand {\nicefrac }[3][]{\mathinner {{}^{#2}\!/\!_{#3}}}\)
+\(\require {mhchem}\)
+\(\newcommand {\toprule }[1][]{\hline }\)
+\(\let \midrule \toprule \)
+\(\let \bottomrule \toprule \)
+\(\def \LWRbooktabscmidruleparen (#1)#2{}\)
+\(\newcommand {\LWRbooktabscmidrulenoparen }[1]{}\)
+\(\newcommand {\cmidrule }[1][]{\ifnextchar (\LWRbooktabscmidruleparen \LWRbooktabscmidrulenoparen }\)
+\(\newcommand {\morecmidrules }{}\)
+\(\newcommand {\specialrule }[3]{\hline }\)
+\(\newcommand {\addlinespace }[1][]{}\)
+\(\newcommand {\LWRsubmultirow }[2][]{#2}\)
+\(\newcommand {\LWRmultirow }[2][]{\LWRsubmultirow }\)
+\(\newcommand {\multirow }[2][]{\LWRmultirow }\)
+\(\newcommand {\mrowcell }{}\)
+\(\newcommand {\mcolrowcell }{}\)
+\(\newcommand {\STneed }[1]{}\)
+\(\newcommand {\vect }[1]{\boldsymbol {#1}}\)
+\(\newcommand {\EMF }{\mathcal {E}}\)
+\(\newcommand {\Efield }{\vect {E}}\)
+\(\newcommand {\Dfield }{\vect {D}}\)
+\(\newcommand {\Bfield }{\vect {B}}\)
+\(\newcommand {\Hfield }{\vect {H}}\)
+\(\newcommand {\rot }{\mathbf {\nabla }\times }\)
+\(\newcommand {\divg }{\mathbf {\nabla }\cdot }\)
+\(\DeclareMathOperator {\const }{const}\)
+\(\DeclareMathOperator {\inv }{inv}\)
+\(\newcommand {\Laplasian }{\Delta }\)
+\(\DeclareMathOperator {\Div }{div}\)
+\(\DeclareMathOperator {\Rot }{rot}\)
+\(\DeclareMathOperator {\Grad }{grad}\)
+\(\newcommand {\pot }{\mathit {ϕ}}\)
+\(\renewcommand {\epsilon }{\varepsilon }\)
+\(\renewcommand {\phi }{\varphi }\)
+\(\newcommand {\nfrac }[2]{{}^{#1}\!/{}_{#2}}\)
+\(\newcommand {\emf }{ℰ}\)
+\(\newcommand {\tikzmarknode }[2]{#2}\)
+\(\newcommand {\tikzmark }[1]{}\)
+\(\newcommand {\enquote }[1]{«#1»}\)
+\(\newcommand {\allowbreak }{}\)
+\(\newcommand {\mitlambda }{\lambda }\)
+\(\newcommand {\mitomega }{\omega }\)
+\(\newcommand {\mittheta }{\theta }\)
+\(\newcommand {\mitphi }{\varphi }\)
+\(\newcommand {\tcbhighmath }[1]{\boxed {#1}}\)
+\(\DeclareMathOperator {\sh }{sh}\)
+\(\DeclareMathOperator {\ch }{ch}\)
+\(\DeclareMathOperator {\tg }{tg}\)
+\(\DeclareMathOperator {\ctg }{ctg}\)
+\(\DeclareMathOperator {\arctg }{arctg}\)
+\(\DeclareMathOperator {\arcctg }{arcctg}\)
+\(\DeclareMathOperator {\cth }{cth}\)
+\(\DeclareMathOperator {\cosec }{cosec}\)
+\(\let \symsf \symsfup \)
+\(\def\Alpha{\unicode{x0391}}\)
+\(\def\Beta{\unicode{x0392}}\)
+\(\def\Gamma{\unicode{x0393}}\)
+\(\def\Digamma{\unicode{x03DC}}\)
+\(\def\Delta{\unicode{x0394}}\)
+\(\def\Epsilon{\unicode{x0395}}\)
+\(\def\Zeta{\unicode{x0396}}\)
+\(\def\Eta{\unicode{x0397}}\)
+\(\def\Theta{\unicode{x0398}}\)
+\(\def\Vartheta{\unicode{x03F4}}\)
+\(\def\Iota{\unicode{x0399}}\)
+\(\def\Kappa{\unicode{x039A}}\)
+\(\def\Lambda{\unicode{x039B}}\)
+\(\def\Mu{\unicode{x039C}}\)
+\(\def\Nu{\unicode{x039D}}\)
+\(\def\Xi{\unicode{x039E}}\)
+\(\def\Omicron{\unicode{x039F}}\)
+\(\def\Pi{\unicode{x03A0}}\)
+\(\def\Varpi{\unicode{x03D6}}\)
+\(\def\Rho{\unicode{x03A1}}\)
+\(\def\Sigma{\unicode{x03A3}}\)
+\(\def\Tau{\unicode{x03A4}}\)
+\(\def\Upsilon{\unicode{x03A5}}\)
+\(\def\Phi{\unicode{x03A6}}\)
+\(\def\Chi{\unicode{x03A7}}\)
+\(\def\Psi{\unicode{x03A8}}\)
+\(\def\Omega{\unicode{x03A9}}\)
+\(\def\alpha{\unicode{x1D6FC}}\)
+\(\def\beta{\unicode{x1D6FD}}\)
+\(\def\varbeta{\unicode{x03D0}}\)
+\(\def\gamma{\unicode{x1D6FE}}\)
+\(\def\digamma{\mathit{\unicode{x03DD}}}\)
+\(\def\delta{\unicode{x1D6FF}}\)
+\(\def\epsilon{\unicode{x1D716}}\)
+\(\def\varepsilon{\unicode{x1D700}}\)
+\(\def\zeta{\unicode{x1D701}}\)
+\(\def\eta{\unicode{x1D702}}\)
+\(\def\theta{\unicode{x1D703}}\)
+\(\def\vartheta{\unicode{x1D717}}\)
+\(\def\iota{\unicode{x1D704}}\)
+\(\def\kappa{\unicode{x1D705}}\)
+\(\def\varkappa{\unicode{x1D718}}\)
+\(\def\lambda{\unicode{x1D706}}\)
+\(\def\mu{\unicode{x1D707}}\)
+\(\def\nu{\unicode{x1D708}}\)
+\(\def\xi{\unicode{x1D709}}\)
+\(\def\omicron{\unicode{x1D70A}}\)
+\(\def\pi{\unicode{x1D70B}}\)
+\(\def\varpi{\unicode{x1D71B}}\)
+\(\def\rho{\unicode{x1D70C}}\)
+\(\def\varrho{\unicode{x1D71A}}\)
+\(\def\sigma{\unicode{x1D70E}}\)
+\(\def\varsigma{\unicode{x1D70D}}\)
+\(\def\tau{\unicode{x1D70F}}\)
+\(\def\upsilon{\unicode{x1D710}}\)
+\(\def\phi{\unicode{x1D719}}\)
+\(\def\varphi{\unicode{x1D711}}\)
+\(\def\chi{\unicode{x1D712}}\)
+\(\def\psi{\unicode{x1D713}}\)
+\(\def\omega{\unicode{x1D714}}\)
+</div>
+<!--
+...... chapter Випромінювання та поширення електромагнітних хвиль ......
+-->
+<h3 id="autosec-129"><span class="sectionnumber">3&#x2003;</span>Випромінювання та поширення електромагнітних хвиль</h3>
+<a id="main-html-autopage-129"></a>
+<a id="main-html-autofile-5"></a>
+<a id="Radiation-dup4"></a>
+
+<div class="cb-theory">
+
+<p>
+<b>Теоретичні відомості</b>
+</p>
+
+<p>
+Потенціали полів, які створюються точковим зарядом \(q\), що рухається по заданій траєкторії \(\vect {r}_q = \vect {r}_q(t_q)\) дається виразами:
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{3.}{0}\)</span>
+
+<!--
+
+     ϕ(𝑡, 𝐫) =                                           𝑞,  𝐀(𝑡, 𝐫) = 𝑞𝐯𝑞/𝑐 ,                                                                     (3.1)                                                    --><a id="Lienard-Wikhert"></a><!--
+                (𝑅𝑞 − 𝐯𝑞⋅𝐑𝑞 )                                             (𝑅𝑞 − 𝐯𝑞⋅𝐑𝑞 )
+                                                         𝑐
+                                                                                               𝑐
+
+-->
+<p>
+
+\begin{equation}
+\label {Lienard-Wikhert} \begin{aligned} \pot (t,\vect {r}) = \frac {q}{\left ( R_q - \frac {\vect {v}_q\cdot \vect {R}_q}{c}\right ) }, \quad \vect {A}(t,\vect {r}) =\frac {q\vect {v}_q/c}{\left ( R_q - \frac
+{\vect {v}_q\cdot \vect {R}_q}{c} \right )}, \end {aligned}
+\end{equation}
+
+</p>
+
+<p>
+де
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{3.}{1}\)</span>
+<!--
+
+                                                                                                                                                                 𝐑𝑞 = 𝐫 − 𝐫𝑞(𝑡𝑞), 𝑅𝑞 = |𝐑𝑞|, 𝐯𝑞 = 𝑟̇𝑞(𝑡𝑞),  --><a id="Lienard-Wikhert-time"></a><!--
+
+-->
+<p>
+
+\begin{equation*}
+\vect {R}_q = \vect {r} - \vect {r}_q(t_q), \quad R_q = |\vect {R}_q|, \quad \vect {v}_q = \dot {r}_q(t_q),
+\end{equation*}
+
+</p>
+<p>
+а \(t_q\) є розв’язком рівняння
+</p>
+<span class="hidden"> \(\seteqnumber{0}{3.}{1}\)</span>
+<!--
+
+                                                                                                 |𝐫 − 𝐫𝑞(𝑡𝑞)|
+                                                                                     𝑡𝑞 = 𝑡 − 𝑐 . (3.2)
+-->
+<p>
+
+\begin{equation}
+\label {Lienard-Wikhert-time} t_q = t - \frac {|\vect {r} - \vect {r}_q(t_q)|}{c}.
+\end{equation}
+
+</p>
+<div class="center">
+
+<p>
+<span
+
+      id="lateximage-main-html-11"
+      class="lateximagesource"
+><!--
+Положення частинки в                                        𝐑𝑞(𝑡𝑞)
+момент 𝑡𝑞 = 𝑡 − 𝑅𝑞/𝑐
+                                                                    𝐫
+                         𝑧                 𝐯𝑞
+                                       𝐫𝑞
+
+                                                Положення частинки в
+                                                момент 𝑡
+
+                                           𝑦
+
+𝑥
+--><img
+      src="main-html-images/image-11.svg"
+      alt="Рис. 3.1. До розрахунку запізнюючих потенціалів"
+      style=""
+      class="lateximage"
+
+></span>
+</p>
+
+<div class="figurecaption">
+<a id="autoid-142" ></a >
+Рис.&nbsp;3.1. До розрахунку запізнюючих потенціалів
+</div>
+<a id="pic:retardion"></a>
+</div>
+
+<p>
+Нагадаємо, що хвильовою зоною називають область на відстані від джерела, яка значно більша за характерну довжину хвилі/ У хвильовій зоні магнітне поле системи з дипольним моментом p(t), у наближенні дипольного випромінювання, є
+</p>
+<span class="hidden"> \(\seteqnumber{0}{3.}{2}\)</span>
+
+<!--
+
+                                                                                                                                                       [𝐩̈ (𝑡 − 𝑟 ) × 𝐧]                                                             --><a id="eq:dipole_radiation"></a><!--
+                                                                                                                                          𝐁(𝑡, 𝐫) = 𝑐2𝑐𝑟 (3.3)                                                                                                                                        (3.4)
+
+                                                                                                                                                                     [[𝐩̈ (𝑡 − 𝑟 ) × 𝐧] × 𝐧]
+                                                                                                                                          𝐄(𝑡, 𝐫) = [𝐁 × 𝐧] = 𝑐𝑐2𝑟 ,
+
+-->
+
+<p>
+
+\begin{align}
+\label {eq:dipole_radiation} \Bfield (t, \vect {r}) &amp; = \frac {\left [ \ddot {\vect {p}}\left (t - \frac {r}{c}\right )\times \vect {n}\right ] }{c^2 r} \\ \Efield (t, \vect {r}) &amp; = \left [ \Bfield
+\times \vect {n}\right ] = \frac {\left [ \left [ \ddot {\vect {p}}\left (t - \frac {r}{c}\right )\times \vect {n}\right ]\times \vect {n}\right ] }{c^2 r},
+\end{align}
+де \(\vect {n} = \frac {\vect {r}}{r}\)&nbsp;— одиничний вектор в напрямку точки спостереження.
+</p>
+
+<p>
+Діаграма спрямованості дипольного випромінювання:
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{3.}{4}\)</span>
+
+<!--
+
+                                                                                                              𝑑𝑁 𝐩̈2 2                    (3.5)                                                      --><a id="eq:diagram_direction"></a><!--
+                                                                                                                    = 3 sin 𝜃.
+
+                                                                                                               𝑑𝑜 4𝜋𝑐
+
+-->
+
+<p>
+
+\begin{equation}
+\label {eq:diagram_direction} \frac {dN}{do} = \frac {\ddot {\vect {p}}^2}{4\pi c^3}\sin ^2\theta .
+\end{equation}
+
+</p>
+
+<p>
+Повна потужність випромінювання в усіх напрямках:
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{3.}{5}\)</span>
+<!--
+
+                                                                                                                              𝑁 = 2 𝐩̈2.                                                      (3.6)                                  --><a id="eq:power"></a><!--
+                                                                                                                                     3𝑐3
+
+-->
+<p>
+
+\begin{equation}
+\label {eq:power} N = \frac {2}{3c^3}\ddot {\vect {p}}^2.
+\end{equation}
+
+</p>
+
+<p>
+
+При розгляді поляризації випромінювання треба зважати на векторну природу польових функції, зокрема, напруженості електричного поля. Зауважимо, що для електромагнітної хвилі, що поширюється у фіксованому напрямку, досить розглядати лише електричне поле; воно визначає також і
+вектор напруженості магнітного поля.
+</p>
+
+<p>                                                                                                                                                                                                                                           e^{-\omega  t}\) з
+Розглянемо випадкове поле випромінювання, що поширюється в напрямку осі \(x_3\), з напруженістю електричного поля \(\Efield = (E_1,E_2,0) \equiv (E_x,E_y,0)\), причому будемо вважати, що поле є суперпозицією монохроматичних хвиль \(\sim
+близькими частотами. Напрямок вектора \(\Efield \), що є ортогональним напрямку поширення хвилі, визначає поляризацію. Для випадкового поля \(\Efield \) введемо тензор поляризації (за&nbsp;<a id="main-html-autopage-132"></a>[<a
+href="bibliography.html#LWR-ht-cite.0@LL2">9</a>]):
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{3.}{6}\)</span>
+
+<!--
+
+                                                                       ⟨𝐸𝑖 𝐸𝑗∗ ⟩         𝑖, 𝑗 = 1, 2.                                     (3.7)                                                      --><a id="eq:polarization_tensor"></a><!--
+                                                         𝜌𝑖𝑗 = ⟨|𝐸1|2⟩ + ⟨|𝐸2|2⟩ ,
+
+-->
+
+<p>
+
+\begin{equation}
+\label {eq:polarization_tensor} \rho _{ij} = \frac {\left \langle E_{i} E_{j}^* \right \rangle }{\left \langle |E_1|^2\right \rangle + \left \langle |E_2|^2\right \rangle },\quad i,j = 1,2.
+\end{equation}
+
+</p>
+
+<p>
+Оскільки область значень \(\det ||\rho || = \) є відрізком \([0,1/4]\), можна записати:
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{3.}{7}\)</span>
+<!--
+
+                                                                                                   det ||𝜌|| = 14 (1 − 𝑃2), 0 ≤ 𝑃 ≤ 1,    (3.8)                                                      --><a id="eq:polarization_lewel"></a><!--
+
+-->
+
+<p>
+
+\begin{equation}
+\label {eq:polarization_lewel} \det ||\rho || = \frac 14(1 - P^2),\quad 0\le P \le 1,
+\end{equation}
+
+</p>
+
+<p>
+де параметр \(P\) називають <em>ступінню поляризації</em>; він приймає значення від \(0\) (неполяризоване світло) до \(1\).
+</p>
+</div>
+<!--
+...... section Співвідношення невизначеностей ......
+-->
+<h4 id="autosec-133"><span class="sectionnumber">&#xA7;&#x202F;3.1&#x2003;</span>Співвідношення невизначеностей</h4>
+<a id="main-html-autopage-133"></a>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-143"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.1.</span></span> <a id="autoid-144" ></a ><a id="LWR-ht-problem:3.{1}"></a> Електричний сигнал має форму
+</p>
+
+<p>
+\[ \phi (t) = \frac {1}{\sqrt {4\pi \sigma }} \exp \left ( -\frac {t^2}{2\sigma ^2}\right ). \]
+</p>
+
+<p>
+Розрахувати (прямим обчисленням) величину \(\left \langle \Delta t^2 \right \rangle \left \langle \left (\Delta \omega - \left \langle \omega \right \rangle \right )^2 \right \rangle \) у співвідношенні невизначеностей. <a
+href="answers.html#LWR-ht-solution:3.{1}">[відповідь]</a>
+</p>
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-145"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.2.</span></span> <a id="autoid-146" ></a ><a id="LWR-ht-problem:3.{2}"></a> Коли в співвідношенні невизначеностей для хвильових пакетів
+</p>
+
+<p>
+\[ \left \langle \Delta t^2 \right \rangle \left \langle \Delta \omega ^2 \right \rangle \ge \frac 14 \]
+</p>
+
+<p>
+має місце знак рівності? Відповідь обґрунтувати й знайти відповідну форму сигналу.
+</p>
+
+</li>
+
+</ul>
+
+</div>
+<!--
+...... section Монохроматичні хвилі. Інтерференція та поляризація хвиль ......
+-->
+<h4 id="autosec-136"><span class="sectionnumber">&#xA7;&#x202F;3.2&#x2003;</span>Монохроматичні хвилі. Інтерференція та поляризація хвиль</h4>
+<a id="main-html-autopage-136"></a>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-147"></a>                                                                                                                                                                                                                                      \), але
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.3.</span></span> <a id="autoid-148" ></a ><a id="LWR-ht-problem:3.{3}"></a> Гармонічні коливання двох електричних диполів відбуваються з однаковою частотою \(\omega
+зсунуті по фазі на \(\frac {\pi }{2}\). Амплітуди дипольних моментів дорівнюють \(p_0\) і утворюють кут \(\frac {\pi }{2}\) один з одним. Відстань між диполями мала порівняно з довжиною хвилі. Знайти середню за часом потужність випромінювання системи.
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-149"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.4.</span></span> <a id="autoid-150" ></a ><a id="LWR-ht-problem:3.{4}"></a> Гармонічні коливання двох електричних диполів синфазні і відбуваються з однаковою частотою \(\omega
+\). Амплітуди дипольних моментів дорівнюють \(p_0\) і утворюють кут \(\frac {\pi }{2}\) один з одним. Відстань між диполями мала порівняно з довжиною хвилі. Знайти середню за часом потужність випромінювання системи.
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-151"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.5.</span></span> <a id="autoid-152" ></a ><a id="LWR-ht-problem:3.{5}"></a> Два електричних диполя розташовані на прямій на відстані \(m\frac {\lambda }{2}\), \(m \in
+\mathbb {N}\). Їх дипольні моменти напрямлені перпендикулярні до цієї прямої, вони синфазні, дорівнюють одне одному та осцилюють з частотою \(\omega = \frac {2\pi c}{\lambda }\) та амплітудою \(p_0\). Знайти кутовий розподіл випромінювання та повну інтенсивність.
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-153"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.6.</span></span> <a id="autoid-154" ></a ><a id="LWR-ht-problem:3.{6}"></a> Два електричних диполя розташовані на прямій на відстані \(m\frac \lambda 2\) (\(m = 1,2,
+\ldots \)) один від одного. Їх дипольні моменти напрямлені вздовж цієї прямої, вони синфазні, дорівнюють одне одному та осцилюють з частотою \(\omega = \frac {2\pi c}{\lambda }\) та амплітудою \(p_0\). Знайти кутовий розподіл випромінювання (діаграму спрямованості) та
+повну інтенсивність.
+</p>
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-155"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.7.</span></span> <a id="autoid-156" ></a ><a id="LWR-ht-problem:3.{7}"></a>Електромагнітна хвиля поширюється в напрямку осі \(OZ\); напруженість електричного поля у початку
+координат \(\Efield = f(t)\left (a\vect {e}_x + b\vect {e}_y \right ) \); \(a\), \(b\) — комплексні числа, \(f(t)\) — випадкова функція з нульовим середнім, \(\left \langle |f(t)|^2\right \rangle = E_0^2\), \(\vect {e}_x\), \(\vect {e}_y\) — орти
+осей декартових координат. Обчислити тензор поляризації та знайти ступінь поляризації. <a href="answers.html#LWR-ht-solution:3.{7}">[відповідь]</a>
+</p>
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-157"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.8.</span></span> <a id="autoid-158" ></a ><a id="LWR-ht-problem:3.{8}"></a>Електромагнітне випромінювання є сумою двох електромагнітних плоских хвиль, згенерованих
+незалежними джерелами. Хвилі поширюються в напрямку осі \(OZ\), напруженості електричних полів у початку координат відповідно \(\Efield _1 = f_1(t)\left (\vect {e}_x + i \vect {e}_y \right ) \) та \(\Efield _2 = f_2(t) \vect {e}_x \), де \(f_1(t)\),
+\(f_2(t)\) — випадкові функції з нульовими середніми, \(\left \langle |f_1(t)|^2\right \rangle = \left \langle |f_2(t)|^2\right \rangle = E_0^2\), \(\vect {e}_x\), \(\vect {e}_y\) — орти осей декартових координат. Знайти ступінь поляризації. <a
+href="answers.html#LWR-ht-solution:3.{8}">[відповідь]</a>
+</p>
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-159"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.9.</span></span> <a id="autoid-160" ></a ><a id="LWR-ht-problem:3.{9}"></a>Електромагнітне випромінювання є сумою двох електромагнітних плоских хвиль, згенерованих
+незалежними джерелами. Хвилі поширюються в напрямку осі \(OZ\), напруженості електричних полів у початку координат відповідно \(\Efield _1 = f_1(t)\vect {e}_x \) та \(\Efield _2 = f_2(t) \vect {e}_y \), де \(f_1(t)\), \(f_2(t)\) — випадкові функції з нульовими
+середніми, \(\left \langle |f_1(t)|^2\right \rangle = \left \langle |f_2(t)|^2\right \rangle = E_0^2\), \(\vect {e}_x\), \(\vect {e}_y\) — орти осей декартових координат. Знайти ступінь поляризації. <a
+href="answers.html#LWR-ht-solution:3.{9}">[відповідь]</a>
+</p>
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-161"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.10.</span></span> <a id="autoid-162" ></a ><a id="LWR-ht-problem:3.{10}"></a> Два електричних диполя розташовані на осі аплікат з ортом \(\vect {e}_z\) на відстані \(d \ll
+\lambda \) . Їх дипольні моменти дорівнюють:
+</p>
+<span class="hidden"> \(\seteqnumber{0}{3.}{8}\)</span>
+
+<!--
+
+                                                                                                                                                                         𝐩1(𝑡) = 𝑝0𝐞𝑧 exp(−𝑖𝜔𝑡),
+                                                                                                                                                                         𝐩2(𝑡) = 𝑝0𝐞𝑥 exp [−𝑖 (𝜔𝑡 + 𝜋2 )] .
+
+-->
+
+<p>
+
+\begin{align*}
+\vect {p}_1(t) &amp; = p_0\vect {e}_z\exp (-i\omega t), \\ \vect {p}_2(t) &amp; = p_0\vect {e}_x\exp \left [ - i\left (\omega t + \frac {\pi }{2}\right )\right ].
+\end{align*}
+Знайти тензор поляризації випромінювання у напрямку, перпендикулярному дo \(\vect {e}_z\) та \(\vect {e}_x\).
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-163"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.11.</span></span> <a id="autoid-164" ></a ><a id="LWR-ht-problem:3.{11}"></a> Два електричних диполя розташовані на осі аплікат з ортом \(\vect {e}_z\) на відстані \(d \ll
+\lambda \) . Їх дипольні моменти дорівнюють:
+</p>
+<span class="hidden"> \(\seteqnumber{0}{3.}{8}\)</span>
+
+<!--
+
+                                                                                                                                                                           𝐩1(𝑡) = 𝑝0𝐞𝑧 exp(−𝑖𝜔𝑡) cos 𝜉,
+                                                                                                                                                                            𝐩2(𝑡) = 𝑝0𝐞𝑧 exp(−𝑖𝜔𝑡) sin 𝜉.
+
+-->
+
+<p>
+
+\begin{align*}
+\vect {p}_1(t) = p_0\vect {e}_z\exp (-i\omega t)\cos \xi , \\ \vect {p}_2(t) = p_0\vect {e}_z\exp (-i\omega t )\sin \xi .
+\end{align*}
+Знайти кутовий розподіл випромінювання та повну інтенсивність. Випадкова величина \(\xi \) рівномірно розподілена на проміжку \(0 \le \xi \le 2\pi \).
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-165"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.12.</span></span> <a id="autoid-166" ></a ><a id="LWR-ht-problem:3.{12}"></a> Два електричних диполя розташовані на осі аплікат з ортом \(\vect {e}_z\) на відстані \(d \ll
+\lambda \) . Їх дипольні моменти дорівнюють:
+</p>
+<span class="hidden"> \(\seteqnumber{0}{3.}{8}\)</span>
+
+<!--
+
+                                                                                                                                                                       𝐩1(𝑡) = 𝑝0𝐞𝑧 exp(−𝑖𝜔𝑡) cos 𝜉,
+                                                                                                                                                                       𝐩2(𝑡) = 𝑝0𝐞𝑧 exp(−𝑖𝜔𝑡 + 𝜋/2) sin 𝜉.
+
+-->
+
+<p>
+
+\begin{align*}
+\vect {p}_1(t) &amp; = p_0\vect {e}_z\exp (-i\omega t)\cos \xi , \\ \vect {p}_2(t) &amp; = p_0\vect {e}_z\exp (-i\omega t +\pi /2)\sin \xi .
+\end{align*}
+Знайти ступінь поляризації та тензор поляризації випромінювання у напрямку, перпендикулярному до \(\vect {e}_z\). Випадкова величина \(\xi \) рівномірно розподілена на проміжку \(0 \le \xi \le 2\pi \).
+</p>
+
+</li>
+</ul>
+</div>
+<!--
+...... section Випромінювання та розсіювання електромагнітних хвиль ......
+-->
+<h4 id="autosec-147"><span class="sectionnumber">&#xA7;&#x202F;3.3&#x2003;</span>Випромінювання та розсіювання електромагнітних хвиль</h4>
+<a id="main-html-autopage-147"></a>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-167"></a>                                                                                                                                                                      class="textup">(<a
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.13.</span></span> <a id="autoid-168" ></a ><a id="LWR-ht-problem:3.{13}"></a> Отримайте потенціали Ліенара-Віхерта&nbsp;<span
+href="radiation.html#Lienard-Wikhert">3.1</a>)</span> із загальних формул для запізнюючих потенціалів&nbsp;<span class="textup">(<a href="maxwellmicro.html#Retarded_potentials">1.25</a>)</span>.
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-169"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.14.</span></span> <a id="autoid-170" ></a ><a id="LWR-ht-problem:3.{14}"></a> Доведіть, що у випадку заряду, який рухається зі швидкістю \(\vect {v} = \const \) запізнюючі
+потенціали&nbsp;<span class="textup">(<a href="radiation.html#Lienard-Wikhert">3.1</a>)</span> дають значення, які співпадають з «миттєвими» потенціалами:
+</p>
+
+<p>
+\[ \pot = \frac {q}{R_t\sqrt {1-\frac {v^2}{c^2}\sin ^2\theta }}, \quad \vect {A} =\frac {q\vect {v}}{R_t\sqrt {1-\frac {v^2}{c^2}\sin ^2\theta }}, \]
+</p>
+
+<p>
+де \(R_t = |\vect {r} - \vect {r}_q(t)|\)&nbsp;— відстань від заряду до точки спостереження в момент спостереження (див. рис.&nbsp;<a href="radiation.html#pic:retardion">3.1</a>), а \(\theta \)&nbsp;— кут між \(\vect {R}_t\) та \(\vect {v}\). <a
+href="answers.html#LWR-ht-solution:3.{14}">[відповідь]</a>
+</p>
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-171"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.15.</span></span> <a id="autoid-172" ></a ><a id="LWR-ht-problem:3.{15}"></a> Обчислити електричне і магнітне поля рухомого заряду використовуючи потенціали
+Ліенара-Віхерта&nbsp;<span class="textup">(<a href="radiation.html#Lienard-Wikhert">3.1</a>)</span>.
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-173"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.16.</span></span> <a id="autoid-174" ></a ><a id="LWR-ht-problem:3.{16}"></a> Доведіть, що радіально осцилююча однорідно заряджена сфера не випромінює електромагнітні хвилі.
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-175"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.17.</span></span> <a id="autoid-176" ></a ><a id="LWR-ht-problem:3.{17}"></a> Довести, що система, яка складається з \(n\) заряджених частинок, у яких однаковий питомий заряд, за
+відсутності зовнішніх полів не буде мати дипольного випромінювання. Частинки взаємодію за законом Кулона. Релятивістськими поправками і реакцією випромінювання знехтувати. <a href="answers.html#LWR-ht-solution:3.{17}">[відповідь]</a>
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-177"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.18.</span></span> <a id="autoid-178" ></a ><a id="LWR-ht-problem:3.{18}"></a> Модуль вектора індукції магнітного поля дипольного випромінювання, що створюється системою
+струмів на великій відстані \(r\), має вигляд:
+</p>
+
+<p>
+\[ B(t,r,\theta ,\phi ) = r^{-n}f\left (t - \frac {r}{c},\theta , \phi \right ), \]
+</p>
+
+<p>
+де \(f\)&nbsp;— довільна функція вказаних аргументів. Чому дорівнює \(n\)?
+</p>
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-179"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.19.</span></span> <a id="autoid-180" ></a ><a id="LWR-ht-problem:3.{19}"></a> Заряд \(q\) рухається з малою швидкістю \(\vect {v}\) та прискоренням \(\dot {\vect {v}}\) в
+обмеженій області простору. Знайти наближені вирази електромагнітного поля \(\Efield \), \(\Bfield \) частинки в точках, відстань до яких від частинки набагато більша у порівнянні з розмірами області руху заряду. Визначити також кутовий розподіл випромінювання та повну потужність
+дипольного випромінювання. <a href="answers.html#LWR-ht-solution:3.{19}">[відповідь]</a>
+</p>
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-181"></a>                                                                                                                                                                                                  {p}_e\), що
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.20.</span></span> <a id="autoid-182" ></a ><a id="LWR-ht-problem:3.{20}"></a> Визначити середню повну потужність дипольного випромінювання диполя \(\vect
+обертається в одній площині з постійною кутовою швидкістю&nbsp;\(\omega \). <a href="answers.html#LWR-ht-solution:3.{20}">[відповідь]</a>
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-183"></a>                                                                                  id="autoid-184" ></a ><a id="LWR-ht-problem:3.{21}"></a> Два електричні диполі, що розташовані на осі \(OX\) і орієнтовані уздовж осі \(OZ\), осцилюють з
+<li>                                                                                                     2\). Обчисліть вектор Пойнтінга на великих відстанях від цієї системи. <a href="answers.html#LWR-ht-solution:3.{21}">[відповідь]</a>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.21.</span></span> <a
+однаковою амплітудою \(p_0\) і точно в протифазі. Їх \(x\)-координати відрізняються на \(\nfrac \lambda
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-185"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.22.</span></span> <a id="autoid-186" ></a ><a id="LWR-ht-problem:3.{22}"></a>Дві нерелятивістські частинки з зарядами \(q_1\) та \(q_2\) і масами \(m_1\) та \(m_2\) здійснюють
+коловий рух на відстані \(r\) одна від одної. Знайдіть потужність випромінювання. Віддачею випромінювання на рух частинок знехтувати. <a href="answers.html#LWR-ht-solution:3.{22}">[відповідь]</a>
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-187"></a>                                                                                                                                                                                                          {e}_z\). Покажіть, що існують
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.23.</span></span> <a id="autoid-188" ></a ><a id="LWR-ht-problem:3.{23}"></a> Використовуючи рівняння&nbsp;<span class="textup">(<a
+href="radiation.html#eq:dipole_radiation">3.3</a>)</span> знайдіть рівняння силових ліній напруженості електричного та магнітного поля диполя, який знаходиться у початку координат і має момент \(\vect {p} = p_0\cos \omega t \vect
+точки, де поля дорівнюють нулю в будь-який момент часу.
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-189"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.24.</span></span> <a id="autoid-190" ></a ><a id="LWR-ht-problem:3.{24}"></a> Сила струму в тонкому круглому витку змінюється за законом \(I = I_0 \sin \omega t\).
+Визначити діаграму спрямованості випромінювання цього витка та повну потужність випромінювання в хвильовій зоні.
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-191"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.25.</span></span> <a id="autoid-192" ></a ><a id="LWR-ht-problem:3.{25}"></a> В тонкій нерухомій квадратній рамці зі стороною \(a\) протікає струм за законом \(I = I_0e^{-b
+t^2}\). Знайдіть повну енергію довгохвильового випромінювання за час \(-\infty &lt; t &lt; \infty \). <a href="answers.html#LWR-ht-solution:3.{25}">[відповідь]</a>
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-193"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.26.</span></span> <a id="autoid-194" ></a ><a id="LWR-ht-problem:3.{26}"></a> У тонкому прямому проводі розташованому на осі \(OZ\) довжиною \(L = m\lambda /2\) (\(m =
+1,2,3, \ldots \)), збуджено струм \(I(t,z) = I_0 e^{-i\omega t}\sin (kz)\), де \(k = \frac {\omega }{c} = \frac {m\pi }{L}\), \(z \in [0,L]\). Знайти діаграму напрямленості \(\frac {dN}{do}\) як функцію кута \(\theta \) в сферичних координатах. <a
+href="answers.html#LWR-ht-solution:3.{26}">[відповідь]</a>
+</p>
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-195"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.27.</span></span> <a id="autoid-196" ></a ><a id="LWR-ht-problem:3.{27}"></a><a id="prb:rad_rotated_disk"></a> Однорідно заряджений тонкий диск радіусом \(R\)
+обертається навколо свого діаметра з постійною кутовою швидкістю \(\omega \). Заряд диска дорівнює \(q\). Знайти інтенсивність випромінювання такої системи. <a href="answers.html#LWR-ht-solution:3.{27}">[відповідь]</a>
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-197"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.28.</span></span> <a id="autoid-198" ></a ><a id="LWR-ht-problem:3.{28}"></a> На дві плоскі паралельні металеві сітки подали напругу, завдяки чому між ними діє електричне поле
+\(\Efield \), яке наближено вважаємо однорідним. Відстань між сітками \(d\), зовні сіток поля немає. Нерелятивістська частинка з масою \(m\) та зарядом \(q\) влітає в область, де діє електричне поле, перетинаючи обидві сітки. Кут між вектором \(\Efield \) і напрямком швидкості \(\vect
+{v}_0 \) частинки при вльоті дорівнював \(0&lt;\alpha &lt;\pi /2 \). Знайти енергію, що втрачає частинка на дипольне випромінювання під час прольоту між сітками. <a href="answers.html#LWR-ht-solution:3.{28}">[відповідь]</a>
+</p>
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-199"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.29.</span></span> <a id="autoid-200" ></a ><a id="LWR-ht-problem:3.{29}"></a> У класичній моделі атома Резерфорда електрон з масою \(m\) і зарядом \(e\) обертається по коловій
+орбіті навколо нерухомого ядра з зарядом \(Z|e|\). Знайти закон зменшення повної енергії електрона, яке обумовлене дипольним випромінюванням. Обчислити час, після закінчення якого електрон впаде на ядро внаслідок втрати енергії на дипольне випромінювання. У початковий момент часу
+електрон знаходиться на відстані \(R\) від ядра. <a href="answers.html#LWR-ht-solution:3.{29}">[відповідь]</a>
+</p>
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-201"></a>                                                                                                                                                                                                    {r}\), падає
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.30.</span></span> <a id="autoid-202" ></a ><a id="LWR-ht-problem:3.{30}"></a> На нерелятивістський заряд \(e\), маси \(m\), що розташований у точці \(\vect
+монохроматична електромагнітна хвиля \(\vect {E} = \vect {E}_0e^{-i\omega t}\). Визначити диференціальний та повний переріз розсіювання електромагнітних хвиль. Власна частота коливань заряду \(\omega _0\). <a
+href="answers.html#LWR-ht-solution:3.{30}">[відповідь]</a>
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-203"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.31.</span></span> <a id="autoid-204" ></a ><a id="LWR-ht-problem:3.{31}"></a> Запишіть диференціальний і повний перерізи розсіювання лінійно поляризованого і неполяризованого
+світла осцилятором із тертям, а також перерізи поглинання.
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-205"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 3.32.</span></span> <a id="autoid-206" ></a ><a id="LWR-ht-problem:3.{32}"></a> На два вільних заряди (зарядом \(q\)), що розташовані на осі аплікат \(OZ\) на відстані \(b= n\lambda
+/2\) один від одного, падає монохроматична електромагнітна хвиля з напруженістю електричного поля \(\Efield = \Efield _0\cos (\omega t - kx)\). Вектор \(\Efield _0\) паралельний осі \(OZ\). Амплітуда коливань зарядів під дією поля значно менша за довжину хвилі,
+швидкість нерелятивістська. Знайти диференціальний переріз розсіювання. Оцінити кут між сусідніми пелюстками перерізу діаграми розсіювання у площині \(XOZ\) при \(n \gg 1\) в околі напрямку \(\theta = \theta _0\) ( \(\theta \) кут між \(\vect {n}\) та \(\vect {e}_z\)).
+</p>
+
+</li>
+
+</ul>
+
+</div>
+</section>
+</main>
+
+<nav class="botnavigation"><a href="main-html.html" class="linkhome" >
+Головна</a></nav>
+</div><!-- grid -->
+<script src="assets/book.js" defer></script>
+</body>
+</html>

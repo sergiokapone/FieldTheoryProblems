@@ -1,0 +1,51 @@
+% !TeX program = lualatex
+% HTML (lwarp) variant of FTProblems.tex. Sources of the HTML pipeline live in html/; html/build-html.ps1 copies this file
+% to the project root for the build and removes it (and everything lwarp makes) afterwards.
+\documentclass{ProblemBookHTML}
+\addbibresource{d:/Projects/LaTeX/MyPackages/bib/MyBase.bib}
+
+\title{Класична електродинаміка. Збірник задач}
+\author{В.~І.~Жданов, С.~М.~Пономаренко, В.~Б.~Долгошей}
+\begin{document}
+\maketitle
+\tableofcontents
+% the preface is a page of its own (prepare_html.py turns its \chapter* into \schapterpage)
+\ForceHTMLPage
+\htmlinput{intro}
+
+\newcommand{\ChaptersOne}{EMstatics,Radiation,SpecialRelativity}
+\newcommand{\ChaptersTwo}{EMstaticsInMedia,QuasiStationarMedia,WavesInLinearMedia}
+
+\setcounter{chapter}{-1}
+\htmlinput{Vanaliz/Vanaliz}
+
+\part{Мікроскопічна теорія}
+\epigraph{\Annabelle Неможливо позбутися відчуття, що ці математичні формули існують незалежно від нас і володіють власним розумом, що вони мудріші за нас, мудріше навіть тих, хто їх відкрив, і що ми дістаємо з них більше, ніж спочатку було закладено\ldots}{Heinrich Hertz}
+\htmlinput{Additions/MaxwellEquation}
+\multiinclude{\ChaptersOne}[]
+
+\part{Електродинаміка суцільних середовищ}
+\epigraph{\Annabelle Вважаю, що більш приземлені та матеріальні науки аж ніяк не можуть бути зневажені у порівнянні з піднесеним вивченням розуму і духу\ldots}{James Clerk Maxwell}
+\htmlinput{Additions/MaxwellEquationMacro}
+\multiinclude{\ChaptersTwo}[]
+
+% answers to the problems (written by the chapters, as in FTProblems.tex)
+\answers
+\multiinclude{\ChaptersOne}[-Answers]
+\multiinclude{\ChaptersTwo}[-Answers]
+
+% appendices (as in FTProblems.tex)
+\appendix
+\htmlinput{Additions/Vanaliz}
+\htmlinput{Additions/PhysConstants}
+
+% bibliography: the two lists of FTProblems.tex under one heading
+\nocite{LL2,ZhdanovFT,ZhdanovESS,ZhdanovRelativity,Fedorchenko1992,Suhakov1975,Jackson1998,GriffithsElectro,GreinerElectrodynamics,LandauLifshitz1975,LandauLifshitz1984,Grechko,BatyginToptygin1978en}
+\ForceHTMLPage
+\schapter{Література}
+\defbibheading{subheading}[\bibname]{\section*{#1}}
+\addtocategory{Textbooks}{LL2,ZhdanovFT,ZhdanovESS,ZhdanovRelativity,Fedorchenko1992,Suhakov1975,Jackson1998,GriffithsElectro,GreinerElectrodynamics,LandauLifshitz1975,LandauLifshitz1984}
+\addtocategory{Problems}{Grechko,BatyginToptygin1978en}
+\printbibliography[category=Textbooks,heading=subheading,title={Підручники та посібники}]
+\printbibliography[category=Problems,heading=subheading,title={Задачники}]
+\end{document}

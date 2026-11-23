@@ -16,3 +16,15 @@ _minted*/
 *.vrb
 *.fdb_latexmk
 /!Save
+
+# HTML build (html/build-html.ps1)
+/_html/
+/lwarp*
+/main-html*
+/comment_*.cut
+/build-error.txt
+html/logs/
+html/cache/
+html/node_modules/
+html/_test/
+__pycache__/

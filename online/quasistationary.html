@@ -1,0 +1,1439 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<meta name="generator" content="LaTeX Lwarp package" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Класична електродинаміка. Збірник задач — Квазістаціонарні поля і струми</title>
+<link rel="stylesheet" type="text/css" href="assets/conspect.css" />
+
+<script>
+// Lwarp MathJax emulation code
+//
+// Based on code by Davide P. Cervone.
+// Equation numbering: https://github.com/mathjax/MathJax/issues/2427
+// Starred and ifnextchar macros: https://github.com/mathjax/MathJax/issues/2428
+// \left, \right delimiters: https://github.com/mathjax/MathJax/issues/2535
+//
+// Modified by Brian Dunn to adjust equation numbering and add subequations.
+//
+// LaTeX can use \seteqnumber{subequations?}{section}{number} before each equation.
+// subequations? is 0 usually, 1 if inside subequations.
+// section is a string printed as-is, or empty.
+// number is auto-incremented by MathJax between equations.
+//
+MathJax = {
+
+   subequations: "0",
+   section: "",
+   loader: {
+
+       load: ['[tex]/tagformat', '[tex]/textmacros'],
+   },
+   startup: {
+
+       ready() {
+          // These would be replaced by import commands if you wanted to make
+          // a proper extension.
+          const Configuration = MathJax._.input.tex.Configuration.Configuration;
+          const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+          const Macro = MathJax._.input.tex.Symbol.Macro;
+          const TexError = MathJax._.input.tex.TexError.default;
+          const ParseUtil = MathJax._.input.tex.ParseUtil.default;
+          const expandable = MathJax._.util.Options.expandable;
+
+// Insert the replacement string into the TeX string, and check
+// that there haven't been too many maxro substitutions (prevents
+// infinite loops).
+const useArgument = (parser, text) => {
+
+   parser.string = ParseUtil.addArgs(parser, text, parser.string.slice(parser.i));
+   parser.i = 0;
+   if (++parser.macroCount > parser.configuration.options.maxMacros) {
+
+       throw new TexError('MaxMacroSub1',
+       'MathJax maximum macro substitution count exceeded; ' +
+       'is there a recursive macro call?');
+   }
+}
+
+// Create the command map for:
+
+// \ifstar, \ifnextchar, \ifblank, \ifstrequal, \gsub, \seteqnumber
+
+new CommandMap('Lwarp-macros', {
+
+ifstar: 'IfstarFunction',
+
+ifnextchar: 'IfnextcharFunction',
+
+ifblank: 'IfblankFunction',
+
+ifstrequal: 'IfstrequalFunction',
+
+gsubstitute: 'GsubstituteFunction',
+
+seteqnumber: 'SeteqnumberFunction'
+
+}, {
+
+// This function implements an ifstar macro.
+
+IfstarFunction(parser, name) {
+
+     const resultstar = parser.GetArgument(name);
+
+     const resultnostar = parser.GetArgument(name);
+
+     const star = parser.GetStar();                                  // true if there is a *
+
+     useArgument(parser, star ? resultstar : resultnostar);
+
+},
+
+// This function implements an ifnextchar macro.
+IfnextcharFunction(parser, name) {
+
+   let whichchar = parser.GetArgument(name);
+   if (whichchar.match(/^(?:0x[0-9A-F]+|[0-9]+)$/i)) {
+
+       // $ syntax highlighting
+       whichchar = String.fromCodePoint(parseInt(whichchar));
+   }
+   const resultnextchar = parser.GetArgument(name);
+   const resultnotnextchar = parser.GetArgument(name);
+   const gotchar = (parser.GetNext() === whichchar);
+   useArgument(parser, gotchar ? resultnextchar : resultnotnextchar);
+},
+
+// This function implements an ifblank macro.
+IfblankFunction(parser, name) {
+
+   const blankarg = parser.GetArgument(name);
+   const resultblank = parser.GetArgument(name);
+   const resultnotblank = parser.GetArgument(name);
+   const isblank = (blankarg.trim() == "");
+   useArgument(parser, isblank ? resultblank : resultnotblank);
+},
+
+// This function implements an ifstrequal macro.
+IfstrequalFunction(parser, name) {
+
+   const strequalfirst = parser.GetArgument(name);
+   const strequalsecond = parser.GetArgument(name);
+   const resultequal = parser.GetArgument(name);
+   const resultnotequal = parser.GetArgument(name);
+   const isequal = (strequalfirst == strequalsecond);
+   useArgument(parser, isequal ? resultequal : resultnotequal);
+},
+
+// This function implements a gsub macro.                            gsubthird);
+GsubstituteFunction(parser, name) {
+
+   const gsubfirst = parser.GetArgument(name);
+   const gsubsecond = parser.GetArgument(name);
+   const gsubthird = parser.GetArgument(name);
+   let gsubresult=gsubfirst.replace(gsubsecond,
+   useArgument(parser, gsubresult);
+},
+
+// This function modifies the equation numbers.
+
+SeteqnumberFunction(parser, name) {
+
+      // Get the macro parameters
+
+      const star = parser.GetStar();                                 // true if there is a *
+
+      const optBrackets = parser.GetBrackets(name); // contents of optional brackets
+
+      const newsubequations = parser.GetArgument(name); // the subequations argument
+
+      const neweqsection = parser.GetArgument(name); // the eq section argument
+
+      const neweqnumber = parser.GetArgument(name); // the eq number argument
+
+      MathJax.config.subequations=newsubequations ; // a string with boolean meaning
+
+      MathJax.config.section=neweqsection ;                          // a string with numeric meaning
+
+      parser.tags.counter = parser.tags.allCounter = neweqnumber ;
+
+}
+
+});
+
+// Create the Lwarp-macros package
+Configuration.create('Lwarp-macros', {
+
+   handler: {macro: ['Lwarp-macros']}
+});
+
+MathJax.startup.defaultReady();
+
+// For forward references:
+MathJax.startup.input[0].preFilters.add(({math}) => {
+
+   if (math.inputData.recompile){
+          MathJax.config.subequations = math.inputData.recompile.subequations;
+          MathJax.config.section = math.inputData.recompile.section;
+
+   }
+});
+MathJax.startup.input[0].postFilters.add(({math}) => {
+
+   if (math.inputData.recompile){
+          math.inputData.recompile.subequations = MathJax.config.subequations;
+          math.inputData.recompile.section = MathJax.config.section;
+
+   }
+});
+
+          // For \left, \right with unicode-math:
+          const {DelimiterMap} = MathJax._.input.tex.SymbolMap;
+          const {Symbol} = MathJax._.input.tex.Symbol;
+          const {MapHandler} = MathJax._.input.tex.MapHandler;
+          const delimiter = MapHandler.getMap('delimiter');
+          delimiter.add('\\lBrack', new Symbol('\\lBrack', '\u27E6'));
+          delimiter.add('\\rBrack', new Symbol('\\rBrack', '\u27E7'));
+          delimiter.add('\\lAngle', new Symbol('\\lAngle', '\u27EA'));
+          delimiter.add('\\rAngle', new Symbol('\\rAngle', '\u27EB'));
+          delimiter.add('\\lbrbrak', new Symbol('\\lbrbrak', '\u2772'));
+          delimiter.add('\\rbrbrak', new Symbol('\\rbrbrak', '\u2773'));
+          delimiter.add('\\lbag', new Symbol('\\lbag', '\u27C5'));
+          delimiter.add('\\rbag', new Symbol('\\rbag', '\u27C6'));
+          delimiter.add('\\llparenthesis', new Symbol('\\llparenthesis', '\u2987'));
+          delimiter.add('\\rrparenthesis', new Symbol('\\rrparenthesis', '\u2988'));
+          delimiter.add('\\llangle', new Symbol('\\llangle', '\u2989'));
+          delimiter.add('\\rrangle', new Symbol('\\rrangle', '\u298A'));
+          delimiter.add('\\Lbrbrak', new Symbol('\\Lbrbrak', '\u27EC'));
+          delimiter.add('\\Rbrbrak', new Symbol('\\Rbrbrak', '\u27ED'));
+          delimiter.add('\\lBrace', new Symbol('\\lBrace', '\u2983'));
+          delimiter.add('\\rBrace', new Symbol('\\rBrace', '\u2984'));
+          delimiter.add('\\lParen', new Symbol('\\lParen', '\u2985'));
+          delimiter.add('\\rParen', new Symbol('\\rParen', '\u2986'));
+          delimiter.add('\\lbrackubar', new Symbol('\\lbrackubar', '\u298B'));
+          delimiter.add('\\rbrackubar', new Symbol('\\rbrackubar', '\u298C'));
+          delimiter.add('\\lbrackultick', new Symbol('\\lbrackultick', '\u298D'));
+          delimiter.add('\\rbracklrtick', new Symbol('\\rbracklrtick', '\u298E'));
+          delimiter.add('\\lbracklltick', new Symbol('\\lbracklltick', '\u298F'));
+          delimiter.add('\\rbrackurtick', new Symbol('\\rbrackurtick', '\u2990'));
+          delimiter.add('\\langledot', new Symbol('\\langledot', '\u2991'));
+          delimiter.add('\\rangledot', new Symbol('\\rangledot', '\u2992'));
+          delimiter.add('\\lparenless', new Symbol('\\lparenless', '\u2993'));
+          delimiter.add('\\rparengtr', new Symbol('\\rparengtr', '\u2994'));
+          delimiter.add('\\Lparengtr', new Symbol('\\Lparengtr', '\u2995'));
+          delimiter.add('\\Rparenless', new Symbol('\\Rparenless', '\u2996'));
+          delimiter.add('\\lblkbrbrak', new Symbol('\\lblkbrbrak', '\u2997'));
+          delimiter.add('\\rblkbrbrak', new Symbol('\\rblkbrbrak', '\u2998'));
+          delimiter.add('\\lvzigzag', new Symbol('\\lvzigzag', '\u29D8'));
+          delimiter.add('\\rvzigzag', new Symbol('\\rvzigzag', '\u29D9'));
+          delimiter.add('\\Lvzigzag', new Symbol('\\Lvzigzag', '\u29DA'));
+          delimiter.add('\\Rvzigzag', new Symbol('\\Rvzigzag', '\u29DB'));
+          delimiter.add('\\lcurvyangle', new Symbol('\\lcurvyangle', '\u29FC'));
+          delimiter.add('\\rcurvyangle', new Symbol('\\rcurvyangle', '\u29FD'));
+          delimiter.add('\\Vvert', new Symbol('\\Vvert', '\u2980'));
+   } // ready
+}, // startup
+
+   tex: {                                                            'textmacros']},
+       packages: {'[+]': ['tagformat', 'Lwarp-macros',
+       tags: "ams",                                                  n);
+              tagformat: {                                           String.fromCharCode(96+n));
+                     number: function (n) {
+                             if(MathJax.config.subequations==0)
+                                    return(MathJax.config.section +
+                             else
+                                    return(MathJax.config.section +
+                     },
+              },
+
+   }
+}
+</script>
+
+<script
+       id="MathJax-script"
+       src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+
+></script>
+
+</head>
+<body>
+
+<a id="main-html-autopage-245"></a>
+<div class="pagegrid">
+
+<nav class="topnavigation"><a href="main-html.html" class="linkhome" >
+Головна</a></nav>
+<div class="sidetoccontainer">
+
+<nav class="sidetoc">
+
+<div class="sidetoctitle">
+<p>
+<span class="sidetocthetitle">Класична електродинаміка. Збірник задач</span>
+</p>
+<p class="sidetoc-meta"><a href="../index.html">Про посібник</a><span aria-hidden="true">·</span><a href="../FTProblems.pdf">PDF</a></p>
+</div>
+
+<div class="sidetoccontents">
+<p>
+<a href="main-html.html" class="linkhome" >
+Головна</a>
+</p>
+<p>
+<a href="preface.html#autosec-6" class="tocchapter" >
+Передмова</a>
+</p>
+
+<p>
+<a href="vanaliz.html#autosec-9" class="tocchapter" >
+<span class="sectionnumber">0</span><span class="toctitle">&#x2003;Співвідношення векторного аналізу в декартових координатах </span></a>
+</p>
+
+<p>
+<a href="maxwellmicro.html#autosec-18" class="tocpart" >
+<span class="sectionnumber">I</span><span class="toctitle">&#x2003;Мікроскопічна теорія</span></a>
+</p>
+
+<p>
+<a href="maxwellmicro.html#autosec-19" class="tocchapter" >
+<span class="sectionnumber">1</span><span class="toctitle">&#x2003;Система мікроскопічних рівнянь Максвелла</span></a>
+</p>
+
+<p>
+<a href="maxwellmicro.html#autosec-20" class="tocsection" >
+<span class="sectionnumber">1.1</span><span class="toctitle">&#x2003;Рівняння Максвелла</span></a>
+</p>
+
+<p>
+<a href="maxwellmicro.html#autosec-21" class="tocsection" >
+<span class="sectionnumber">1.2</span><span class="toctitle">&#x2003;Закони збереження (диференціальна форма)</span></a>
+</p>
+
+<p>
+<a href="maxwellmicro.html#autosec-22" class="tocsection" >
+<span class="sectionnumber">1.3</span><span class="toctitle">&#x2003;Граничні умови для границі розділу двох середовищ</span></a>
+</p>
+
+<p>
+<a href="maxwellmicro.html#autosec-23" class="tocsection" >
+<span class="sectionnumber">1.4</span><span class="toctitle">&#x2003;Потенціали електромагнітного поля</span></a>
+</p>
+
+<p>
+<a href="emstatics.html#autosec-26" class="tocchapter" >
+<span class="sectionnumber">2</span><span class="toctitle">&#x2003;Електро- та магнітостатика у вакуумі</span></a>
+</p>
+
+<p>
+<a href="emstatics.html#autosec-27" class="tocsection" >
+<span class="sectionnumber">2.1</span><span class="toctitle">&#x2003;Прості задачі на рівняння Максвелла</span></a>
+</p>
+
+<p>
+<a href="emstatics.html#autosec-68" class="tocsection" >
+<span class="sectionnumber">2.2</span><span class="toctitle">&#x2003;Рівняння Пуассона та Лапласа. Граничні задачі електростатики</span></a>
+</p>
+
+<p>
+<a href="emstatics.html#autosec-69" class="tocsection" >
+<span class="sectionnumber">2.3</span><span class="toctitle">&#x2003;Метод електричних зображень</span></a>
+</p>
+
+<p>
+<a href="emstatics.html#autosec-74" class="tocsection" >
+<span class="sectionnumber">2.4</span><span class="toctitle">&#x2003;Пошук розв’язків методом розкладання за системою ортогональних функцій</span></a>
+</p>
+
+<p>
+<a href="emstatics.html#autosec-98" class="tocsection" >
+<span class="sectionnumber">2.5</span><span class="toctitle">&#x2003;Розкладання потенціалів за мультиполями</span></a>
+</p>
+
+<p>
+<a href="radiation.html#autosec-129" class="tocchapter" >
+<span class="sectionnumber">3</span><span class="toctitle">&#x2003;Випромінювання та поширення електромагнітних хвиль</span></a>
+</p>
+
+<p>
+<a href="radiation.html#autosec-133" class="tocsection" >
+<span class="sectionnumber">3.1</span><span class="toctitle">&#x2003;Співвідношення невизначеностей</span></a>
+</p>
+
+<p>
+<a href="radiation.html#autosec-136" class="tocsection" >
+<span class="sectionnumber">3.2</span><span class="toctitle">&#x2003;Монохроматичні хвилі. Інтерференція та поляризація хвиль</span></a>
+</p>
+
+<p>
+<a href="radiation.html#autosec-147" class="tocsection" >
+<span class="sectionnumber">3.3</span><span class="toctitle">&#x2003;Випромінювання та розсіювання електромагнітних хвиль</span></a>
+</p>
+
+<p>
+<a href="relativity.html#autosec-170" class="tocchapter" >
+<span class="sectionnumber">4</span><span class="toctitle">&#x2003;Спеціальна теорія відносності</span></a>
+</p>
+
+<p>
+<a href="relativity.html#autosec-171" class="tocsection" >
+<span class="sectionnumber">4.1</span><span class="toctitle">&#x2003;Перетворення Лоренца та закони збереження</span></a>
+</p>
+
+<p>
+<a href="relativity.html#autosec-182" class="tocsection" >
+<span class="sectionnumber">4.2</span><span class="toctitle">&#x2003;Електродинаміка в релятивістських позначеннях</span></a>
+</p>
+
+<p>
+<a href="relativity.html#autosec-188" class="tocsection" >
+<span class="sectionnumber">4.3</span><span class="toctitle">&#x2003;Рух заряджених частинок в електромагнітному полі</span></a>
+</p>
+
+<p>
+<a href="relativity.html#autosec-198" class="tocsection" >
+<span class="sectionnumber">4.4</span><span class="toctitle">&#x2003;Випромінювання релятивістських заряджених частинок</span></a>
+</p>
+
+<p>
+<a href="maxwellmacro.html#autosec-202" class="tocpart" >
+<span class="sectionnumber">II</span><span class="toctitle">&#x2003;Електродинаміка суцільних середовищ</span></a>
+</p>
+
+<p>
+<a href="maxwellmacro.html#autosec-203" class="tocchapter" >
+<span class="sectionnumber">5</span><span class="toctitle">&#x2003;Система макроскопічних рівнянь Максвелла</span></a>
+</p>
+
+<p>
+<a href="maxwellmacro.html#autosec-204" class="tocsection" >
+<span class="sectionnumber">5.1</span><span class="toctitle">&#x2003;Макроскопічні рівняння Максвелла</span></a>
+</p>
+
+<p>
+<a href="maxwellmacro.html#autosec-205" class="tocsection" >
+<span class="sectionnumber">5.2</span><span class="toctitle">&#x2003;Співвідношення для лінійних ізотропних середовищ</span></a>
+</p>
+
+<p>
+<a href="maxwellmacro.html#autosec-206" class="tocsection" >
+<span class="sectionnumber">5.3</span><span class="toctitle">&#x2003;Умови на границі розділу двох середовищ</span></a>
+</p>
+
+<p>
+<a href="emmedia.html#autosec-209" class="tocchapter" >
+<span class="sectionnumber">6</span><span class="toctitle">&#x2003;Діелектрики та магнетики в статичних полях</span></a>
+</p>
+
+<p>
+<a href="quasistationary.html#autosec-247" class="tocchapter" >
+<span class="sectionnumber">7</span><span class="toctitle">&#x2003;Квазістаціонарні поля і струми</span></a>
+</p>
+
+<p>
+<a href="quasistationary.html#autosec-248" class="tocsection" >
+<span class="sectionnumber">7.1</span><span class="toctitle">&#x2003;Розтікання зарядів в провідниках. Струми Фуко</span></a>
+</p>
+
+<p>
+<a href="quasistationary.html#autosec-263" class="tocsection" >
+<span class="sectionnumber">7.2</span><span class="toctitle">&#x2003;Магнітні поля в надпровідниках</span></a>
+</p>
+
+<p>
+<a href="waves.html#autosec-275" class="tocchapter" >
+<span class="sectionnumber">8</span><span class="toctitle">&#x2003;Електромагнітні хвилі в середовищі</span></a>
+</p>
+
+<p>
+<a href="waves.html#autosec-276" class="tocsection" >
+<span class="sectionnumber">8.1</span><span class="toctitle">&#x2003;Поширення електромагнітних хвиль в середовищі</span></a>
+</p>
+
+<p>
+<a href="waves.html#autosec-287" class="tocsection" >
+<span class="sectionnumber">8.2</span><span class="toctitle">&#x2003;Відбивання та заломлення електромагнітних хвиль на межі двох середовищ</span></a>
+</p>
+
+<p>
+<a href="waves.html#autosec-293" class="tocsection" >
+<span class="sectionnumber">8.3</span><span class="toctitle">&#x2003;Електромагнітні хвилі в плазмі</span></a>
+</p>
+
+<p>
+<a href="waves.html#autosec-297" class="tocsection" >
+<span class="sectionnumber">8.4</span><span class="toctitle">&#x2003;Розсіювання та дифракція</span></a>
+</p>
+
+<p>
+<a href="answers.html#autosec-307" class="tocchapter" >
+Відповіді</a>
+</p>
+
+<p>
+<a href="appendices.html#autosec-325" class="tocchapter" >
+Додатки</a>
+</p>
+
+<p>
+<a href="appendices.html#autosec-326" class="tocsection" >
+<span class="sectionnumber">А</span><span class="toctitle">&#x2003;Основні формули векторного аналізу</span></a>
+</p>
+
+<p>
+<a href="appendices.html#autosec-335" class="tocsection" >
+<span class="sectionnumber">Б</span><span class="toctitle">&#x2003;Поліноми Лежандра</span></a>
+</p>
+
+<p>
+<a href="appendices.html#autosec-336" class="tocsection" >
+<span class="sectionnumber">В</span><span class="toctitle">&#x2003;Сферичні гармоніки</span></a>
+</p>
+
+<p>
+<a href="appendices.html#autosec-337" class="tocsection" >
+<span class="sectionnumber">Г</span><span class="toctitle">&#x2003;Циліндричні функції</span></a>
+</p>
+
+<p>
+<a href="appendices.html#autosec-344" class="tocsection" >
+<span class="sectionnumber">Д</span><span class="toctitle">&#x2003;Дельта-функція Дірака</span></a>
+</p>
+
+<p>
+<a href="appendices.html#autosec-345" class="tocsection" >
+<span class="sectionnumber">Е</span><span class="toctitle">&#x2003;Фізичні константи</span></a>
+</p>
+
+<p>
+<a href="bibliography.html#autosec-351" class="tocchapter" >
+Література</a>
+</p>
+
+</div>
+</nav>
+</div>
+
+<main class="bodycontainer" data-pagefind-body data-pagefind-meta="title[data-title]" data-title="Квазістаціонарні поля і струми">
+
+<section class="textbody">
+<h1 data-pagefind-ignore>Класична електродинаміка. Збірник задач</h1>
+<!--MathJax customizations:-->
+<div data-nosnippet
+
+      style="display:none"
+>
+\(\newcommand{\footnotename}{footnote}\)
+\(\def \LWRfootnote {1}\)
+\(\newcommand {\footnote }[2][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+\(\newcommand {\footnotemark }[1][\LWRfootnote ]{{}^{\mathrm {#1}}}\)
+\(\let \LWRorighspace \hspace \)
+\(\renewcommand {\hspace }{\ifstar \LWRorighspace \LWRorighspace }\)
+\(\newcommand {\TextOrMath }[2]{#2}\)
+\(\newcommand {\mathnormal }[1]{{#1}}\)
+\(\newcommand \ensuremath [1]{#1}\)
+\(\newcommand {\LWRframebox }[2][]{\fbox {#2}} \newcommand {\framebox }[1][]{\LWRframebox } \)
+\(\newcommand {\setlength }[2]{}\)
+\(\newcommand {\addtolength }[2]{}\)
+\(\newcommand {\setcounter }[2]{}\)
+\(\newcommand {\addtocounter }[2]{}\)
+\(\newcommand {\arabic }[1]{}\)
+\(\newcommand {\number }[1]{}\)
+\(\newcommand {\noalign }[1]{\text {#1}\notag \\}\)
+\(\newcommand {\cline }[1]{}\)
+\(\newcommand {\directlua }[1]{\text {(directlua)}}\)
+\(\newcommand {\luatexdirectlua }[1]{\text {(directlua)}}\)
+\(\newcommand {\protect }{}\)
+\(\def \LWRabsorbnumber #1 {}\)
+\(\def \LWRabsorbquotenumber &quot;#1 {}\)
+\(\newcommand {\LWRabsorboption }[1][]{}\)
+\(\newcommand {\LWRabsorbtwooptions }[1][]{\LWRabsorboption }\)
+\(\def \mathchar {\ifnextchar &quot;\LWRabsorbquotenumber \LWRabsorbnumber }\)
+\(\def \mathcode #1={\mathchar }\)
+\(\let \delcode \mathcode \)
+\(\let \delimiter \mathchar \)
+\(\def \oe {\unicode {x0153}}\)
+\(\def \OE {\unicode {x0152}}\)
+\(\def \ae {\unicode {x00E6}}\)
+\(\def \AE {\unicode {x00C6}}\)
+\(\def \aa {\unicode {x00E5}}\)
+\(\def \AA {\unicode {x00C5}}\)
+\(\def \o {\unicode {x00F8}}\)
+\(\def \O {\unicode {x00D8}}\)
+\(\def \l {\unicode {x0142}}\)
+\(\def \L {\unicode {x0141}}\)
+\(\def \ss {\unicode {x00DF}}\)
+\(\def \SS {\unicode {x1E9E}}\)
+\(\def \dag {\unicode {x2020}}\)
+\(\def \ddag {\unicode {x2021}}\)
+\(\def \P {\unicode {x00B6}}\)
+\(\def \copyright {\unicode {x00A9}}\)
+\(\def \pounds {\unicode {x00A3}}\)
+\(\let \LWRref \ref \)
+\(\renewcommand {\ref }{\ifstar \LWRref \LWRref }\)
+\( \newcommand {\multicolumn }[3]{#3}\)
+\(\require {textcomp}\)
+\(\require {colortbl}\)
+\(\let \LWRorigcolumncolor \columncolor \)
+\(\renewcommand {\columncolor }[2][named]{\LWRorigcolumncolor [#1]{#2}\LWRabsorbtwooptions }\)
+\(\let \LWRorigrowcolor \rowcolor \)
+\(\renewcommand {\rowcolor }[2][named]{\LWRorigrowcolor [#1]{#2}\LWRabsorbtwooptions }\)
+\(\let \LWRorigcellcolor \cellcolor \)
+\(\renewcommand {\cellcolor }[2][named]{\LWRorigcellcolor [#1]{#2}\LWRabsorbtwooptions }\)
+\(\newcommand {\intertext }[1]{\text {#1}\notag \\}\)
+\(\let \Hat \hat \)
+\(\let \Check \check \)
+\(\let \Tilde \tilde \)
+\(\let \Acute \acute \)
+\(\let \Grave \grave \)
+\(\let \Dot \dot \)
+\(\let \Ddot \ddot \)
+\(\let \Breve \breve \)
+\(\let \Bar \bar \)
+\(\let \Vec \vec \)
+\(\let \symnormal \mathit \)
+\(\let \symliteral \mathrm \)
+\(\let \symbb \mathbb \)
+\(\let \symbbit \mathbb \)
+\(\let \symcal \mathcal \)
+\(\let \symscr \mathscr \)
+\(\let \symfrak \mathfrak \)
+\(\let \symsfup \mathsf \)
+\(\let \symsfit \mathit \)
+\(\let \symbfsf \mathbf \)
+\(\let \symbfup \mathbf \)
+\(\newcommand {\symbfit }[1]{\boldsymbol {#1}}\)
+\(\let \symbfcal \mathcal \)
+\(\let \symbfscr \mathscr \)
+\(\let \symbffrak \mathfrak \)
+\(\let \symbfsfup \mathbf \)
+\(\newcommand {\symbfsfit }[1]{\boldsymbol {#1}}\)
+\(\let \symup \mathrm \)
+\(\let \symbf \mathbf \)
+\(\let \symit \mathit \)
+\(\let \symtt \mathtt \)
+\(\let \symbffrac \mathbffrac \)
+\(\newcommand {\mathfence }[1]{\mathord {#1}}\)
+\(\newcommand {\mathover }[1]{#1}\)
+\(\newcommand {\mathunder }[1]{#1}\)
+\(\newcommand {\mathaccent }[1]{#1}\)
+\(\newcommand {\mathbotaccent }[1]{#1}\)
+\(\newcommand {\mathalpha }[1]{\mathord {#1}}\)
+\(\def\upAlpha{\unicode{x0391}}\)
+\(\def\upBeta{\unicode{x0392}}\)
+\(\def\upGamma{\unicode{x0393}}\)
+\(\def\upDigamma{\unicode{x03DC}}\)
+\(\def\upDelta{\unicode{x0394}}\)
+\(\def\upEpsilon{\unicode{x0395}}\)
+\(\def\upZeta{\unicode{x0396}}\)
+\(\def\upEta{\unicode{x0397}}\)
+\(\def\upTheta{\unicode{x0398}}\)
+\(\def\upVartheta{\unicode{x03F4}}\)
+\(\def\upIota{\unicode{x0399}}\)
+\(\def\upKappa{\unicode{x039A}}\)
+\(\def\upLambda{\unicode{x039B}}\)
+\(\def\upMu{\unicode{x039C}}\)
+\(\def\upNu{\unicode{x039D}}\)
+\(\def\upXi{\unicode{x039E}}\)
+\(\def\upOmicron{\unicode{x039F}}\)
+\(\def\upPi{\unicode{x03A0}}\)
+\(\def\upVarpi{\unicode{x03D6}}\)
+\(\def\upRho{\unicode{x03A1}}\)
+\(\def\upSigma{\unicode{x03A3}}\)
+\(\def\upTau{\unicode{x03A4}}\)
+\(\def\upUpsilon{\unicode{x03A5}}\)
+\(\def\upPhi{\unicode{x03A6}}\)
+\(\def\upChi{\unicode{x03A7}}\)
+\(\def\upPsi{\unicode{x03A8}}\)
+\(\def\upOmega{\unicode{x03A9}}\)
+\(\def\itAlpha{\unicode{x1D6E2}}\)
+\(\def\itBeta{\unicode{x1D6E3}}\)
+\(\def\itGamma{\unicode{x1D6E4}}\)
+\(\def\itDigamma{\mathit{\unicode{x03DC}}}\)
+\(\def\itDelta{\unicode{x1D6E5}}\)
+\(\def\itEpsilon{\unicode{x1D6E6}}\)
+\(\def\itZeta{\unicode{x1D6E7}}\)
+\(\def\itEta{\unicode{x1D6E8}}\)
+\(\def\itTheta{\unicode{x1D6E9}}\)
+\(\def\itVartheta{\unicode{x1D6F3}}\)
+\(\def\itIota{\unicode{x1D6EA}}\)
+\(\def\itKappa{\unicode{x1D6EB}}\)
+\(\def\itLambda{\unicode{x1D6EC}}\)
+\(\def\itMu{\unicode{x1D6ED}}\)
+\(\def\itNu{\unicode{x1D6EE}}\)
+\(\def\itXi{\unicode{x1D6EF}}\)
+\(\def\itOmicron{\unicode{x1D6F0}}\)
+\(\def\itPi{\unicode{x1D6F1}}\)
+\(\def\itRho{\unicode{x1D6F2}}\)
+\(\def\itSigma{\unicode{x1D6F4}}\)
+\(\def\itTau{\unicode{x1D6F5}}\)
+\(\def\itUpsilon{\unicode{x1D6F6}}\)
+\(\def\itPhi{\unicode{x1D6F7}}\)
+\(\def\itChi{\unicode{x1D6F8}}\)
+\(\def\itPsi{\unicode{x1D6F9}}\)
+\(\def\itOmega{\unicode{x1D6FA}}\)
+\(\def\upalpha{\unicode{x03B1}}\)
+\(\def\upbeta{\unicode{x03B2}}\)
+\(\def\upvarbeta{\unicode{x03D0}}\)
+\(\def\upgamma{\unicode{x03B3}}\)
+\(\def\updigamma{\unicode{x03DD}}\)
+\(\def\updelta{\unicode{x03B4}}\)
+\(\def\upepsilon{\unicode{x03F5}}\)
+\(\def\upvarepsilon{\unicode{x03B5}}\)
+\(\def\upzeta{\unicode{x03B6}}\)
+\(\def\upeta{\unicode{x03B7}}\)
+\(\def\uptheta{\unicode{x03B8}}\)
+\(\def\upvartheta{\unicode{x03D1}}\)
+\(\def\upiota{\unicode{x03B9}}\)
+\(\def\upkappa{\unicode{x03BA}}\)
+\(\def\upvarkappa{\unicode{x03F0}}\)
+\(\def\uplambda{\unicode{x03BB}}\)
+\(\def\upmu{\unicode{x03BC}}\)
+\(\def\upnu{\unicode{x03BD}}\)
+\(\def\upxi{\unicode{x03BE}}\)
+\(\def\upomicron{\unicode{x03BF}}\)
+\(\def\uppi{\unicode{x03C0}}\)
+\(\def\upvarpi{\unicode{x03D6}}\)
+\(\def\uprho{\unicode{x03C1}}\)
+\(\def\upvarrho{\unicode{x03F1}}\)
+\(\def\upsigma{\unicode{x03C3}}\)
+\(\def\upvarsigma{\unicode{x03C2}}\)
+\(\def\uptau{\unicode{x03C4}}\)
+\(\def\upupsilon{\unicode{x03C5}}\)
+\(\def\upphi{\unicode{x03D5}}\)
+\(\def\upvarphi{\unicode{x03C6}}\)
+\(\def\upchi{\unicode{x03C7}}\)
+\(\def\uppsi{\unicode{x03C8}}\)
+\(\def\upomega{\unicode{x03C9}}\)
+\(\def\italpha{\unicode{x1D6FC}}\)
+\(\def\itbeta{\unicode{x1D6FD}}\)
+\(\def\itvarbeta{\unicode{x03D0}}\)
+\(\def\itgamma{\unicode{x1D6FE}}\)
+\(\def\itdigamma{\mathit{\unicode{x03DD}}}\)
+\(\def\itdelta{\unicode{x1D6FF}}\)
+\(\def\itepsilon{\unicode{x1D716}}\)
+\(\def\itvarepsilon{\unicode{x1D700}}\)
+\(\def\itzeta{\unicode{x1D701}}\)
+\(\def\iteta{\unicode{x1D702}}\)
+\(\def\ittheta{\unicode{x1D703}}\)
+\(\def\itvartheta{\unicode{x1D717}}\)
+\(\def\itiota{\unicode{x1D704}}\)
+\(\def\itkappa{\unicode{x1D705}}\)
+\(\def\itvarkappa{\unicode{x1D718}}\)
+\(\def\itlambda{\unicode{x1D706}}\)
+\(\def\itmu{\unicode{x1D707}}\)
+\(\def\itnu{\unicode{x1D708}}\)
+\(\def\itxi{\unicode{x1D709}}\)
+\(\def\itomicron{\unicode{x1D70A}}\)
+\(\def\itpi{\unicode{x1D70B}}\)
+\(\def\itvarpi{\unicode{x1D71B}}\)
+\(\def\itrho{\unicode{x1D70C}}\)
+\(\def\itvarrho{\unicode{x1D71A}}\)
+\(\def\itsigma{\unicode{x1D70E}}\)
+\(\def\itvarsigma{\unicode{x1D70D}}\)
+\(\def\ittau{\unicode{x1D70F}}\)
+\(\def\itupsilon{\unicode{x1D710}}\)
+\(\def\itphi{\unicode{x1D719}}\)
+\(\def\itvarphi{\unicode{x1D711}}\)
+\(\def\itchi{\unicode{x1D712}}\)
+\(\def\itpsi{\unicode{x1D713}}\)
+\(\def\itomega{\unicode{x1D714}}\)
+\(\let \lparen (\)
+\(\let \rparen )\)
+\(\newcommand {\cuberoot }[1]{\,{}^3\!\!\sqrt {#1}}\,\)
+\(\newcommand {\fourthroot }[1]{\,{}^4\!\!\sqrt {#1}}\,\)
+\(\newcommand {\longdivision }[1]{\mathord {\unicode {x027CC}#1}}\)
+\(\newcommand {\mathcomma }{,}\)
+\(\newcommand {\mathcolon }{:}\)
+\(\newcommand {\mathsemicolon }{;}\)
+\(\newcommand {\overbracket }[1]{\mathinner {\overline {\ulcorner {#1}\urcorner }}}\)
+\(\newcommand {\underbracket }[1]{\mathinner {\underline {\llcorner {#1}\lrcorner }}}\)
+\(\newcommand {\overbar }[1]{\mathord {#1\unicode {x00305}}}\)
+\(\newcommand {\ovhook }[1]{\mathord {#1\unicode {x00309}}}\)
+\(\newcommand {\ocirc }[1]{\mathord {#1\unicode {x0030A}}}\)
+\(\newcommand {\candra }[1]{\mathord {#1\unicode {x00310}}}\)
+\(\newcommand {\oturnedcomma }[1]{\mathord {#1\unicode {x00312}}}\)
+\(\newcommand {\ocommatopright }[1]{\mathord {#1\unicode {x00315}}}\)
+\(\newcommand {\droang }[1]{\mathord {#1\unicode {x0031A}}}\)
+\(\newcommand {\leftharpoonaccent }[1]{\mathord {#1\unicode {x020D0}}}\)
+\(\newcommand {\rightharpoonaccent }[1]{\mathord {#1\unicode {x020D1}}}\)
+\(\newcommand {\vertoverlay }[1]{\mathord {#1\unicode {x020D2}}}\)
+\(\newcommand {\leftarrowaccent }[1]{\mathord {#1\unicode {x020D0}}}\)
+\(\newcommand {\annuity }[1]{\mathord {#1\unicode {x020E7}}}\)
+\(\newcommand {\widebridgeabove }[1]{\mathord {#1\unicode {x020E9}}}\)
+\(\newcommand {\asteraccent }[1]{\mathord {#1\unicode {x020F0}}}\)
+\(\newcommand {\threeunderdot }[1]{\mathord {#1\unicode {x020E8}}}\)
+\(\newcommand {\Bbbsum }{\mathop {\unicode {x2140}}\limits }\)
+\(\newcommand {\oiint }{\mathop {\unicode {x222F}}\limits }\)
+\(\newcommand {\oiiint }{\mathop {\unicode {x2230}}\limits }\)
+\(\newcommand {\intclockwise }{\mathop {\unicode {x2231}}\limits }\)
+\(\newcommand {\ointclockwise }{\mathop {\unicode {x2232}}\limits }\)
+\(\newcommand {\ointctrclockwise }{\mathop {\unicode {x2233}}\limits }\)
+\(\newcommand {\varointclockwise }{\mathop {\unicode {x2232}}\limits }\)
+\(\newcommand {\leftouterjoin }{\mathop {\unicode {x27D5}}\limits }\)
+\(\newcommand {\rightouterjoin }{\mathop {\unicode {x27D6}}\limits }\)
+\(\newcommand {\fullouterjoin }{\mathop {\unicode {x27D7}}\limits }\)
+\(\newcommand {\bigbot }{\mathop {\unicode {x27D8}}\limits }\)
+\(\newcommand {\bigtop }{\mathop {\unicode {x27D9}}\limits }\)
+\(\newcommand {\xsol }{\mathop {\unicode {x29F8}}\limits }\)
+\(\newcommand {\xbsol }{\mathop {\unicode {x29F9}}\limits }\)
+\(\newcommand {\bigcupdot }{\mathop {\unicode {x2A03}}\limits }\)
+\(\newcommand {\bigsqcap }{\mathop {\unicode {x2A05}}\limits }\)
+\(\newcommand {\conjquant }{\mathop {\unicode {x2A07}}\limits }\)
+\(\newcommand {\disjquant }{\mathop {\unicode {x2A08}}\limits }\)
+\(\newcommand {\bigtimes }{\mathop {\unicode {x2A09}}\limits }\)
+\(\newcommand {\modtwosum }{\mathop {\unicode {x2A0A}}\limits }\)
+\(\newcommand {\sumint }{\mathop {\unicode {x2A0B}}\limits }\)
+\(\newcommand {\intbar }{\mathop {\unicode {x2A0D}}\limits }\)
+\(\newcommand {\intBar }{\mathop {\unicode {x2A0E}}\limits }\)
+\(\newcommand {\fint }{\mathop {\unicode {x2A0F}}\limits }\)
+\(\newcommand {\cirfnint }{\mathop {\unicode {x2A10}}\limits }\)
+\(\newcommand {\awint }{\mathop {\unicode {x2A11}}\limits }\)
+\(\newcommand {\rppolint }{\mathop {\unicode {x2A12}}\limits }\)
+\(\newcommand {\scpolint }{\mathop {\unicode {x2A13}}\limits }\)
+\(\newcommand {\npolint }{\mathop {\unicode {x2A14}}\limits }\)
+\(\newcommand {\pointint }{\mathop {\unicode {x2A15}}\limits }\)
+\(\newcommand {\sqint }{\mathop {\unicode {x2A16}}\limits }\)
+\(\newcommand {\intlarhk }{\mathop {\unicode {x2A17}}\limits }\)
+\(\newcommand {\intx }{\mathop {\unicode {x2A18}}\limits }\)
+\(\newcommand {\intcap }{\mathop {\unicode {x2A19}}\limits }\)
+\(\newcommand {\intcup }{\mathop {\unicode {x2A1A}}\limits }\)
+\(\newcommand {\upint }{\mathop {\unicode {x2A1B}}\limits }\)
+\(\newcommand {\lowint }{\mathop {\unicode {x2A1C}}\limits }\)
+\(\newcommand {\bigtriangleleft }{\mathop {\unicode {x2A1E}}\limits }\)
+\(\newcommand {\zcmp }{\mathop {\unicode {x2A1F}}\limits }\)
+\(\newcommand {\zpipe }{\mathop {\unicode {x2A20}}\limits }\)
+\(\newcommand {\zproject }{\mathop {\unicode {x2A21}}\limits }\)
+\(\newcommand {\biginterleave }{\mathop {\unicode {x2AFC}}\limits }\)
+\(\newcommand {\bigtalloblong }{\mathop {\unicode {x2AFF}}\limits }\)
+\(\newcommand {\arabicmaj }{\mathop {\unicode {x1EEF0}}\limits }\)
+\(\newcommand {\arabichad }{\mathop {\unicode {x1EEF1}}\limits }\)
+\(\newcommand {\nicefrac }[3][]{\mathinner {{}^{#2}\!/\!_{#3}}}\)
+\(\require {mhchem}\)
+\(\newcommand {\toprule }[1][]{\hline }\)
+\(\let \midrule \toprule \)
+\(\let \bottomrule \toprule \)
+\(\def \LWRbooktabscmidruleparen (#1)#2{}\)
+\(\newcommand {\LWRbooktabscmidrulenoparen }[1]{}\)
+\(\newcommand {\cmidrule }[1][]{\ifnextchar (\LWRbooktabscmidruleparen \LWRbooktabscmidrulenoparen }\)
+\(\newcommand {\morecmidrules }{}\)
+\(\newcommand {\specialrule }[3]{\hline }\)
+\(\newcommand {\addlinespace }[1][]{}\)
+\(\newcommand {\LWRsubmultirow }[2][]{#2}\)
+\(\newcommand {\LWRmultirow }[2][]{\LWRsubmultirow }\)
+\(\newcommand {\multirow }[2][]{\LWRmultirow }\)
+\(\newcommand {\mrowcell }{}\)
+\(\newcommand {\mcolrowcell }{}\)
+\(\newcommand {\STneed }[1]{}\)
+\(\newcommand {\vect }[1]{\boldsymbol {#1}}\)
+\(\newcommand {\EMF }{\mathcal {E}}\)
+\(\newcommand {\Efield }{\vect {E}}\)
+\(\newcommand {\Dfield }{\vect {D}}\)
+\(\newcommand {\Bfield }{\vect {B}}\)
+\(\newcommand {\Hfield }{\vect {H}}\)
+\(\newcommand {\rot }{\mathbf {\nabla }\times }\)
+\(\newcommand {\divg }{\mathbf {\nabla }\cdot }\)
+\(\DeclareMathOperator {\const }{const}\)
+\(\DeclareMathOperator {\inv }{inv}\)
+\(\newcommand {\Laplasian }{\Delta }\)
+\(\DeclareMathOperator {\Div }{div}\)
+\(\DeclareMathOperator {\Rot }{rot}\)
+\(\DeclareMathOperator {\Grad }{grad}\)
+\(\newcommand {\pot }{\mathit {ϕ}}\)
+\(\renewcommand {\epsilon }{\varepsilon }\)
+\(\renewcommand {\phi }{\varphi }\)
+\(\newcommand {\nfrac }[2]{{}^{#1}\!/{}_{#2}}\)
+\(\newcommand {\emf }{ℰ}\)
+\(\newcommand {\tikzmarknode }[2]{#2}\)
+\(\newcommand {\tikzmark }[1]{}\)
+\(\newcommand {\enquote }[1]{«#1»}\)
+\(\newcommand {\allowbreak }{}\)
+\(\newcommand {\mitlambda }{\lambda }\)
+\(\newcommand {\mitomega }{\omega }\)
+\(\newcommand {\mittheta }{\theta }\)
+\(\newcommand {\mitphi }{\varphi }\)
+\(\newcommand {\tcbhighmath }[1]{\boxed {#1}}\)
+\(\DeclareMathOperator {\sh }{sh}\)
+\(\DeclareMathOperator {\ch }{ch}\)
+\(\DeclareMathOperator {\tg }{tg}\)
+\(\DeclareMathOperator {\ctg }{ctg}\)
+\(\DeclareMathOperator {\arctg }{arctg}\)
+\(\DeclareMathOperator {\arcctg }{arcctg}\)
+\(\DeclareMathOperator {\cth }{cth}\)
+\(\DeclareMathOperator {\cosec }{cosec}\)
+\(\let \symsf \symsfup \)
+\(\def\Alpha{\unicode{x0391}}\)
+\(\def\Beta{\unicode{x0392}}\)
+\(\def\Gamma{\unicode{x0393}}\)
+\(\def\Digamma{\unicode{x03DC}}\)
+\(\def\Delta{\unicode{x0394}}\)
+\(\def\Epsilon{\unicode{x0395}}\)
+\(\def\Zeta{\unicode{x0396}}\)
+\(\def\Eta{\unicode{x0397}}\)
+\(\def\Theta{\unicode{x0398}}\)
+\(\def\Vartheta{\unicode{x03F4}}\)
+\(\def\Iota{\unicode{x0399}}\)
+\(\def\Kappa{\unicode{x039A}}\)
+\(\def\Lambda{\unicode{x039B}}\)
+\(\def\Mu{\unicode{x039C}}\)
+\(\def\Nu{\unicode{x039D}}\)
+\(\def\Xi{\unicode{x039E}}\)
+\(\def\Omicron{\unicode{x039F}}\)
+\(\def\Pi{\unicode{x03A0}}\)
+\(\def\Varpi{\unicode{x03D6}}\)
+\(\def\Rho{\unicode{x03A1}}\)
+\(\def\Sigma{\unicode{x03A3}}\)
+\(\def\Tau{\unicode{x03A4}}\)
+\(\def\Upsilon{\unicode{x03A5}}\)
+\(\def\Phi{\unicode{x03A6}}\)
+\(\def\Chi{\unicode{x03A7}}\)
+\(\def\Psi{\unicode{x03A8}}\)
+\(\def\Omega{\unicode{x03A9}}\)
+\(\def\alpha{\unicode{x1D6FC}}\)
+\(\def\beta{\unicode{x1D6FD}}\)
+\(\def\varbeta{\unicode{x03D0}}\)
+\(\def\gamma{\unicode{x1D6FE}}\)
+\(\def\digamma{\mathit{\unicode{x03DD}}}\)
+\(\def\delta{\unicode{x1D6FF}}\)
+\(\def\epsilon{\unicode{x1D716}}\)
+\(\def\varepsilon{\unicode{x1D700}}\)
+\(\def\zeta{\unicode{x1D701}}\)
+\(\def\eta{\unicode{x1D702}}\)
+\(\def\theta{\unicode{x1D703}}\)
+\(\def\vartheta{\unicode{x1D717}}\)
+\(\def\iota{\unicode{x1D704}}\)
+\(\def\kappa{\unicode{x1D705}}\)
+\(\def\varkappa{\unicode{x1D718}}\)
+\(\def\lambda{\unicode{x1D706}}\)
+\(\def\mu{\unicode{x1D707}}\)
+\(\def\nu{\unicode{x1D708}}\)
+\(\def\xi{\unicode{x1D709}}\)
+\(\def\omicron{\unicode{x1D70A}}\)
+\(\def\pi{\unicode{x1D70B}}\)
+\(\def\varpi{\unicode{x1D71B}}\)
+\(\def\rho{\unicode{x1D70C}}\)
+\(\def\varrho{\unicode{x1D71A}}\)
+\(\def\sigma{\unicode{x1D70E}}\)
+\(\def\varsigma{\unicode{x1D70D}}\)
+\(\def\tau{\unicode{x1D70F}}\)
+\(\def\upsilon{\unicode{x1D710}}\)
+\(\def\phi{\unicode{x1D719}}\)
+\(\def\varphi{\unicode{x1D711}}\)
+\(\def\chi{\unicode{x1D712}}\)
+\(\def\psi{\unicode{x1D713}}\)
+\(\def\omega{\unicode{x1D714}}\)
+</div>
+<!--
+...... chapter Квазістаціонарні поля і струми ......
+-->
+<h3 id="autosec-247"><span class="sectionnumber">7&#x2003;</span>Квазістаціонарні поля і струми</h3>
+<a id="main-html-autopage-247"></a>
+<a id="main-html-autofile-9"></a>
+<a id="QuasiStationarMedia-dup3"></a>
+
+<div class="cb-theory">
+
+<p>
+<b>Теоретичні відомості</b>
+</p>
+
+<p>
+Kвазістаціонарними називають поля, які виникають за умов, коли можна знехтувати струмами зміщення. Нижче квазістаціонарні поля буде розглянуто на прикладі розрахунків скін ефекту.
+</p>
+
+<p>
+Умови квазистаціонарності в провідниках виконуються, коли провідність \(\lambda \gg \omega \), де \(\omega \)&nbsp;— характерна частота змін поля. Зовні провідників умова квазістаціонарності виконується, коли просторовий масштаб системи, що розглядається, значно менший за
+характерну довжину хвилі випромінювання, пов’язаною з процесом.
+</p>
+
+<p>
+Скін-ефект — явище проникнення електромагнітного поля в провідник на певну глибину, яка називається скін-шар. Скін-ефект призводить до протікання струму в провіднику в основному в області скін-шару, і, як наслідок, збільшення опору провідника. При скін-ефекті змінний струм високої
+частоти протікає переважно лише в поверхневому шарі.
+</p>
+
+<p>
+Усередині однорідного провідника з рівнянь Максвелла для квазістаціонарного поля випливають рівняння:
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{7.}{0}\)</span>
+
+<!--
+
+     4𝜋𝜇𝜆 𝜕𝐇
+     Δ𝐇 = 2                                                                                   ,
+     𝑐 𝜕𝑡
+                                                                                                                           (7.1)  --><a id="eq:skin-effect"></a><!--
+     4𝜋𝜇𝜆 𝜕𝐄
+     Δ𝐄 = 2                                                                                   ,
+     𝑐 𝜕𝑡
+
+-->
+
+<p>
+
+\begin{equation}
+\begin{aligned}\label {eq:skin-effect} \Delta \Hfield &amp; = \frac {4\pi \mu \lambda }{c^2}\frac {\partial \Hfield }{\partial t}, \\ \Delta \Efield &amp; = \frac {4\pi \mu \lambda }{c^2}\frac {\partial \Efield
+}{\partial t} , \end {aligned}
+\end{equation}
+
+</p>
+
+<p>
+де \(\lambda \)&nbsp;— провідність, \(\mu \)&nbsp;—магнітна проникність.
+</p>
+
+<p>
+Глибина проникнення електричного поля у провідник (товщина скін-шару) визначається формулою:
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{7.}{1}\)</span>
+<!--
+
+                                                                                                            𝛿= 𝑐 .         (7.2)  --><a id="eq:skin-thickness"></a><!--
+                                                                                                                   √2𝜋𝜇𝜆𝜔
+
+-->
+
+<p>
+
+\begin{equation}
+\label {eq:skin-thickness} \delta = \frac {c}{\sqrt {2\pi \mu \lambda \omega }}.
+\end{equation}
+
+</p>
+
+<p>
+В задачах цього підрозділу вважати \(\epsilon =\mu =1\).
+</p>
+</div>
+<!--
+...... section Розтікання зарядів в провідниках. Струми Фуко ......
+-->
+<h4 id="autosec-248"><span class="sectionnumber">&#xA7;&#x202F;7.1&#x2003;</span>Розтікання зарядів в провідниках. Струми Фуко</h4>
+<a id="main-html-autopage-248"></a>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-319"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.1.</span></span> <a id="autoid-320" ></a ><a id="LWR-ht-problem:7.{1}"></a> Електричне поле \(\Efield = f(x)\vect {e}_ze^{- i\omega t} \) паралельне площині \(x =
+0\), що розділяє метал та вакуум. Провідність металу \(\lambda \) . На межі розділу \(f(0) = E_0\), усередині металу \(f(\infty ) = 0\) Знайти розподіл густини струму.
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-321"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.2.</span></span> <a id="autoid-322" ></a ><a id="LWR-ht-problem:7.{2}"></a> У початковий момент електрони з концентрацією \(n_0\) знаходяться в спокої і рівномірно розподілені
+усередині пласкої області товщиною \(2a\). При \(t&gt;0\) вони починають рухатися під дією власного (усередненого) електричного поля. Знайти закон спадання густини заряду в центрі області&nbsp;\(\rho (0,t)\). <a
+href="answers.html#LWR-ht-solution:7.{2}">[відповідь]</a>
+</p>
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-323"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.3 (Максвеллівська релаксація).</span></span> <a id="autoid-324" ></a ><a id="LWR-ht-problem:7.{3}"></a><a id="prb:MaxwellRelax"></a> Пласка нескінченна однорідна плита
+має діелектричну проникність \(\epsilon _1\) і провідність \(\lambda _1\) і розташована між площинами \(x = 0\) і \(x = a\) (декартові координати). Навколо плити ідеальний ізолятор. У початковий момент \(t= 0\) вільний заряд з густиною \(\rho _1\) рівномірно розподілений
+всередині плити, на поверхні та зовні плити вільних зарядів немає. При \(t &gt; 0 \) починається квазистаціонарне перетікання зарядів, причому утворюється вільний поверхневий заряд густиною \(\sigma (t)\) на границях плити. Виконується закон Ома \(\vect {j} = \lambda
+\Efield \). Знайти \(\sigma (t)\) а також розподіл густини струму \(\vect {j}(x,t)\) всередині плити. <a href="answers.html#LWR-ht-solution:7.{3}">[відповідь]</a>
+</p>
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-325"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.4.</span></span> <a id="autoid-326" ></a ><a id="LWR-ht-problem:7.{4}"></a> Нескінченний однорідний циліндр радіуса \(R\) має діелектричну проникність \(\epsilon _1\) і
+провідність \(\lambda _1\). Навколо&nbsp;— ідеальний ізолятор. У початковий момент \(t = 0\) вільний заряд з густиною \(\rho _1\) рівномірно розподілений всередині циліндра, на поверхні та зовні вільних зарядів немає. При \(t &gt; 0\) починається квазістаціонарне перетікання
+зарядів, причому утворюється вільний заряд з поверхневою густиною \(\sigma (t)\) на поверхні циліндра. Виконується закон Ома \(\vect {j} = \lambda \Efield \). Знайти \(\sigma (t)\) та розподіл густини струму \(\vect {j}(\vect {r},t)\) всередині циліндра. <a
+href="answers.html#LWR-ht-solution:7.{4}">[відповідь]</a>
+</p>
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-327"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.5.</span></span> <a id="autoid-328" ></a ><a id="LWR-ht-problem:7.{5}"></a> Однорідна куля радіуса \(R\) має діелектричну проникність \(\epsilon _1\) і провідність \(\lambda
+_1\). Навколо&nbsp;— ідеальний ізолятор. У початковий момент \(t = 0\) вільний заряд з густиною \(\rho _1\) рівномірно розподілений всередині куля, на поверхні та зовні вільних зарядів немає. При \(t &gt; 0\) починається квазістаціонарне перетікання зарядів, причому утворюється
+вільний заряд з поверхневою густиною \(\sigma (t)\) на поверхні кулі. Виконується закон Ома \(\vect {j} = \lambda \Efield \). Знайти \(\sigma (t)\) та розподіл густини струму \(\vect {j}(\vect {r},t)\) всередині кулі. <a
+href="answers.html#LWR-ht-solution:7.{5}">[відповідь]</a>
+</p>
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-329"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.6.</span></span> <a id="autoid-330" ></a ><a id="LWR-ht-problem:7.{6}"></a> Метал знаходиться в області \(x \in [-a, a]\) , його провідність \(\lambda \). Електричне поле має
+вид \(\Efield = f(x)\vect {e}_z\exp ( - i\omega t)\). На границях \(f( - a) = f(a) = E_0\) . Знайти розподіл густини струму.
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-331"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.7.</span></span> <a id="autoid-332" ></a ><a id="LWR-ht-problem:7.{7}"></a><a id="prb:TrueSkin"></a> Вздовж нескінченного циліндричного провідника радіуса \(a\), матеріал
+якого має провідність \(\lambda \) і магнітну проникність \(\mu \), тече змінний струм \(I = I_0e^{-i\omega t}\). Зовні провідника&nbsp;— вакуум. Знайдіть розподіл густини струму та її асимптотику за високих частот. <a
+href="answers.html#LWR-ht-solution:7.{7}">[відповідь]</a>
+</p>
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-333"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.8.</span></span> <a id="autoid-334" ></a ><a id="LWR-ht-problem:7.{8}"></a> Обчисліть активний опір на одиницю довжини циліндричного провідника радіуса \(a\) провідністю
+\(\lambda \). Отримайте значення цієї величини за малих та за великих частот. <a href="answers.html#LWR-ht-solution:7.{8}">[відповідь]</a>
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-335"></a>                                                                                                                                 id="prb:BfieldTrueSkin"></a> Для умов задачі&nbsp;<a
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.9.</span></span> <a id="autoid-336" ></a ><a id="LWR-ht-problem:7.{9}"></a><a
+href="quasistationary.html#prb:TrueSkin">7.7</a> знайдіть розподіл магнітного поля всередині провідника. <a href="answers.html#LWR-ht-solution:7.{9}">[відповідь]</a>
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-337"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.10.</span></span> <a id="autoid-338" ></a ><a id="LWR-ht-problem:7.{10}"></a> Обчисліть внутрішню індуктивність на одиницю довжини циліндричного провідника радіуса \(a\)
+провідністю \(\lambda \). Отримайте значення цієї величини за малих та за великих частот. <a href="answers.html#LWR-ht-solution:7.{10}">[відповідь]</a>
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-339"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.11.</span></span> <a id="autoid-340" ></a ><a id="LWR-ht-problem:7.{11}"></a> Всередині нескінченного циліндричного провідника радіуса \(a\) діє електричне поле, паралельне осі
+\(\Efield = \vect {e}_z f(r)e^{-i\omega t}\), невідома функція \(f(r)\) залежить тільки від відстані до осі циліндра \(r\). Всередині провідника провідність \(\lambda \), магнітна проникність \(\mu = \const \). Знайдіть розподіл густини струму та її асимптотику за високих
+частот. Окремо оцініть відношення густини струму на осі провідника до значення при \(r = a\), а також темп спадання біля краю.
+</p>
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-341"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.12.</span></span> <a id="autoid-342" ></a ><a id="LWR-ht-problem:7.{12}"></a><a id="prb:Bat379"></a>Нескінченний металевий циліндр, матеріал якого має провідність
+\(\lambda \) і магнітну проникність \(\mu \), розташований так, що його вісь збігається з віссю нескінченного соленоїда колового перерізу, по якому тече змінний струм \(I = I_0e^{-i\omega t}\). Між циліндром і намоткою соленоїда, а також зовні соленоїда&nbsp;— вакуум.
+Знайдіть напруженість магнітного та індукційного електричного поля поля у всьому просторі, а також розподіл густини струму в циліндрі. Радіус циліндра дорівнює \(a\), радіус соленоїда дорівнює \(b\) (\(a&lt;b \ll c/\omega \)), густина обмотки соленоїда \(n\). <a
+href="answers.html#LWR-ht-solution:7.{12}">[відповідь]</a>
+</p>
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-343"></a>                                                                                                                                                                                                                                     \Bfield
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.13.</span></span> <a id="autoid-344" ></a ><a id="LWR-ht-problem:7.{13}"></a>Металевий циліндр радіусу \(a\) внесли у зовнішнє однорідне магнітне поле \(\Bfield =
+_0e^{-i\omega t}\), яке паралельне до його осі. Враховуючи результати задачі&nbsp;<a href="quasistationary.html#prb:Bat379">7.12</a>, знайдіть густину струму всередині циліндру. Система знаходиться у вакуумі. Розгляньте окремо випадок великих та малих частот. <a
+href="answers.html#LWR-ht-solution:7.{13}">[відповідь]</a>
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-345"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.14.</span></span> <a id="autoid-346" ></a ><a id="LWR-ht-problem:7.{14}"></a>Яка кількість теплоти виділяється за період на одиницю довжини циліндра, розглянутого в
+задачі&nbsp;<a href="quasistationary.html#prb:Bat379">7.12</a>. Дослідіть випадок малих та високих частот. <a href="answers.html#LWR-ht-solution:7.{14}">[відповідь]</a>
+</p>
+
+</li>
+</ul>
+</div>
+<!--
+...... section Магнітні поля в надпровідниках ......
+-->
+<h4 id="autosec-263"><span class="sectionnumber">&#xA7;&#x202F;7.2&#x2003;</span>Магнітні поля в надпровідниках</h4>
+<a id="main-html-autopage-263"></a>
+
+<div class="cb-theory">
+
+<p>
+<b>Теоретичні відомості</b>
+</p>
+
+<p>
+Надпровідність&nbsp;—явище протікання електричного струму у твердому тілі без втрат, тобто при строго нульовому електричному опорі тіла. Хоча надпровідність суттєво квантове явище, його феноменологічна теорія будується на основі класичних уявлень (теорія Лондонів).
+</p>
+
+<p>
+Згідно цієї теорії повні густини заряду та струму в надпровіднику складаються з нормальної та надпровідної частин:
+</p>
+
+<p>
+\[ \rho = \rho _\text {над} + \rho _\text {норм}, \quad \vect {j} = \vect {j}_\text {над} + \vect {j}_\text {норм}, \]
+</p>
+
+<p>
+де нормальна компонента густини струму \(\vect {j}_\text {норм} = \sigma \Efield \) підпорядковується закону Ома.
+</p>
+
+<p>
+Електродинаміка надпровідників згідно теорії Лондонів описується матеріальними рівняннями вигляду:
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{7.}{2}\)</span>
+
+<!--
+
+     𝑐𝛁 × (Λ𝐣над) + 𝐇 = 0,  𝜕𝐣над − 1 𝐄 = 0,                                                                                      (7.3)                              --><a id="eq:London"></a><!--
+                             𝜕𝑡 Λ
+
+-->
+
+<p>
+
+\begin{equation}
+\label {eq:London} c\rot {(\Lambda \vect {j}_\text {над})} + \Hfield =0, \quad \frac {\partial \vect {j}_\text {над}}{\partial t} - \frac {1}{\Lambda }\Efield = 0,
+\end{equation}
+
+</p>
+
+<p>
+де \(\Lambda = \frac {m}{n_\text {над} e^2}\)&nbsp;— параметр Лондонів, \(n_\text {над}\)&nbsp;— концентрація електронів, які забезпечують надпровідність.
+</p>
+
+<p>
+Надпровідність характеризується абсолютним діамагнетизмом. У магнітному полі в надпровідному матеріалі виникають такі струми, магнітне поле яких компенсує зовнішнє магнітне поле, тобто магнітне поле виштовхується із товщі надпровідника, воно проникає в провідник лише на невелику
+глибину, яка визначається за формулою:
+</p>
+
+<span class="hidden"> \(\seteqnumber{0}{7.}{3}\)</span>
+
+<!--
+
+                                                                                                                      Λ𝑐2  (7.4)                                     --><a id="уйЖLondon_thickness"></a><!--
+                                                                                                            𝛿=√ .
+
+                                                                                                                       4𝜋
+-->
+<p>
+
+\begin{equation}
+\label {уйЖLondon_thickness} \delta = \sqrt {\frac {\Lambda c^2}{4\pi }}.
+\end{equation}
+
+</p>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-347"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.15.</span></span> <a id="autoid-348" ></a ><a id="LWR-ht-problem:7.{15}"></a><a id="prb:B341"></a>Надпровідник заповнює півпростір \(x \ge 0\), при \(x&lt;0\)&nbsp;—
+знаходиться вакуум. У вакуумі існує однорідне магнітне поле \(\Hfield \) паралельне осі \(OY\). Знайдіть розподіл магнітного поля і струмів на межі надпровідника в статичному випадку. <a href="answers.html#LWR-ht-solution:7.{15}">[відповідь]</a>
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-349"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.16.</span></span> <a id="autoid-350" ></a ><a id="LWR-ht-problem:7.{16}"></a> Надпровідна куля радіусу \(R\) знаходиться в зовнішньому однорідному магнітному полі \(H_0\).
+Знайдіть розподіл струмів і магнітне поле у всьому просторі. <a href="answers.html#LWR-ht-solution:7.{16}">[відповідь]</a>
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-351"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.17.</span></span> <a id="autoid-352" ></a ><a id="LWR-ht-problem:7.{17}"></a>Нескінченно довгий круглий циліндр радіуса \(R\) з надпровідника знаходиться в зовнішньому
+магнітному полі, яке напрямлене вздовж його осі симетрії. Знайдіть розподіл магнітного поля по об’єму циліндра та середній магнітний момент одиниці об’єму. <a href="answers.html#LWR-ht-solution:7.{17}">[відповідь]</a>
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-353"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.18.</span></span> <a id="autoid-354" ></a ><a id="LWR-ht-problem:7.{18}"></a> В центр надпровідного кільця (без струму) індуктивністю \(L\) і радіусом \(R\) внесено магнітний диполь
+з моментом \(m\), який напрямлений вздовж осі кільця. Який струм установиться в кільці? <a href="answers.html#LWR-ht-solution:7.{18}">[відповідь]</a>
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-355"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.19.</span></span> <a id="autoid-356" ></a ><a id="LWR-ht-problem:7.{19}"></a> Провідне кільце з індуктивністю \(L\) знаходиться в нормальному стані в зовнішньому магнітному полі
+(магнітний потік через контур кільця дорівнює \(\Phi _0\)). Потім температура знижується і кільце переходить в надпровідний стан. Який струм буде текти по кільцю, якщо вимкнути зовнішнє магнітне поле? <a href="answers.html#LWR-ht-solution:7.{19}">[відповідь]</a>
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-357"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.20.</span></span> <a id="autoid-358" ></a ><a id="LWR-ht-problem:7.{20}"></a> У постійному однорідному магнітному полі з індукцією \(B\) знаходиться кругле жорстке
+надпровідникове кільце радіусом \(R\) малого перерізу. Коефіцієнт самоіндукцї кільця \(L\). У початковий момент площина кільця паралельна напрямку магнітного поля, а струм в кільці відсутній. Визначити силу струму в кільці відразу після того, як воно було повернуто так, що площина кільця
+стала перпендикулярна до ліній магнітного поля. Знайти витрачену роботу. <a href="answers.html#LWR-ht-solution:7.{20}">[відповідь]</a>
+</p>
+
+</li>
+
+</ul>
+
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-359"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.21.</span></span> <a id="autoid-360" ></a ><a id="LWR-ht-problem:7.{21}"></a> На якій висоті постійний магніт з магнітним моментом \(p_m\) і масою \(m\) буде левітувати положенні
+над плоскою горизонтальною поверхнею надпровідника? Магніт вважати точковим диполем. магнітний момент перпендикулярний площині. <a href="answers.html#LWR-ht-solution:7.{21}">[відповідь]</a>
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-361"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.22.</span></span> <a id="autoid-362" ></a ><a id="LWR-ht-problem:7.{22}"></a> Невелика надпровідна кулька радіусом \(r\) знаходиться на осі на відстані \(z\) від площини кільця
+радіусом \(R\), по якому тече струм \(I\); \(\delta \ll r\). Знайдіть силу взаємодії між кулькою та кільцем. <a href="answers.html#LWR-ht-solution:7.{22}">[відповідь]</a>
+</p>
+
+</li>
+</ul>
+</div>
+<div class="theorembodyproblemX">
+
+<ul class="list" style="list-style-type:none">
+
+<a id="autoid-363"></a>
+<li>
+<p>
+<span class="listmarker"> <span class="theoremheaderplain"> 7.23.</span></span> <a id="autoid-364" ></a ><a id="LWR-ht-problem:7.{23}"></a> Знайти силу, що діє на одиницю поверхні надпровідника, розглянутого в задачі&nbsp;<a
+href="quasistationary.html#prb:B341">7.15</a>. <a href="answers.html#LWR-ht-solution:7.{23}">[відповідь]</a>
+</p>
+
+</li>
+
+</ul>
+
+</div>
+</section>
+</main>
+
+<nav class="botnavigation"><a href="main-html.html" class="linkhome" >
+Головна</a></nav>
+</div><!-- grid -->
+<script src="assets/book.js" defer></script>
+</body>
+</html>
